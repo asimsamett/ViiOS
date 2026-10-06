@@ -2,6 +2,12 @@
 
 [English](README.md) | **Türkçe**
 
+<!-- docs-nav:start -->
+**Ana sayfa** · [Katkı](CONTRIBUTING.tr.md) · [Lisans](docs/licensing.tr.md) · [Güvenlik](SECURITY.tr.md)
+
+[Demo](docs/demo.tr.md) · [Sunucu bağlantıları](docs/connections.tr.md) · [Windows desteği](docs/windows-support.tr.md) · [Doğrulama](docs/validation.tr.md) · [Telif bildirimleri](docs/notices.tr.md) · [Üçüncü taraflar](THIRD_PARTY_NOTICES.tr.md)
+<!-- docs-nav:end -->
+
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="public/brand/viios-wordmark-dark.png">
   <source media="(prefers-color-scheme: light)" srcset="public/brand/viios-wordmark-light.png">
@@ -12,7 +18,7 @@
 
 [Canlı demo](https://asimsamett.github.io/ViiOS/) · [Sürümler](https://github.com/asimsamett/ViiOS/releases) · [Katkı rehberi](CONTRIBUTING.tr.md) · [Güvenlik bildirimi](SECURITY.tr.md)
 
-**Yalnız özel ve ticari olmayan kullanım:** v0.3.2 itibarıyla [ViiOS Private Noncommercial License 1.0](LICENSE) geçerlidir. Özel ortamınızda değişiklik yapabilirsiniz; dağıtım, ticari kullanım, kurumsal kurulum ve üçüncü kişilere hizmet sunma hakkı verilmez. Bu bir **açık kaynak lisansı değildir**. Lisansı, atıfları ve [NOTICE](NOTICE) bildirimini koruyun. Platformdan, önceki lisanslardan ve [üçüncü taraf lisanslarından](THIRD_PARTY_NOTICES.md) doğan bağımsız haklar saklıdır. [Madde madde Türkçe açıklamayı ve geçiş notlarını](docs/licensing.tr.md) okuyun.
+**Yalnız özel ve ticari olmayan kullanım:** v0.3.2 itibarıyla [ViiOS Private Noncommercial License 1.0](docs/licensing.tr.md) geçerlidir. Özel ortamınızda değişiklik yapabilirsiniz; dağıtım, ticari kullanım, kurumsal kurulum ve üçüncü kişilere hizmet sunma hakkı verilmez. Bu bir **açık kaynak lisansı değildir**. Lisansı, atıfları ve [telif ve atıf bildirimi](docs/notices.tr.md) bildirimini koruyun. Platformdan, önceki lisanslardan ve [üçüncü taraf lisanslarından](THIRD_PARTY_NOTICES.tr.md) doğan bağımsız haklar saklıdır. [Madde madde Türkçe açıklamayı ve geçiş notlarını](docs/licensing.tr.md) okuyun.
 
 **Yayımlama sınırı:** Aşağıdaki GitHub Pages ve kaynak ZIP yayımlama yönergeleri yalnız telif hakkı sahibi veya ayrıca yazılı izin almış kişiler içindir. Araçların mevcut olması dağıtım izni vermez. Yerel demo yalnız kişisel, ticari olmayan kullanım içindir.
 
@@ -42,7 +48,7 @@ Node.js **22.13+** kurun, projeyi indirip klasörünü açın.
 4. ViiOS bağlantıyı sınar, sabit yardımcılarını kurar ve özelliklerini doğrular. İlerleme ve hata nedenleri görünür; başarısız kurulum yeniden denenebilir.
 5. Hazır sunucuyu seçin. Ekranlar seçili sunucunun verilerini gösterir; kayıtlar yeniden açılışta korunur.
 
-Hedefte **erişilebilir SSH hizmeti**, geçerli giriş bilgileri ve kurulum yetkisi gerekir. Linux'ta root veya sudo; Windows'ta OpenSSH Server, SFTP ve yönetici hesabı gerekir. SSH kapalı bir bilgisayara yalnız IP ve şifreyle erişim kurulamaz. [Windows hazırlığı](docs/windows-support.md).
+Hedefte **erişilebilir SSH hizmeti**, geçerli giriş bilgileri ve kurulum yetkisi gerekir. Linux'ta root veya sudo; Windows'ta OpenSSH Server, SFTP ve yönetici hesabı gerekir. SSH kapalı bir bilgisayara yalnız IP ve şifreyle erişim kurulamaz. [Windows hazırlığı](docs/windows-support.tr.md).
 
 Linux yardımcısı `/opt/viios-agent`, verileri `/var/lib/viios-agent`; Windows yardımcısı `C:\ProgramData\ViiOS\agent` altında bulunur. Linux'ta eksik bağımlılıklar desteklenen paket yöneticisiyle kurulur. Sunucu ekleme bu konumlara yazılmasına ve gerekli yardımcı yetkilerinin oluşturulmasına izin verir. Mevcut uygulamalar taşınmaz veya kendiliğinden yeniden başlatılmaz.
 
@@ -107,4 +113,4 @@ Sonuç `outputs/releases/ViiOS-Standalone-<sürüm>-public-source-<özet>.zip` d
 
 Kontroller: `npm test`, `npm run check`, `npm run build`. Geliştirme için bir terminalde `npm start`, diğerinde `npm run dev`; vekil 3180'e bağlanır. Windows yardımcı testleri PowerShell 5.1, Linux yardımcı testleri Linux gerektirir.
 
-Proje: [asimsamett/viios](https://github.com/asimsamett/ViiOS). Kullanım koşulları için [LICENSE](LICENSE), katkı göndermek için [CONTRIBUTING.md](CONTRIBUTING.tr.md) dosyasını okuyun.
+Proje: [asimsamett/viios](https://github.com/asimsamett/ViiOS). Kullanım koşulları için [Türkçe lisans rehberi](docs/licensing.tr.md), katkı göndermek için [Türkçe katkı rehberi](CONTRIBUTING.tr.md) dosyasını okuyun.

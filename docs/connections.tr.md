@@ -2,6 +2,12 @@
 
 [English](connections.md) | **Türkçe**
 
+<!-- docs-nav:start -->
+[Ana sayfa](../README.tr.md) · [Katkı](../CONTRIBUTING.tr.md) · [Lisans](licensing.tr.md) · [Güvenlik](../SECURITY.tr.md)
+
+[Demo](demo.tr.md) · **Sunucu bağlantıları** · [Windows desteği](windows-support.tr.md) · [Doğrulama](validation.tr.md) · [Telif bildirimleri](notices.tr.md) · [Üçüncü taraflar](../THIRD_PARTY_NOTICES.tr.md)
+<!-- docs-nav:end -->
+
 ViiOS denetleyicisi Windows veya Linux üzerinde Node.js ile çalışır. Sunucular arayüzde **Sunucular → Sunucu ekle** üzerinden eklenir. Bilgisayardaki kişisel SSH yapılandırması, SSH agent veya bir yapay zekâ servisi kullanılmaz. SSH bağlantıları uygulamanın içindeki SSH2 istemcisiyle kurulur.
 
 ## Ön koşullar
@@ -49,7 +55,7 @@ Aynı anda en fazla iki sunucu hazırlanır; diğerleri sırada bekler. Aynı su
 
 **Yeniden dene**, kayıtlı SSH bilgileri ve parmak iziyle kurulumu tekrar dener. Farklı bir sudo parolası verilebilir. Yanlış SSH şifresi, özel anahtar veya IP bilgisi için **Düzenle** ile bağlantı bilgilerini güncelleyin. Kaydetme ve yeniden bağlanma sunucu kimliğini, veri klasörünü ve masaüstü düzenini korur; varsa etkin kurulum önce durdurulur. **Kaldır**, yerel kaydı ve etkin bağlantıları kaldırır; uzak ViiOS dosyalarını veya sunucu uygulamalarını silmez.
 
-Linux/Windows desteği eşit özellik seti anlamına gelmez. Windows Git sürümleme ve model eşzamanlılık ölçümleri bu sürümde kullanılamaz. Windows dosya/kontrol sınırları için [Windows destek belgesi](windows-support.md) geçerlidir. UAT çalışma ortamları iki platformda da devre dışıdır.
+Linux/Windows desteği eşit özellik seti anlamına gelmez. Windows Git sürümleme ve model eşzamanlılık ölçümleri bu sürümde kullanılamaz. Windows dosya/kontrol sınırları için [Windows destek belgesi](windows-support.tr.md) geçerlidir. UAT çalışma ortamları iki platformda da devre dışıdır.
 
 ## İsteğe bağlı ACL araçları
 

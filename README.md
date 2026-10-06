@@ -2,6 +2,12 @@
 
 **English** | [Türkçe](README.tr.md)
 
+<!-- docs-nav:start -->
+**Home** · [Contributing](CONTRIBUTING.md) · [License](docs/licensing.md) · [Security](SECURITY.md)
+
+[Demo](docs/demo.md) · [Server connections](docs/connections.md) · [Windows support](docs/windows-support.md) · [Validation](docs/validation.md) · [Copyright notices](docs/notices.md) · [Third parties](THIRD_PARTY_NOTICES.md)
+<!-- docs-nav:end -->
+
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="public/brand/viios-wordmark-dark.png">
   <source media="(prefers-color-scheme: light)" srcset="public/brand/viios-wordmark-light.png">
@@ -14,7 +20,7 @@
 
 > **Application language:** the interface is currently Turkish. This English documentation includes the Turkish labels needed to follow the setup steps.
 
-**Private noncommercial use only:** From v0.3.2, ViiOS uses the [ViiOS Private Noncommercial License 1.0](LICENSE). Private modification is permitted; distribution, commercial use, organizational deployment, and third-party services are not granted. This is **not open source**. Keep the license, attribution, and [NOTICE](NOTICE). Independent platform rights, earlier licenses, and [third-party licenses](THIRD_PARTY_NOTICES.md) remain applicable; see [license scope and history](docs/licensing.md) and the [Turkish explanation](docs/licensing.tr.md).
+**Private noncommercial use only:** From v0.3.2, ViiOS uses the [ViiOS Private Noncommercial License 1.0](docs/licensing.md). Private modification is permitted; distribution, commercial use, organizational deployment, and third-party services are not granted. This is **not open source**. Keep the license, attribution, and [copyright notices](docs/notices.md). Independent platform rights, earlier licenses, and [third-party licenses](THIRD_PARTY_NOTICES.md) remain applicable; see [license scope and history](docs/licensing.md) and the [Turkish explanation](docs/licensing.tr.md).
 
 ## Explore the demo
 
@@ -115,4 +121,4 @@ Optional Docker setup: `docker compose up --build -d`. Create your administrator
 
 Run `npm test`, `npm run check`, `npm run lint`, and `npm run build` for validation. For development, run `npm start` in one terminal and `npm run dev` in another; the proxy connects to port 3180. Windows helper tests require PowerShell 5.1, and Linux helper tests require Linux. See the [validation history](docs/validation.md) for earlier checks and their limits.
 
-Project: [asimsamett/ViiOS](https://github.com/asimsamett/ViiOS). Read [LICENSE](LICENSE) for the terms of use and [CONTRIBUTING.md](CONTRIBUTING.md) before submitting changes.
+Project: [asimsamett/ViiOS](https://github.com/asimsamett/ViiOS). Read [license guide](docs/licensing.md) for the terms of use and [CONTRIBUTING.md](CONTRIBUTING.md) before submitting changes.

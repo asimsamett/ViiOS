@@ -2,6 +2,12 @@
 
 **English** | [Türkçe](licensing.tr.md)
 
+<!-- docs-nav:start -->
+[Home](../README.md) · [Contributing](../CONTRIBUTING.md) · **License** · [Security](../SECURITY.md)
+
+[Demo](demo.md) · [Server connections](connections.md) · [Windows support](windows-support.md) · [Validation](validation.md) · [Copyright notices](notices.md) · [Third parties](../THIRD_PARTY_NOTICES.md)
+<!-- docs-nav:end -->
+
 The complete license is [ViiOS Private Noncommercial License 1.0](../LICENSE).
 It is an original project-specific license, not an open-source license or an
 OSI-approved license. This page explains it and does not add permissions.

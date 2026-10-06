@@ -2,6 +2,12 @@
 
 [English](SECURITY.md) | **Türkçe**
 
+<!-- docs-nav:start -->
+[Ana sayfa](README.tr.md) · [Katkı](CONTRIBUTING.tr.md) · [Lisans](docs/licensing.tr.md) · **Güvenlik**
+
+[Demo](docs/demo.tr.md) · [Sunucu bağlantıları](docs/connections.tr.md) · [Windows desteği](docs/windows-support.tr.md) · [Doğrulama](docs/validation.tr.md) · [Telif bildirimleri](docs/notices.tr.md) · [Üçüncü taraflar](THIRD_PARTY_NOTICES.tr.md)
+<!-- docs-nav:end -->
+
 Güvenlik düzeltmeleri en son yayımlanan ViiOS sürümüne uygulanır. Eski sürümler için ayrı bir bakım takvimi taahhüt edilmez.
 
 ## Açık bildirme

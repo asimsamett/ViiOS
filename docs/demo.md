@@ -2,6 +2,12 @@
 
 **English** | [Türkçe](demo.tr.md)
 
+<!-- docs-nav:start -->
+[Home](../README.md) · [Contributing](../CONTRIBUTING.md) · [License](licensing.md) · [Security](../SECURITY.md)
+
+**Demo** · [Server connections](connections.md) · [Windows support](windows-support.md) · [Validation](validation.md) · [Copyright notices](notices.md) · [Third parties](../THIRD_PARTY_NOTICES.md)
+<!-- docs-nav:end -->
+
 ViiOS's synthetic-data interface can be published as a static GitHub Pages site. No server, SSH account, password, database, or AI service is required. Opening the page displays an example desktop.
 
 **Publishing is restricted:** The public publishing steps below are only for the Copyright Holder or a person with separate written authorization. The [license](../LICENSE) permits private noncommercial local previews, but does not grant redistribution or third-party hosting rights. The official owner-published demo is not permission to publish another copy.

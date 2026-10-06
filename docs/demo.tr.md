@@ -2,9 +2,15 @@
 
 [English](demo.md) | **Türkçe**
 
+<!-- docs-nav:start -->
+[Ana sayfa](../README.tr.md) · [Katkı](../CONTRIBUTING.tr.md) · [Lisans](licensing.tr.md) · [Güvenlik](../SECURITY.tr.md)
+
+**Demo** · [Sunucu bağlantıları](connections.tr.md) · [Windows desteği](windows-support.tr.md) · [Doğrulama](validation.tr.md) · [Telif bildirimleri](notices.tr.md) · [Üçüncü taraflar](../THIRD_PARTY_NOTICES.tr.md)
+<!-- docs-nav:end -->
+
 ViiOS'un örnek verili arayüzü GitHub Pages üzerinde statik bir site olarak yayınlanabilir. Demo için sunucu, SSH hesabı, şifre, veritabanı veya AI servisi gerekmez. Sayfa açıldığında örnek masaüstü görünür.
 
-**Yayımlama kısıtı:** Aşağıdaki yayımlama adımları yalnız telif hakkı sahibi veya ayrıca yazılı izin almış kişiler içindir. [Lisans](../LICENSE), özel ortamda ticari olmayan yerel önizlemeye izin verir; yeniden dağıtım veya üçüncü kişilere barındırma hakkı vermez. Hak sahibinin resmî demosu, başka bir kopyayı yayımlama izni değildir.
+**Yayımlama kısıtı:** Aşağıdaki yayımlama adımları yalnız telif hakkı sahibi veya ayrıca yazılı izin almış kişiler içindir. [Türkçe lisans rehberi](licensing.tr.md), özel ortamda ticari olmayan yerel önizlemeye izin verir; yeniden dağıtım veya üçüncü kişilere barındırma hakkı vermez. Hak sahibinin resmî demosu, başka bir kopyayı yayımlama izni değildir.
 
 ## GitHub'da yayınlama
 
@@ -15,7 +21,7 @@ ViiOS'un örnek verili arayüzü GitHub Pages üzerinde statik bir site olarak y
 
 Workflow, Pages'in bildirdiği alt yolu kullanır; depo adı kodda sabit değildir. Yalnız üretilmiş statik demo dosyaları yayınlanır. Sunucu uygulaması, kaynak klasörünün tamamı veya çalışma verileri Pages'e gönderilmez. Kaynak dosyalarını GitHub'a yüklemek tek başına Pages'i etkinleştirmez; ikinci adım gereklidir.
 
-GitHub'ın resmi yönergesi: [GitHub Pages için özel workflow kullanımı](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
+GitHub'ın resmi yönergesi: [GitHub Pages için özel workflow kullanımı (İngilizce)](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
 
 ## Bilgisayarda önizleme
 

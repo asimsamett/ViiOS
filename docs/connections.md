@@ -2,6 +2,12 @@
 
 **English** | [Türkçe](connections.tr.md)
 
+<!-- docs-nav:start -->
+[Home](../README.md) · [Contributing](../CONTRIBUTING.md) · [License](licensing.md) · [Security](../SECURITY.md)
+
+[Demo](demo.md) · **Server connections** · [Windows support](windows-support.md) · [Validation](validation.md) · [Copyright notices](notices.md) · [Third parties](../THIRD_PARTY_NOTICES.md)
+<!-- docs-nav:end -->
+
 The ViiOS controller runs on Windows or Linux using Node.js. Add targets through **Servers → Add server** (**Sunucular → Sunucu ekle**). Connections use the application's SSH2 client, without the computer's personal SSH configuration, an SSH agent, or an AI service.
 
 ## Prerequisites

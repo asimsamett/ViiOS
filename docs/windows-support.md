@@ -1,5 +1,13 @@
 # Windows target support
 
+**English** | [Türkçe](windows-support.tr.md)
+
+<!-- docs-nav:start -->
+[Home](../README.md) · [Contributing](../CONTRIBUTING.md) · [License](licensing.md) · [Security](../SECURITY.md)
+
+[Demo](demo.md) · [Server connections](connections.md) · **Windows support** · [Validation](validation.md) · [Copyright notices](notices.md) · [Third parties](../THIRD_PARTY_NOTICES.md)
+<!-- docs-nav:end -->
+
 ViiOS can use a Windows controller or a Linux controller to manage a Windows target over SSH. The target runs `server/agent/windows-agent.ps1` using Windows PowerShell 5.1 or later. The controller does not need PowerShell when connecting to a Windows target from Linux.
 
 The target must already have OpenSSH Server installed, running, reachable, and configured for the selected account. ViiOS cannot install its first SSH transport across a network without an existing administrative transport. Bootstrap requires an elevated administrator account. Windows PowerShell 5.1, CIM, and the NetTCPIP module are used; Python, WSL, Git, Docker, and a Linux compatibility layer are not required for the native adapter.

@@ -2,7 +2,13 @@
 
 [English](licensing.md) | **Türkçe**
 
-Tam ve esas alınan İngilizce metin: [ViiOS Private Noncommercial License 1.0](../LICENSE).
+<!-- docs-nav:start -->
+[Ana sayfa](../README.tr.md) · [Katkı](../CONTRIBUTING.tr.md) · **Lisans** · [Güvenlik](../SECURITY.tr.md)
+
+[Demo](demo.tr.md) · [Sunucu bağlantıları](connections.tr.md) · [Windows desteği](windows-support.tr.md) · [Doğrulama](validation.tr.md) · [Telif bildirimleri](notices.tr.md) · [Üçüncü taraflar](../THIRD_PARTY_NOTICES.tr.md)
+<!-- docs-nav:end -->
+
+Tam ve esas alınan İngilizce metin: [ViiOS Private Noncommercial License 1.0 — tam metin, İngilizce](../LICENSE).
 Bu açıklama ek hak vermez. Lisans açık kaynak lisansı değildir ve OSI onayı iddiası taşımaz.
 
 Temel kural: **Değiştirmek serbest; dağıtmak yasak.** Bu kural, yalnız lisansın
@@ -97,9 +103,9 @@ PolyForm Noncommercial 1.0.0 ile yayımlandı. Tag ve arşivi tarihsel haliyle
 korunur. Yeni lisans v0.3.2 ve bu lisansı açıkça taşıyan sonraki revizyonlarla
 başlar. Daha önce PolyForm ile lisanslanmış aynı kod, o lisansın verdiği
 haklardan sırf main dalındaki LICENSE değişti diye arındırılamaz. Yeni eklenen
-kod da kendiliğinden eski lisansı almaz. [PolyForm metni](https://polyformproject.org/licenses/noncommercial/1.0.0).
+kod da kendiliğinden eski lisansı almaz. [Önceki PolyForm metni (İngilizce)](https://polyformproject.org/licenses/noncommercial/1.0.0).
 
-**Public GitHub ile mutlak fork yasağı çelişir.** [GitHub koşullarının D bölümü](https://docs.github.com/en/site-policy/github-terms/github-terms-of-service#d-user-generated-content)
+**Public GitHub ile mutlak fork yasağı çelişir.** [GitHub koşullarının D bölümü (İngilizce)](https://docs.github.com/en/site-policy/github-terms/github-terms-of-service#d-user-generated-content)
 public depolar için platform işlevleriyle görüntüleme ve fork hakları içerir.
 Bu lisans bu bağımsız hakları geri aldığını iddia etmez. Bunun kapsamı,
 değiştirilmiş forklar dahil, platform koşullarına göre değerlendirilmelidir;

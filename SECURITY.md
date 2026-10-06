@@ -2,6 +2,12 @@
 
 **English** | [Türkçe](SECURITY.tr.md)
 
+<!-- docs-nav:start -->
+[Home](README.md) · [Contributing](CONTRIBUTING.md) · [License](docs/licensing.md) · **Security**
+
+[Demo](docs/demo.md) · [Server connections](docs/connections.md) · [Windows support](docs/windows-support.md) · [Validation](docs/validation.md) · [Copyright notices](docs/notices.md) · [Third parties](THIRD_PARTY_NOTICES.md)
+<!-- docs-nav:end -->
+
 Security fixes target the latest published ViiOS release. No separate maintenance schedule is promised for older releases.
 
 ## Report a vulnerability

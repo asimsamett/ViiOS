@@ -2,6 +2,12 @@
 
 [English](validation.md) | **Türkçe**
 
+<!-- docs-nav:start -->
+[Ana sayfa](../README.tr.md) · [Katkı](../CONTRIBUTING.tr.md) · [Lisans](licensing.tr.md) · [Güvenlik](../SECURITY.tr.md)
+
+[Demo](demo.tr.md) · [Sunucu bağlantıları](connections.tr.md) · [Windows desteği](windows-support.tr.md) · **Doğrulama** · [Telif bildirimleri](notices.tr.md) · [Üçüncü taraflar](../THIRD_PARTY_NOTICES.tr.md)
+<!-- docs-nav:end -->
+
 Bu kayıtlar tarihseldir; tüm kontrollerin güncel commit üzerinde yeniden çalıştırıldığı anlamına gelmez. Test ve dosya sayıları ilgili tarihteki sürüme aittir. Güncel otomatik sonuçlar [GitHub Actions](https://github.com/asimsamett/ViiOS/actions) ekranındadır.
 
 ## 6 Ekim 2026 — İlk GitHub yayını
@@ -65,4 +71,4 @@ Tam kurulum, yeni bir uzak Linux veya Windows sunucusunda uçtan uca çalıştı
 
 Docker motoru ve Linux çalışma ortamı bu bilgisayarda bulunmadığı için Docker imajı ve tüm Linux dosya/Git testleri çalıştırılmadı. GitHub Actions dosyası Linux/Windows kontrol matrisini içerir; GitHub'a yükleme yapılmadığından bu iş akışı henüz çalışmadı.
 
-Windows Git yönetimi, büyük dosya streaming/ZIP aktarımı ve özel UAT akışları bu sürümün destek kapsamı dışındadır. Ayrıntılar [README](../README.tr.md), [sunucu kurulumu](connections.tr.md) ve [Windows desteği](windows-support.md) içindedir.
+Windows Git yönetimi, büyük dosya streaming/ZIP aktarımı ve özel UAT akışları bu sürümün destek kapsamı dışındadır. Ayrıntılar [README](../README.tr.md), [sunucu kurulumu](connections.tr.md) ve [Windows desteği](windows-support.tr.md) içindedir.

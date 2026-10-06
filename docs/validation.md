@@ -2,6 +2,12 @@
 
 **English** | [Türkçe](validation.tr.md)
 
+<!-- docs-nav:start -->
+[Home](../README.md) · [Contributing](../CONTRIBUTING.md) · [License](licensing.md) · [Security](../SECURITY.md)
+
+[Demo](demo.md) · [Server connections](connections.md) · [Windows support](windows-support.md) · **Validation** · [Copyright notices](notices.md) · [Third parties](../THIRD_PARTY_NOTICES.md)
+<!-- docs-nav:end -->
+
 These are dated validation records, not a claim that every check has been rerun for the current commit. Test counts, file counts, and limitations describe the revision tested on each date. Current automated results are available in [GitHub Actions](https://github.com/asimsamett/ViiOS/actions).
 
 ## October 6, 2026 — Initial GitHub publication

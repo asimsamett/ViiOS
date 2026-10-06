@@ -2,7 +2,13 @@
 
 [English](CONTRIBUTING.md) | **Türkçe**
 
-[Issues](https://github.com/asimsamett/ViiOS/issues) üzerinden korunan yazılım kodu içermeyen hata bildirimleri ve öneriler paylaşabilirsiniz. [ViiOS Private Noncommercial License 1.0](LICENSE), özel ortamda değişikliğe izin verir; değişiklikleri yayımlama veya kod aktarma izni genel olarak vermez. Herkese açık patch, fork veya pull request hazırlamadan önce ayrıca yazılı katkı ve yayımlama izni alın; bağımsız platform hakları için [lisans notlarını](docs/licensing.tr.md) okuyun. Üçüncü taraf bildirimlerini koruyun.
+<!-- docs-nav:start -->
+[Ana sayfa](README.tr.md) · **Katkı** · [Lisans](docs/licensing.tr.md) · [Güvenlik](SECURITY.tr.md)
+
+[Demo](docs/demo.tr.md) · [Sunucu bağlantıları](docs/connections.tr.md) · [Windows desteği](docs/windows-support.tr.md) · [Doğrulama](docs/validation.tr.md) · [Telif bildirimleri](docs/notices.tr.md) · [Üçüncü taraflar](THIRD_PARTY_NOTICES.tr.md)
+<!-- docs-nav:end -->
+
+[Issues](https://github.com/asimsamett/ViiOS/issues) üzerinden korunan yazılım kodu içermeyen hata bildirimleri ve öneriler paylaşabilirsiniz. [ViiOS Private Noncommercial License 1.0](docs/licensing.tr.md), özel ortamda değişikliğe izin verir; değişiklikleri yayımlama veya kod aktarma izni genel olarak vermez. Herkese açık patch, fork veya pull request hazırlamadan önce ayrıca yazılı katkı ve yayımlama izni alın; bağımsız platform hakları için [lisans notlarını](docs/licensing.tr.md) okuyun. Üçüncü taraf bildirimlerini koruyun.
 
 ## Geliştirme
 
@@ -29,7 +35,7 @@ Arayüzü gerçek sunucu bağlamadan denemek için `npm run demo:build` ve `npm 
 
 Gerçek sunucu adreslerini, kullanıcı bilgilerini, parolaları, anahtarları, envanterleri, günlükleri veya müşteri verilerini issue, ekran görüntüsü ve commitlere eklemeyin. Örneklerde dokümantasyon adresleri ve yapay veriler kullanın. `data/`, `.env`, `outputs/` ve geliştirme aracı oturumları kaynak pakete dahil edilmez.
 
-Güvenlik açıkları için [SECURITY.md](SECURITY.tr.md) yönergesini izleyin.
+Güvenlik açıkları için [güvenlik bildirimini](SECURITY.tr.md) yönergesini izleyin.
 
 ## Belge dilleri
 
