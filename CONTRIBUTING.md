@@ -2,7 +2,7 @@
 
 **English** | [Türkçe](CONTRIBUTING.tr.md)
 
-Use [Issues](https://github.com/asimsamett/ViiOS/issues) for bug reports and feature suggestions, and pull requests for code changes. The project is distributed under [PolyForm Noncommercial 1.0.0](LICENSE.md); contributions must be submitted under the same project license. Preserve the license and copyright notices of third-party code.
+Use [Issues](https://github.com/asimsamett/ViiOS/issues) for factual bug reports and feature suggestions without protected Software code. The project uses the [ViiOS Private Noncommercial License 1.0](LICENSE): private modification is permitted, but publishing changes or transferring code is not generally permitted. Obtain separate written contribution and publication permission before creating a public patch, fork, or pull request; independently existing platform rights are explained in [licensing notes](docs/licensing.md). Preserve third-party notices.
 
 ## Development
 
@@ -20,12 +20,12 @@ python -m unittest discover -s tests -p test_public_source.py
 
 Use `npm run demo:build` and `npm run demo:serve` to explore the interface without connecting a real server. The README explains differences between Linux and Windows target support.
 
-## Submit a change
+## Propose a change
 
-1. Use a separate branch and focus the change on one issue.
-2. Explain how to reproduce the problem, the expected behavior, and the checks you ran.
-3. Review new public source files before adding them to `public-source-files.json`.
-4. Open a pull request and confirm that automated checks pass.
+1. Describe the issue and desired behavior without uploading Software code.
+2. For a code contribution, request a private contact channel and separate written terms from the Copyright Holder first.
+3. Until permission is granted, keep your changes in your private local environment; do not publish or send patches.
+4. If permission is granted, use only the transfer/publication scope it authorizes. No automatic copyright assignment or general redistribution license is implied.
 
 Do not include real server addresses, account information, passwords, keys, inventories, logs, or customer data in issues, screenshots, or commits. Use documentation addresses and synthetic examples. `data/`, `.env`, `outputs/`, and development-tool sessions are excluded from the public source package.
 

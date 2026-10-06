@@ -1,6 +1,6 @@
 # Third-party notices
 
-ViiOS-specific code is licensed under PolyForm Noncommercial 1.0.0. The following third-party material retains its own license; ViiOS does not replace or restrict rights granted by those upstream licenses.
+ViiOS-specific code in v0.3.2 and later revisions expressly carrying this license is licensed under the ViiOS Private Noncommercial License 1.0 (see LICENSE). Earlier licenses remain applicable to previously licensed material; see docs/licensing.md. The following third-party material retains its own license; ViiOS does not replace or restrict rights granted by those upstream licenses.
 
 ## shadcn/ui
 

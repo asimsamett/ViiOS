@@ -4,6 +4,8 @@
 
 ViiOS'un örnek verili arayüzü GitHub Pages üzerinde statik bir site olarak yayınlanabilir. Demo için sunucu, SSH hesabı, şifre, veritabanı veya AI servisi gerekmez. Sayfa açıldığında örnek masaüstü görünür.
 
+**Yayımlama kısıtı:** Aşağıdaki yayımlama adımları yalnız telif hakkı sahibi veya ayrıca yazılı izin almış kişiler içindir. [Lisans](../LICENSE), özel ortamda ticari olmayan yerel önizlemeye izin verir; yeniden dağıtım veya üçüncü kişilere barındırma hakkı vermez. Hak sahibinin resmî demosu, başka bir kopyayı yayımlama izni değildir.
+
 ## GitHub'da yayınlama
 
 1. Temiz kaynak paketini açın ve içindeki dosyaları GitHub deponuzun köküne yükleyin. `.github/workflows/demo-pages.yml` dosyası da depoda bulunmalı.

@@ -1,0 +1,247 @@
+ViiOS Private Noncommercial License 1.0
+Version date: 6 October 2026
+
+Copyright (c) 2026 asimsamett (https://github.com/asimsamett)
+
+This is a limited copyright license, not an open-source license. It permits
+private noncommercial use and modification. It does not grant commercial use,
+distribution, sublicensing, or third-party service rights. MODIFICATION IS
+PERMITTED; DISTRIBUTION IS PROHIBITED, subject only to independently existing
+rights described in Section 10 or separate written permission.
+
+1. Definitions
+
+"Copyright Holder" means the person identified in the copyright notice above,
+but only to the extent that person owns or is authorized to license the rights
+in question.
+
+"Software" means the ViiOS source code, executable code, documentation, assets,
+and other material that the Copyright Holder expressly supplies under this
+license, including protected portions of that material. Independently licensed
+third-party material is governed by Section 10.
+
+"You" means the individual exercising rights under this license in their own
+capacity. This license does not grant an organization a shared or institutional
+license. Organizational deployment requires separate written permission.
+
+"Third Party" means any person or legal entity other than You or the Copyright
+Holder. Family members, colleagues, employers, clients, affiliated entities,
+students, and other members of a group are Third Parties.
+
+"Use" means to download, inspect, reproduce, install, compile, execute, or
+otherwise operate the Software. Use does not include a right to Distribute.
+
+"Modify" means to edit, adapt, translate, alter, or combine the Software with
+other material to create a Derivative Work. Permission to Modify is separate
+from, and does not imply, permission to Distribute.
+
+"Derivative Work" means a modified version or other work incorporating or
+adapting protectable expression from the Software. Merely interoperating with
+the Software does not, by itself, make independently created work a Derivative
+Work. The service restrictions in Section 4 apply regardless of this distinction.
+
+"Distribute" means to give, transmit, publish, upload, supply, sell, rent, lend,
+license, sublicense, transfer, or otherwise make the Software or a Derivative
+Work available to a Third Party, in source, executable, archive, container,
+embedded, or other form. This includes patches containing protected Software
+material and making a repository or download accessible to a Third Party,
+whether publicly or privately, directly or through an intermediary.
+
+"Commercial Use" means Use directed toward or materially supporting revenue,
+compensation, profit, commercial advantage, or business operations, whether
+directly or indirectly. It includes Use in a for-profit organization's internal
+operations, employee work for that organization, client work, paid consulting,
+commercial product development or evaluation, and paid or revenue-supported
+products or services. Neither lack of resale nor absence of a separate charge
+for the Software makes such Use noncommercial.
+
+"Noncommercial Use" means Use that is not Commercial Use. Education, research,
+testing, hobby activity, and nonprofit status are not automatic exemptions:
+the actual purpose and circumstances must satisfy this definition and all
+other conditions of this license.
+
+"Personal Use" means Use by You, for Your own purposes and without providing
+the Software or its functionality to a Third Party. Personal Use is permitted
+only when it is also Noncommercial Use; running a business on a personal
+computer is not permitted Personal Use.
+
+"Private Environment" means computers, storage, and servers under Your control
+where the Software, Derivative Works, and their functionality are accessible
+only to You. A personal remote server may qualify; a shared team deployment,
+public endpoint, or third-party-accessible repository does not. This license
+does not authorize giving a hosting or other service provider rights in, or
+access to, the Software beyond independently existing rights in Section 10.
+
+2. Limited copyright permission
+
+Subject to every applicable condition of this license, the Copyright Holder
+grants You a worldwide, royalty-free, nonexclusive, nontransferable, and
+nonsublicensable copyright license to obtain an authorized copy, inspect its
+source, make private working and backup copies, install, compile, execute, and
+Modify the Software solely for Your own Noncommercial Use in a Private
+Environment. This includes personal learning, independent noncommercial
+research, private testing, and hobbies that satisfy those conditions.
+
+You may keep a local version-control repository. You may run Your modified
+version privately. Neither action authorizes sharing it. All rights not
+expressly granted are reserved by the Copyright Holder. No ownership is sold
+or transferred, and no further permission arises from availability of source.
+
+3. No distribution or transfer
+
+You must not Distribute the original Software or any Derivative Work, for free
+or for payment. In particular, this license does not permit uploading either
+to GitHub, GitLab, Bitbucket, another repository, a package registry, a website,
+or a file-sharing service; publishing an original or modified fork; sending
+source or a ZIP archive to another person; or incorporating the Software into
+a product, installer, image, or project that You distribute.
+
+Password protection, a private repository, attribution, an unchanged license,
+or the noncommercial purpose of a recipient does not create permission to
+Distribute. Recipients cannot obtain rights through You. Refer interested
+people to the Copyright Holder's authorized source instead of sending copies.
+Section 10 governs independently existing platform and other rights.
+
+4. No commercial use or third-party service
+
+You must not engage in Commercial Use without separate written permission.
+You must not make the Software or a Derivative Work available for a Third
+Party to operate, or provide its functionality to a Third Party through SaaS,
+an API, managed hosting, remote access, a shared account, a hosted interface,
+or any comparable arrangement. This service restriction applies even when no
+copy is transferred and no fee is charged. You must not operate it on behalf
+of another person or organization. These are express conditions of the rights
+granted here, not a claim that all remote access is legally distribution.
+
+5. Notices, identity, and ownership
+
+Retain this license, copyright and attribution notices, NOTICE, and applicable
+third-party notices in every permitted copy and Derivative Work. Do not remove
+or conceal existing authorship or attribution notices in the interface.
+Record Your modifications as Your own changes without suggesting that the
+Copyright Holder made or endorsed them; a private change log is sufficient.
+
+Do not claim ownership or authorship of the original Software, attribute its
+development to Yourself or another product, or misrepresent its name,
+developer, or copyright holder. No trademark, trade-name, logo, or endorsement
+license is granted beyond retaining notices and accurately identifying the
+Software in permitted Use.
+
+The Copyright Holder retains rights in the original Software. You retain any
+rights that applicable law gives You in Your independently authored changes;
+this is not an assignment of those rights. Such ownership does not authorize
+distribution or commercial exploitation of the Software or a Derivative Work.
+
+6. Data, results, and communications
+
+This license does not claim ownership of Your input data or independently
+created results merely because the Software processed or produced them.
+Noncommercial publication of findings that contain no protected Software
+material is not prohibited by this license. Publishing a service that exposes
+the Software's functionality remains prohibited under Section 4.
+
+You may share a link to the Copyright Holder's authorized project and submit
+factual feedback without Software code. No permission to publish patches or
+code contributions is implied. Arrange separate written terms with the
+Copyright Holder before transferring a proposed code contribution. This
+license itself imposes no obligation to contribute changes.
+
+7. Patents
+
+Only to the extent the Copyright Holder controls licensable patent claims
+necessarily infringed by executing the unmodified Software as supplied, the
+Copyright Holder grants You a nonexclusive, worldwide, royalty-free,
+nontransferable, nonsublicensable patent license to execute it for the Use
+permitted by this license. That grant lasts only while Your license remains
+in effect. It does not authorize selling, offering for sale, distributing,
+or commercially exploiting anything.
+
+No patent license is granted for claims infringed only because of Your
+modifications or combinations, for other implementations, or under patents
+owned by a Third Party. Private modification permission is not a representation
+that a modification is patent-cleared. No statement is made that the Software
+is covered by a patent or free of patent claims. No other patent license is
+implied by this document.
+
+8. Term and termination
+
+Your permissions begin when You exercise a right granted here and continue
+while You comply. If You breach a condition of this license, the copyright
+and patent permissions granted here terminate automatically upon the breach,
+without requiring notice. Stop Use and remove the Software and Derivative
+Works from Your systems and copies under Your control. If law requires
+retention of a copy, keep it inaccessible for operational use and retain it
+only for that legally required purpose and period.
+
+Correcting a breach does not automatically restore permission; reinstatement
+requires the Copyright Holder's express written agreement. Termination does
+not extinguish accrued claims or obligations that should continue, including
+ownership, notice protection for required retained copies, disclaimers, and
+limits of liability. It does not terminate independently existing rights
+described in Section 10.
+
+9. No warranties; limits of liability
+
+THE SOFTWARE IS PROVIDED "AS IS" AND "AS AVAILABLE". TO THE FULLEST EXTENT
+APPLICABLE LAW ALLOWS, THE COPYRIGHT HOLDER MAKES NO WARRANTY OR ASSURANCE,
+EXPRESS, IMPLIED, OR STATUTORY, INCLUDING ABOUT QUALITY, FITNESS FOR A
+PARTICULAR PURPOSE, MERCHANTABILITY, TITLE, NON-INFRINGEMENT, ACCURACY,
+SECURITY, AVAILABILITY, OR FREEDOM FROM DEFECTS. NO SUPPORT, MAINTENANCE,
+UPDATE, OR COMPATIBILITY COMMITMENT IS MADE BY THIS LICENSE.
+
+TO THAT SAME EXTENT, THE COPYRIGHT HOLDER IS NOT LIABLE FOR LOSS, DAMAGE,
+COST, OR CLAIM ARISING FROM THE SOFTWARE OR ITS USE OR INABILITY TO BE USED,
+INCLUDING DATA LOSS, SYSTEM INTERRUPTION, LOST INCOME, AND DIRECT, INDIRECT,
+SPECIAL, OR CONSEQUENTIAL DAMAGE, WHATEVER THE LEGAL BASIS AND EVEN IF THE
+POSSIBILITY WAS KNOWN. YOU BEAR THE RISK OF PERMITTED USE AND MODIFICATION.
+
+Nothing here excludes a warranty, remedy, or liability that applicable law
+does not allow to be excluded or limited, including any non-excludable
+liability for fraud, intentional misconduct, gross negligence, or personal
+injury. These limitations apply only to the legally permitted extent.
+
+10. Independent rights, platform terms, and earlier releases
+
+This license does not limit mandatory statutory rights, exceptions, or
+limitations that cannot lawfully be restricted. Third-party components remain
+under their own licenses; consult THIRD_PARTY_NOTICES.md and dependency
+notices. This license does not replace or restrict those independent grants,
+nor does a dependency license grant rights to ViiOS-owned material.
+
+If the Copyright Holder publishes the Software on a platform whose applicable
+terms independently grant users rights, this license does not withdraw those
+rights. For example, GitHub's terms for public repositories include viewing
+and forking through its functionality. Any such right exists only to the
+extent actually granted under those terms, not under Sections 2 or 3 here.
+This provision adds no permission to republish elsewhere, commercially use,
+host a service, or publish modified material beyond any independently granted
+right. A public GitHub repository cannot be represented as having an absolute
+ban on every platform-authorized fork.
+
+This license applies only to copies and revisions expressly released under
+it. It does not retroactively replace an earlier license or revoke permissions
+already granted for earlier releases, including PolyForm-licensed releases.
+Previously licensed material keeps those independently existing permissions;
+later additions do not obtain the earlier license merely by being combined
+with it. The Copyright Holder's own publishing and services are not licenses
+for others to reproduce those activities.
+
+11. Separate permissions and interpretation
+
+Commercial, organizational, distribution, contribution, and service rights
+require separate written permission identifying the authorized scope from
+the Copyright Holder. Payment, silence, a feature request, or technical
+ability to perform an action is not permission. Contact the Copyright Holder
+through the official project at https://github.com/asimsamett/ViiOS to request
+terms without publishing protected code or confidential information.
+
+This document is the complete grant made under this license. A separate
+written agreement from the Copyright Holder controls only to the extent of
+its express terms. A later license version does not automatically amend
+permissions for a previously licensed copy. If a provision is unenforceable,
+the remaining provisions continue to the extent permitted by applicable law;
+severability does not create a new distribution or commercial grant.
+
+The English text controls this license. Summaries and translations are
+explanations, not additional grants. Applicable law determines enforceability;
+this document does not select a governing law or an exclusive court.

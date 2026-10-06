@@ -2,7 +2,7 @@
 
 [English](CONTRIBUTING.md) | **Türkçe**
 
-Hata bildirimleri ve geliştirme önerileri için [Issues](https://github.com/asimsamett/ViiOS/issues), kod değişiklikleri için pull request kullanabilirsiniz. Proje [PolyForm Noncommercial 1.0.0](LICENSE.md) ile paylaşılır; katkılar aynı proje lisansı altında sunulmalıdır. Başkalarına ait kodların lisans ve telif bildirimlerini koruyun.
+[Issues](https://github.com/asimsamett/ViiOS/issues) üzerinden korunan yazılım kodu içermeyen hata bildirimleri ve öneriler paylaşabilirsiniz. [ViiOS Private Noncommercial License 1.0](LICENSE), özel ortamda değişikliğe izin verir; değişiklikleri yayımlama veya kod aktarma izni genel olarak vermez. Herkese açık patch, fork veya pull request hazırlamadan önce ayrıca yazılı katkı ve yayımlama izni alın; bağımsız platform hakları için [lisans notlarını](docs/licensing.tr.md) okuyun. Üçüncü taraf bildirimlerini koruyun.
 
 ## Geliştirme
 
@@ -20,12 +20,12 @@ python -m unittest discover -s tests -p test_public_source.py
 
 Arayüzü gerçek sunucu bağlamadan denemek için `npm run demo:build` ve `npm run demo:serve` kullanın. Windows ve Linux hedeflerinin destek farkları README'de açıklanır.
 
-## Değişiklik gönderme
+## Değişiklik önerme
 
-1. Ayrı bir dalda, tek bir soruna odaklanan değişiklik hazırlayın.
-2. Hatanın nasıl oluştuğunu, beklenen davranışı ve yaptığınız kontrolleri açıklayın.
-3. Yeni yayımlanacak kaynak dosyalarını içeriklerini inceledikten sonra `public-source-files.json` listesine ekleyin.
-4. Otomatik kontrollerin geçtiğini doğrulayarak pull request açın.
+1. Sorunu ve beklenen davranışı yazılım kodu yüklemeden açıklayın.
+2. Kod katkısı için önce hak sahibinden özel iletişim kanalı ve ayrıca yazılı koşullar isteyin.
+3. İzin verilene kadar değişiklikleri kendi özel yerel ortamınızda tutun; patch yayımlamayın veya göndermeyin.
+4. İzin verilirse yalnız o iznin kapsadığı aktarım/yayımlama yolunu kullanın. Otomatik telif devri veya genel dağıtım izni oluşmaz.
 
 Gerçek sunucu adreslerini, kullanıcı bilgilerini, parolaları, anahtarları, envanterleri, günlükleri veya müşteri verilerini issue, ekran görüntüsü ve commitlere eklemeyin. Örneklerde dokümantasyon adresleri ve yapay veriler kullanın. `data/`, `.env`, `outputs/` ve geliştirme aracı oturumları kaynak pakete dahil edilmez.
 

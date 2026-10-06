@@ -12,4 +12,4 @@ Include the affected version, expected and actual behavior, impact, and reproduc
 
 ## Deployment
 
-ViiOS can perform administrative operations on connected servers. Restrict your installation to authorized users and do not publish the `data/` directory with your source code. Use HTTPS and appropriate access controls for network access. The GitHub Pages demo uses only synthetic data and never connects to real servers.
+ViiOS can perform administrative operations on connected servers. Under the standard license, restrict your installation to yourself in a private noncommercial environment; organizational or shared access requires separate written permission. Never publish the `data/` directory or private configuration. Use HTTPS and appropriate access controls for network access. The GitHub Pages demo uses only synthetic data and never connects to real servers.

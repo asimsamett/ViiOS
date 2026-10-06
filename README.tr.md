@@ -12,7 +12,9 @@
 
 [Canlı demo](https://asimsamett.github.io/ViiOS/) · [Sürümler](https://github.com/asimsamett/ViiOS/releases) · [Katkı rehberi](CONTRIBUTING.tr.md) · [Güvenlik bildirimi](SECURITY.tr.md)
 
-**Ticari olmayan kullanım:** ViiOS, [PolyForm Noncommercial 1.0.0](LICENSE.md) lisansıyla paylaşılır. Lisansın izin verdiği ticari olmayan amaçlarla kullanılabilir, değiştirilebilir ve dağıtılabilir. Bu lisans ticari kullanım izni vermez; ticari kullanım için hak sahibinden ayrıca izin alınması gerekir. Lisans metni ve [NOTICE](NOTICE) bildirimi korunmalıdır. Üçüncü taraf bileşenlerin kendi lisansları geçerlidir; [bildirimlere](THIRD_PARTY_NOTICES.md) bakın.
+**Yalnız özel ve ticari olmayan kullanım:** v0.3.2 itibarıyla [ViiOS Private Noncommercial License 1.0](LICENSE) geçerlidir. Özel ortamınızda değişiklik yapabilirsiniz; dağıtım, ticari kullanım, kurumsal kurulum ve üçüncü kişilere hizmet sunma hakkı verilmez. Bu bir **açık kaynak lisansı değildir**. Lisansı, atıfları ve [NOTICE](NOTICE) bildirimini koruyun. Platformdan, önceki lisanslardan ve [üçüncü taraf lisanslarından](THIRD_PARTY_NOTICES.md) doğan bağımsız haklar saklıdır. [Madde madde Türkçe açıklamayı ve geçiş notlarını](docs/licensing.tr.md) okuyun.
+
+**Yayımlama sınırı:** Aşağıdaki GitHub Pages ve kaynak ZIP yayımlama yönergeleri yalnız telif hakkı sahibi veya ayrıca yazılı izin almış kişiler içindir. Araçların mevcut olması dağıtım izni vermez. Yerel demo yalnız kişisel, ticari olmayan kullanım içindir.
 
 ## Örnek verili demo ve GitHub önizlemesi
 
@@ -105,4 +107,4 @@ Sonuç `outputs/releases/ViiOS-Standalone-<sürüm>-public-source-<özet>.zip` d
 
 Kontroller: `npm test`, `npm run check`, `npm run build`. Geliştirme için bir terminalde `npm start`, diğerinde `npm run dev`; vekil 3180'e bağlanır. Windows yardımcı testleri PowerShell 5.1, Linux yardımcı testleri Linux gerektirir.
 
-Proje: [asimsamett/viios](https://github.com/asimsamett/ViiOS). Kullanım koşulları için [LICENSE.md](LICENSE.md), katkı göndermek için [CONTRIBUTING.md](CONTRIBUTING.tr.md) dosyasını okuyun.
+Proje: [asimsamett/viios](https://github.com/asimsamett/ViiOS). Kullanım koşulları için [LICENSE](LICENSE), katkı göndermek için [CONTRIBUTING.md](CONTRIBUTING.tr.md) dosyasını okuyun.

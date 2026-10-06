@@ -12,4 +12,4 @@ Etkilenen sürümü, beklenen ve gerçekleşen davranışı, etkisini ve mümkü
 
 ## Kurulum
 
-ViiOS bağlı sunucularda yönetim işlemleri gerçekleştirebilir. Kendi kurulumunuzun erişimini yetkili kullanıcılarla sınırlandırın; kayıtlı bağlantıların bulunduğu `data/` dizinini kaynak koduyla yayımlamayın. Ağdan erişimde HTTPS ve uygun erişim kontrolleri kullanın. GitHub Pages demosu yalnız yapay veri kullanır ve gerçek sunuculara bağlanmaz.
+ViiOS bağlı sunucularda yönetim işlemleri gerçekleştirebilir. Standart lisans kapsamında kurulum yalnız sizin eriştiğiniz özel, ticari olmayan ortamda kullanılmalıdır; kurumsal veya paylaşımlı erişim ayrıca yazılı izin gerektirir. Kayıtlı bağlantıların bulunduğu `data/` dizinini ve özel yapılandırmayı yayımlamayın. Ağdan erişimde HTTPS ve uygun erişim kontrolleri kullanın. GitHub Pages demosu yalnız yapay veri kullanır ve gerçek sunuculara bağlanmaz.

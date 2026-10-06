@@ -4,6 +4,8 @@
 
 ViiOS's synthetic-data interface can be published as a static GitHub Pages site. No server, SSH account, password, database, or AI service is required. Opening the page displays an example desktop.
 
+**Publishing is restricted:** The public publishing steps below are only for the Copyright Holder or a person with separate written authorization. The [license](../LICENSE) permits private noncommercial local previews, but does not grant redistribution or third-party hosting rights. The official owner-published demo is not permission to publish another copy.
+
 ## Publish on GitHub
 
 1. Extract the clean source package and upload its files to the root of your GitHub repository, including `.github/workflows/demo-pages.yml`.

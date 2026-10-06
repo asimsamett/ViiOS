@@ -14,7 +14,7 @@
 
 > **Application language:** the interface is currently Turkish. This English documentation includes the Turkish labels needed to follow the setup steps.
 
-**Noncommercial use:** ViiOS is distributed under [PolyForm Noncommercial 1.0.0](LICENSE.md). You may use, modify, and distribute it for purposes permitted by that license. Commercial use is not granted and requires separate permission from the rights holder. Preserve the license and [NOTICE](NOTICE). Third-party components retain their own licenses; see [Third-party notices](THIRD_PARTY_NOTICES.md).
+**Private noncommercial use only:** From v0.3.2, ViiOS uses the [ViiOS Private Noncommercial License 1.0](LICENSE). Private modification is permitted; distribution, commercial use, organizational deployment, and third-party services are not granted. This is **not open source**. Keep the license, attribution, and [NOTICE](NOTICE). Independent platform rights, earlier licenses, and [third-party licenses](THIRD_PARTY_NOTICES.md) remain applicable; see [license scope and history](docs/licensing.md) and the [Turkish explanation](docs/licensing.tr.md).
 
 ## Explore the demo
 
@@ -28,7 +28,7 @@ npm run demo:serve
 
 Open the address printed in the terminal, normally `http://127.0.0.1:4180/`.
 
-To publish your own preview, select **Settings → Pages → Source: GitHub Actions**, then run **Actions → Publish ViiOS demo to GitHub Pages**. Subsequent pushes to `main` publish the demo automatically. GitHub displays the deployed URL in the Pages settings. See [Demo setup and data isolation](docs/demo.md).
+**Publishing instructions for the Copyright Holder or separately authorized publishers only.** This license does not permit users to publish their own preview. Authorized publishers can select **Settings → Pages → Source: GitHub Actions**, then run **Actions → Publish ViiOS demo to GitHub Pages**. Subsequent pushes to `main` publish the demo automatically. GitHub displays the deployed URL in the Pages settings. See [Demo setup and data isolation](docs/demo.md).
 
 ## Quick start
 
@@ -101,7 +101,7 @@ If a filesystem does not support ACL operations or rejects permission changes, p
 
 ### Prepare a public source archive
 
-Run `python scripts/package-source.py` instead of manually archiving the whole directory. Packaging requires Python 3.9+. Only files explicitly listed in `public-source-files.json` are included. Review new files before adding them. The packager rejects private data, environment settings, keys, logs, local databases, and AI development-tool directories even if listed. Symbolic links, hard-linked files, and Windows junctions are rejected.
+**For the Copyright Holder or separately authorized distributors only; this tool does not grant redistribution permission.** Run `python scripts/package-source.py` instead of manually archiving the whole directory. Packaging requires Python 3.9+. Only files explicitly listed in `public-source-files.json` are included. Review new files before adding them. The packager rejects private data, environment settings, keys, logs, local databases, and AI development-tool directories even if listed. Symbolic links, hard-linked files, and Windows junctions are rejected.
 
 The packager checks private-network IP addresses, some key/token formats, and initial inventories that must remain empty. These checks supplement manual review; they cannot detect every secret. Validate without producing an archive with `python scripts/package-source.py --check`. Check the packaging safeguards with `python -m unittest discover -s tests -p test_public_source.py`.
 
@@ -115,4 +115,4 @@ Optional Docker setup: `docker compose up --build -d`. Create your administrator
 
 Run `npm test`, `npm run check`, `npm run lint`, and `npm run build` for validation. For development, run `npm start` in one terminal and `npm run dev` in another; the proxy connects to port 3180. Windows helper tests require PowerShell 5.1, and Linux helper tests require Linux. See the [validation history](docs/validation.md) for earlier checks and their limits.
 
-Project: [asimsamett/ViiOS](https://github.com/asimsamett/ViiOS). Read [LICENSE.md](LICENSE.md) for the terms of use and [CONTRIBUTING.md](CONTRIBUTING.md) before submitting changes.
+Project: [asimsamett/ViiOS](https://github.com/asimsamett/ViiOS). Read [LICENSE](LICENSE) for the terms of use and [CONTRIBUTING.md](CONTRIBUTING.md) before submitting changes.
