@@ -154,6 +154,77 @@ def rate(pids, before, after, first_io, last_io, key, elapsed):
     return round(total)
 
 
+def device_counters():
+    """Cumulative counters; exclude partitions and stacked block devices."""
+    disks, network = {}, {}
+    for device in pathlib.Path('/sys/block').glob('*'):
+        try:
+            if device.name.startswith(('loop', 'ram', 'dm-', 'md', 'zram')):
+                continue
+            fields = device.joinpath('stat').read_text().split()
+            disks[device.name] = {'read': int(fields[2]) * 512, 'write': int(fields[6]) * 512}
+        except (OSError, ValueError, IndexError):
+            continue
+    try:
+        for line in pathlib.Path('/proc/net/dev').read_text().splitlines()[2:]:
+            name, values = line.split(':', 1)
+            fields = values.split()
+            if name.strip() != 'lo':
+                network[name.strip()] = {'read': int(fields[0]), 'write': int(fields[8])}
+    except (OSError, ValueError, IndexError):
+        pass
+    return {'disks': disks, 'network': network, 'at': time.monotonic()}
+
+
+def counter_rates(before, after, group):
+    seconds = after['at'] - before['at']
+    rows = []
+    for name, current in after[group].items():
+        previous = before[group].get(name)
+        valid = previous is not None and seconds > 0 and all(current[k] >= previous[k] for k in ('read', 'write'))
+        rows.append({'name': name, 'readBytesPerSecond': round((current['read'] - previous['read']) / seconds) if valid else None,
+                     'writeBytesPerSecond': round((current['write'] - previous['write']) / seconds) if valid else None})
+    return rows
+
+
+def overview(before, after, total_delta, first_devices, last_devices):
+    import platform
+    os_name = platform.system()
+    try:
+        for line in pathlib.Path('/etc/os-release').read_text().splitlines():
+            if line.startswith('PRETTY_NAME='):
+                os_name = line.split('=', 1)[1].strip('"')[:200]
+    except OSError:
+        pass
+    addresses = []
+    try:
+        interfaces = json.loads(subprocess.check_output(['ip', '-j', 'address', 'show'], text=True, timeout=3))
+        addresses = [a['local'] for interface in interfaces for a in interface.get('addr_info', [])
+                     if a.get('scope') == 'global' and isinstance(a.get('local'), str)][:64]
+    except (OSError, ValueError, subprocess.SubprocessError):
+        pass
+    temperatures = []
+    for sensor in pathlib.Path('/sys/class/hwmon').glob('hwmon*'):
+        try:
+            if sensor.joinpath('name').read_text().strip() not in ('coretemp', 'k10temp', 'zenpower', 'cpu_thermal'):
+                continue
+            for reading in sensor.glob('temp*_input'):
+                value = int(reading.read_text()) / 1000
+                if -20 <= value <= 150:
+                    temperatures.append(value)
+        except (OSError, ValueError):
+            continue
+    top = [{'pid': p['pid'], 'name': p['name'], 'state': p['state'], 'memoryBytes': p['rss'],
+            'cpuPercent': cpu_percent(before.get(p['pid']), p, total_delta)} for p in after.values()]
+    top.sort(key=lambda p: (p['cpuPercent'] if p['cpuPercent'] is not None else -1, p['memoryBytes']), reverse=True)
+    return {'version': 1, 'platform': 'linux', 'os': os_name, 'kernel': platform.release(), 'addresses': addresses,
+            'cpuTemperatureC': max(temperatures) if temperatures else None,
+            'disks': counter_rates(first_devices, last_devices, 'disks'),
+            'network': counter_rates(first_devices, last_devices, 'network'), 'topProcesses': top[:10],
+            'notes': ['Network counters are per interface; virtual interfaces can count the same traffic more than once.',
+                      'Disk I/O excludes partitions and stacked dm/md devices to avoid duplicate totals.']}
+
+
 def sample():
     started = time.monotonic()
     initial_groups = group_listeners(listeners(subprocess.check_output(['ss', '-lntupH'], text=True, timeout=5)))
@@ -161,9 +232,11 @@ def sample():
     before = processes()
     initial_owned = owned_processes(initial_groups, before)
     first_io = io_counters(set().union(*initial_owned) if initial_owned else set())
+    first_devices = device_counters()
     time.sleep(0.65)
     after = processes()
     last_cpu = host_cpu()
+    last_devices = device_counters()
     raw = subprocess.check_output(['ss', '-lntupH'], text=True, timeout=5)
     groups = group_listeners(listeners(raw))
     owned = owned_processes(groups, after)
@@ -193,7 +266,8 @@ def sample():
                        'disk': server_disk(),
                        'uptimeSeconds': float(pathlib.Path('/proc/uptime').read_text().split()[0]),
                        'loadAverage': list(os.getloadavg()), 'processCount': len(after)},
-            'applications': rows, 'portCount': sum(len(group['ports']) for group in groups)}
+            'applications': rows, 'portCount': sum(len(group['ports']) for group in groups),
+            'overview': overview(before, after, total_delta, first_devices, last_devices)}
 
 
 if __name__ == '__main__':

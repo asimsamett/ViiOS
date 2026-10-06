@@ -15,6 +15,9 @@ import ModelCatalog from './model-catalog';
 import PeoplePanel from './people-panel';
 import AppCredentials from './app-credentials';
 import StoragePanel from './storage-panel';
+import ServerOverview from './server-overview';
+import ProcessManager from './process-manager';
+import ServiceManager from './service-manager';
 import LockScreen from './lock-screen';
 import SetupScreen from './setup-screen';
 import ServerConnections from './server-connections';
@@ -95,7 +98,7 @@ function DesktopSession({onServer,onSessionLost}:{onServer:(id:string)=>void;onS
  const [fileRequest,setFileRequest]=useState<{id:number;path:string}|null>(null);
  const [navigationRequest,setNavigationRequest]=useState<{id:number;view:DesktopView}|null>(()=>{
   const view=typeof window!=='undefined'?new URLSearchParams(window.location.search).get('view'):null;
-  return view && ['models','ports','reports','people','help','endpoints','servers','credentials','storage'].includes(view)?{id:1,view:view as DesktopView}:null;
+  return view && ['models','ports','reports','people','help','endpoints','servers','credentials','storage','overview','processes','services','features'].includes(view)?{id:1,view:view as DesktopView}:null;
  });
  function navigate(view:DesktopView){setNavigationRequest(current=>({id:(current?.id || 0)+1,view}));}
  function openFiles(path:string){setSelected(null);setPanel(null);setFileRequest(current=>({id:(current?.id || 0)+1,path}));}
@@ -125,10 +128,13 @@ function DesktopSession({onServer,onSessionLost}:{onServer:(id:string)=>void;onS
  const apps=inventory?.apps || [],current=selected && (apps.find(app=>app.port===selected.port) || selected),busy=!!inventory?.scanning || actionPending;
  function renderPanel(view:DesktopView,visible:boolean){
   switch(view){
+   case 'services':return <ServiceManager key={serverId} visible={visible}/>;
+   case 'processes':return <ProcessManager key={serverId} visible={visible}/>;
+   case 'overview':return <ServerOverview key={serverId} visible={visible}/>;
    case 'models':return <ModelCatalog/>;
    case 'people':return <PeoplePanel/>;
    case 'credentials':return visible?<AppCredentials query=""/>:null;
-   case 'storage':return <StoragePanel key={serverId} visible={visible}/>;
+   case 'storage':return <StoragePanel key={serverId} visible={visible} onOpenFiles={openFiles}/>;
    case 'endpoints':return <PortInventory inventory={inventory} busy={controlBusy} onAction={(app,action)=>void prepareControl(app,action)} onSelect={setSelected} onHistory={showHistory} onAnnotate={setEditing} onMessage={setMessage} onRefresh={refresh}/>;
    case 'ports':return inventory?.networkOnly?<div className="empty-state"><Network size={30}/><h3>Boş port doğrulaması için sunucu erişimi gerekir</h3><p>Ağ üzerinden yanıt gelmemesi portun boş olduğunu kanıtlamaz.</p></div>:<PortExplorer inventory={inventory} onSelect={port=>setSelected(apps.find(app=>app.port===port) || null)} onMessage={setMessage} onScan={()=>void run('/scan')}/>;
    case 'reports':return <ReportsPanel inventory={inventory} onMessage={setMessage} onPorts={()=>navigate('ports')}/>;

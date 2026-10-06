@@ -24,6 +24,18 @@
 
 **AI tools:** Using an AI IDE or supplying a repository URL does not grant extra rights. Third-party code uploads or retrieval require permission; permitted private local modifications remain subject to the license. These are legal conditions, not a technical copying barrier. Read the [AI-use license notes](docs/licensing.md#ai-tools-and-automated-use).
 
+## What's new in v0.4.0
+
+- **Feature Guide (Özellik Rehberi):** a searchable in-app booklet covering 23 tools in five categories, with usage steps, capability notes and direct application links. Open it from the ViiOS menu or `?view=features`; it can also be pinned to the Dock.
+- **Server Monitor (Sunucu Monitörü):** CPU, memory, swap, uptime, disk I/O, network counters and top processes.
+- **Process Manager (Süreç Yöneticisi):** search, sorting, details and guarded termination with process identity verification.
+- **Services (Servisler):** inventory, details, approved lifecycle/startup changes and bounded Linux journal viewing. Service changes require an administrator-managed allowlist.
+- **Storage (Depolama):** physical disks, partitions, volume relationships and per-device I/O without double-counting capacity.
+- **Desktop:** more tools available as shortcuts, paginated Dock navigation on narrow screens, preserved magnification, and a simpler lock/desktop background.
+- **Preview:** new management panels use synthetic data on GitHub Pages; process termination and service changes remain disabled in the demo.
+
+See the [release notes and upgrade instructions](docs/releases/v0.4.0.md), [service policies](docs/service-management.md), [storage semantics](docs/storage-management.md), and optional [Windows Server Lab](docs/server-lab.md). Normal startup remains on port **3180**; the opt-in local lab uses **3280**.
+
 ## Explore the demo
 
 The [live demo](https://asimsamett.github.io/ViiOS/) uses synthetic Linux and Windows servers, applications, storage measurements, and files. It never connects to real servers or asks for connection credentials.

@@ -48,11 +48,11 @@ export function AppearanceTheme() {
   return null;
 }
 
-export default function Appearance() {
+export default function Appearance({ open, onOpenChange }: { open?: boolean; onOpenChange?: (open: boolean) => void } = {}) {
   const dark = useDarkTheme();
   const lock = useWallpaper('lock');
   const desktop = useWallpaper('desktop');
-  return <Popover>
+  return <Popover open={open} onOpenChange={onOpenChange}>
     <PopoverTrigger className="vii-appearance-trigger" aria-label="Görünüm" title="Görünüm"><Palette size={17}/></PopoverTrigger>
     <PopoverContent align="end" sideOffset={9} className="vii-appearance-panel">
       <PopoverTitle>Görünüm</PopoverTitle>

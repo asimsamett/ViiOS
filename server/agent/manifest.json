@@ -64,6 +64,14 @@
     {
       "source": "server/versioning-ignore",
       "name": "versioning-ignore"
+    },
+    {
+      "source": "server/processes.py",
+      "name": "processes.py"
+    },
+    {
+      "source": "server/services.py",
+      "name": "services.py"
     }
   ],
   "windows": [

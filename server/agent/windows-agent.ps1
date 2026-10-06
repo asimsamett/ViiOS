@@ -1,6 +1,6 @@
 #requires -Version 5.1
 [CmdletBinding()]
-param([ValidateSet('capabilities','scan','resources','storage','files','control','versions','models','concurrency')][string]$Helper = 'capabilities')
+param([ValidateSet('capabilities','scan','resources','processes','services','storage','files','control','versions','models','concurrency')][string]$Helper = 'capabilities')
 
 # Fixed dispatcher for the administrator-installed ViiOS Windows agent.
 # No request is ever evaluated as PowerShell, a command line, or a script.
@@ -48,6 +48,42 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Win32.SafeHandles;
 namespace ViiOS {
+ public sealed class ProcessInfo { public long Started; public string User, Sid; public bool Critical; }
+ public static class ProcessGuard {
+  [DllImport("kernel32.dll",SetLastError=true)] static extern SafeProcessHandle OpenProcess(uint access,bool inherit,int pid);
+  [DllImport("kernel32.dll",SetLastError=true)] static extern bool GetProcessTimes(SafeProcessHandle h,out long created,out long exited,out long kernel,out long user);
+  [DllImport("kernel32.dll",SetLastError=true)] static extern bool IsProcessCritical(SafeProcessHandle h,out bool critical);
+  [DllImport("kernel32.dll",SetLastError=true)] static extern bool TerminateProcess(SafeProcessHandle h,uint code);
+  [DllImport("kernel32.dll",SetLastError=true)] static extern uint WaitForSingleObject(SafeProcessHandle h,uint timeout);
+  [DllImport("advapi32.dll",SetLastError=true)] static extern bool OpenProcessToken(SafeProcessHandle h,uint access,out IntPtr token);
+  [DllImport("advapi32.dll",SetLastError=true)] static extern bool GetTokenInformation(IntPtr token,int kind,IntPtr buffer,int size,out int required);
+  [DllImport("kernel32.dll")] static extern bool CloseHandle(IntPtr h);
+  static ConcurrentDictionary<string,string> names=new ConcurrentDictionary<string,string>();
+  static ProcessInfo InspectHandle(SafeProcessHandle h) {
+   long started,exited,kernel,user; bool critical;
+   if(h.IsInvalid || !GetProcessTimes(h,out started,out exited,out kernel,out user)) throw new IOException("Process unavailable");
+   if(!IsProcessCritical(h,out critical)) critical=true;
+   string sid="",name=""; IntPtr token;
+   if(OpenProcessToken(h,8,out token)) { try { int size; GetTokenInformation(token,1,IntPtr.Zero,0,out size);
+    if(size>0 && size<65536) { IntPtr buffer=Marshal.AllocHGlobal(size); try {
+     if(GetTokenInformation(token,1,buffer,size,out size)) { var identity=new System.Security.Principal.SecurityIdentifier(Marshal.ReadIntPtr(buffer)); sid=identity.Value;
+      name=names.GetOrAdd(sid,key=>{try {return identity.Translate(typeof(System.Security.Principal.NTAccount)).Value;}catch{return key;}});
+     }
+    } finally {Marshal.FreeHGlobal(buffer);} }
+   } finally {CloseHandle(token);} }
+   return new ProcessInfo {Started=started,User=name,Sid=sid,Critical=critical};
+  }
+  public static ProcessInfo Inspect(int pid) { using(var h=OpenProcess(0x1000,false,pid)) {return InspectHandle(h);} }
+  public static bool Terminate(int pid,long expected) {
+   // Keep one kernel handle from identity verification through termination.
+   using(var h=OpenProcess(0x101001,false,pid)) {var info=InspectHandle(h);
+    if(info.Started!=expected) throw new InvalidOperationException("Process identity changed");
+    if(info.Critical || info.Sid=="" || info.Sid=="S-1-5-18" || info.Sid=="S-1-5-19" || info.Sid=="S-1-5-20") throw new UnauthorizedAccessException("Protected process");
+    if(!TerminateProcess(h,1)) throw new IOException("Termination unavailable");
+    return WaitForSingleObject(h,1500)==0;
+   }
+  }
+ }
  public sealed class ProbeTarget { public string Host; public int Port; }
  public sealed class ProbeResult {
   public string Host,Protocol,Title,Kind,ContentType; public int Port,Status,Latency; public bool TlsUnverified;
@@ -255,21 +291,52 @@ function Measure-Directory([string]$Native, [int]$MaxEntries = 15000, [double]$S
     }
     return @{ bytes = $allocated; logicalBytes = $logical; partial = [bool]($skipped -or $stack.Count); visited = $visited; skipped = $skipped; files = $files; directories = $folders; timedOut = $watch.Elapsed.TotalSeconds -ge $Seconds; measurement = 'allocated'; reason = 'Allocated bytes from FileStandardInfo; hard links counted once; reparse points and other volumes excluded.' }
 }
+function Get-VolumeCapacity([string]$Name) { return ,([ViiOS.Native]::Capacity($Name)) }
 function Get-Volumes {
-    $rows = New-Object 'System.Collections.Generic.List[object]'; $seen = @{}
+    $rows = New-Object 'System.Collections.Generic.List[object]'; $seen = @{}; $failures = 0
     foreach ($volume in @(Get-CimInstance -ClassName Win32_Volume -Filter 'DriveType=3')) {
         if (!$volume.Name -or $volume.Name -notmatch '^[A-Za-z]:\\' -or $seen.ContainsKey([string]$volume.DeviceID)) { continue }
         $seen[[string]$volume.DeviceID] = $true
         try {
-            $capacity = [ViiOS.Native]::Capacity($volume.Name)
+            $capacity = Get-VolumeCapacity $volume.Name
             $total = [long]$capacity[0]; $free = [long]$capacity[1]; $available = [long]$capacity[2]; $used = $total - $free
             $rows.Add(@{ id = Hash-Text $volume.DeviceID; source = [string]$volume.DeviceID; mount = Virtual-Path $volume.Name; filesystem = [string]$volume.FileSystem; totalBytes = $total; usedBytes = $used; freeBytes = $free; availableBytes = $available; reservedBytes = [Math]::Max(0, $free - $available); percent = $(if ($total -gt 0) { [Math]::Round(100 * $used / $total, 2) } else { $null }) })
-        } catch { }
+        } catch {
+            $failures++
+            $rows.Add(@{ id = Hash-Text $volume.DeviceID; source = [string]$volume.DeviceID; mount = Virtual-Path $volume.Name; filesystem = [string]$volume.FileSystem;
+                totalBytes = $null; usedBytes = $null; freeBytes = $null; availableBytes = $null; reservedBytes = $null; percent = $null; reason = 'Volume capacity could not be measured.' })
+        }
     }
     $summary = @{ totalBytes = [long]0; usedBytes = [long]0; freeBytes = [long]0; availableBytes = [long]0; reservedBytes = [long]0; percent = $null; volumeCount = $rows.Count }
     foreach ($row in $rows) { foreach ($key in @('totalBytes','usedBytes','freeBytes','availableBytes','reservedBytes')) { $summary[$key] += $row[$key] } }
     if ($summary.totalBytes -gt 0) { $summary.percent = [Math]::Round(100 * $summary.usedBytes / $summary.totalBytes, 2) }
-    return @{ available = $rows.Count -gt 0; sampledAt = Timestamp; hostname = $env:COMPUTERNAME; summary = $summary; volumes = @($rows.ToArray()); reason = 'Mounted local fixed volumes, deduplicated by volume identity. Available excludes quota-reserved capacity.' }
+    if ($failures -or !$rows.Count) { foreach ($key in @('totalBytes','usedBytes','freeBytes','availableBytes','reservedBytes','percent')) { $summary[$key] = $null } }
+    return @{ available = ($rows.Count -gt 0 -and !$failures); sampledAt = Timestamp; hostname = $env:COMPUTERNAME; summary = $summary; volumes = @($rows.ToArray()); reason = $(if ($failures) { 'Some mounted volumes could not be measured; server totals are unavailable.' } else { 'Mounted local fixed volumes, deduplicated by volume identity. Available excludes quota-reserved capacity.' }) }
+}
+function Get-StorageTopology($Volumes) {
+    try {
+        $disks = @(Get-Disk -ErrorAction Stop); $partitions = @(Get-Partition -ErrorAction Stop)
+        $rates = @{}
+        try { foreach ($rate in @(Get-CimInstance Win32_PerfFormattedData_PerfDisk_PhysicalDisk -ErrorAction Stop)) {
+            if ([string]$rate.Name -match '^(\d+)(?:\s|$)') { $rates[[string]$Matches[1]] = $rate }
+        } } catch { }
+        $rows = @()
+        foreach ($disk in $disks) {
+            $rate = $rates[[string]$disk.Number]
+            $rows += @{ id = "disk:$($disk.Number)"; name = "Disk $($disk.Number)"; kind = 'disk'; sizeBytes = [long]$disk.Size;
+                parentIds = @(); volumeIds = @(); model = [string]$disk.FriendlyName; partitionStyle = [string]$disk.PartitionStyle;
+                readBytesPerSecond = $(if ($null -ne $rate -and $null -ne $rate.DiskReadBytesPersec) { [double]$rate.DiskReadBytesPersec } else { $null });
+                writeBytesPerSecond = $(if ($null -ne $rate -and $null -ne $rate.DiskWriteBytesPersec) { [double]$rate.DiskWriteBytesPersec } else { $null }) }
+        }
+        foreach ($partition in $partitions) {
+            $ids = @($Volumes | Where-Object { $partition.AccessPaths -contains $_.source } | ForEach-Object { $_.id })
+            $rows += @{ id = "partition:$($partition.DiskNumber):$($partition.PartitionNumber)"; name = "Partition $($partition.PartitionNumber)";
+                kind = 'partition'; sizeBytes = [long]$partition.Size; parentIds = @("disk:$($partition.DiskNumber)"); volumeIds = $ids;
+                readBytesPerSecond = $null; writeBytesPerSecond = $null }
+        }
+        return @{ available = $disks.Count -gt 0; partial = $rows.Count -gt 512; devices = @($rows | Select-Object -First 512);
+            reason = 'Disk and partition capacities overlap; do not add them. I/O comes from physical-disk performance counters.' }
+    } catch { return @{ available = $false; partial = $true; devices = @(); reason = 'Windows Storage topology is unavailable; volume capacities remain available.' } }
 }
 function Storage-Usage([string]$Path) {
     if ($Path -eq '/') { return @{ status = 'ready'; path = '/'; scannedAt = Timestamp; totalBytes = $null; partial = $false; entries = @($script:Drives | ForEach-Object { @{ name = $_; path = "/$_"; kind = 'directory'; bytes = $null; mount = $true; partial = $false; reason = 'Separate Windows volume; open to measure a bounded directory snapshot.' } }) } }
@@ -297,7 +364,7 @@ function Storage-Usage([string]$Path) {
 }
 function Invoke-Storage($Request) {
     switch ($Request.action) {
-        'overview' { return Get-Volumes }
+        'overview' { $result = Get-Volumes; $result.topology = Get-StorageTopology $result.volumes; return $result }
         'usage' { return Storage-Usage $Request.path }
         'applications' { }
         'apps' { }
@@ -369,10 +436,44 @@ function Invoke-Scan($Request) {
     Update-WebApplications $apps
     return @{ hostname = $env:COMPUTERNAME; apps = @($apps); modelProfiles = @(); scope = 'Windows TCP listeners and UDP bindings; bounded HTTP/HTTPS GET metadata probes to local listener addresses, without following redirects.' }
 }
+function Get-OverviewNetwork {
+    $result = @{}
+    try {
+        foreach ($adapter in @(Get-NetAdapterStatistics -ErrorAction Stop)) {
+            $result[[string]$adapter.Name] = @{ read = [double]$adapter.ReceivedBytes; write = [double]$adapter.SentBytes }
+        }
+    } catch { }
+    return @{ counters = $result; at = [Diagnostics.Stopwatch]::GetTimestamp() }
+}
+function Get-ServerOverview($Os, $Before, $After, $Elapsed, $CpuCount, $FirstNetwork, $LastNetwork) {
+    $network = @(); $disks = @(); $addresses = @(); $top = @()
+    $networkSeconds = ($LastNetwork.at - $FirstNetwork.at) / [double][Diagnostics.Stopwatch]::Frequency
+    foreach ($name in $LastNetwork.counters.Keys) {
+        $first = $FirstNetwork.counters[$name]; $last = $LastNetwork.counters[$name]
+        $valid = $first -and $networkSeconds -gt 0 -and $last.read -ge $first.read -and $last.write -ge $first.write
+        $network += @{ name = $name; readBytesPerSecond = $(if ($valid) { [Math]::Round(($last.read-$first.read)/$networkSeconds) } else { $null }); writeBytesPerSecond = $(if ($valid) { [Math]::Round(($last.write-$first.write)/$networkSeconds) } else { $null }) }
+    }
+    try {
+        foreach ($disk in @(Get-CimInstance Win32_PerfFormattedData_PerfDisk_PhysicalDisk -ErrorAction Stop | Where-Object { $_.Name -ne '_Total' })) {
+            $disks += @{ name = [string]$disk.Name; readBytesPerSecond = $disk.DiskReadBytesPersec; writeBytesPerSecond = $disk.DiskWriteBytesPersec }
+        }
+    } catch { }
+    try { $addresses = @(Get-NetIPAddress -ErrorAction Stop | Where-Object { $_.AddressState -eq 'Preferred' -and $_.IPAddress -notin @('127.0.0.1','::1') -and $_.IPAddress -notlike 'fe80:*' } | Select-Object -First 64 -ExpandProperty IPAddress) } catch { }
+    foreach ($processId in $After.Keys) {
+        if ($processId -eq 0) { continue } # Idle time is not CPU work by a process.
+        $last = $After[$processId]; $first = $Before[$processId]; $cpu = $null
+        if ($first -and $first.sampled -and $last.sampled -and $first.started -eq $last.started -and $last.cpu -ge $first.cpu -and $Elapsed -gt 0) { $cpu = [Math]::Round([Math]::Min([double]100,($last.cpu-$first.cpu)/10000000/$Elapsed/$CpuCount*100),2) }
+        $top += @{ pid = [int]$processId; name = [string]$last.name; state = $null; cpuPercent = $cpu; memoryBytes = $(if ($last.memoryAvailable) { $last.memory } else { $null }) }
+    }
+    $top = @($top | Sort-Object @{Expression={if ($null -eq $_.cpuPercent) {-1} else {$_.cpuPercent}};Descending=$true}, @{Expression={$_.memoryBytes};Descending=$true} | Select-Object -First 10)
+    return @{ version = 1; platform = 'windows'; os = [string]$Os.Caption; kernel = [string]$Os.Version; addresses = $addresses; cpuTemperatureC = $null; disks = $disks; network = $network; topProcesses = $top; notes = @('CPU temperature is not exposed by the standard Windows adapter.', 'Network rates are per adapter; virtual adapters may count the same traffic more than once.', 'Disk I/O uses physical-disk performance counters, not process I/O.') }
+}
 function Invoke-Resources {
     $os = Get-CimInstance Win32_OperatingSystem; $cpus = @(Get-CimInstance Win32_Processor); $cpuCount = [int](($cpus | Measure-Object NumberOfLogicalProcessors -Sum).Sum)
     if ($cpuCount -lt 1) { $cpuCount = [Environment]::ProcessorCount }
+    $firstNetwork = Get-OverviewNetwork
     $before = Get-ProcessSnapshot; $watch = [Diagnostics.Stopwatch]::StartNew(); Start-Sleep -Milliseconds 650; $after = Get-ProcessSnapshot; $elapsed = $watch.Elapsed.TotalSeconds
+    $lastNetwork = Get-OverviewNetwork
     $listeners = @(Get-Listeners); $rows = @(); $ownedBy = @{}
     foreach ($listener in $listeners) { if ($listener.pid -gt 0) { $ownedBy[$listener.pid] = $true } }
     $totalMemory = [long]$os.TotalVisibleMemorySize * 1024; $usedMemory = $totalMemory - [long]$os.FreePhysicalMemory * 1024
@@ -398,7 +499,7 @@ function Invoke-Resources {
     $storage = Get-Volumes; $disk = @{ scope = 'server'; mount = $null; available = $storage.available }; foreach ($key in $storage.summary.Keys) { $disk[$key] = $storage.summary[$key] }
     $swapTotal = $null; $swapUsed = $null
     try { $pageFiles = @(Get-CimInstance Win32_PageFileUsage); $swapTotal = [long](($pageFiles | Measure-Object AllocatedBaseSize -Sum).Sum) * 1MB; $swapUsed = [long](($pageFiles | Measure-Object CurrentUsage -Sum).Sum) * 1MB } catch { }
-    return @{ available = $true; hostname = $env:COMPUTERNAME; sampledAt = Timestamp; sampleSeconds = [Math]::Round($elapsed,2); portCount = @($listeners | ForEach-Object { $_.port } | Sort-Object -Unique).Count; applications = @($rows); system = @{ cpuPercent = (($cpus | Measure-Object LoadPercentage -Average).Average); cpuCount = $cpuCount; memory = @{ totalBytes = $totalMemory; usedBytes = $usedMemory; percent = [Math]::Round($usedMemory/$totalMemory*100,2); swapTotalBytes = $swapTotal; swapUsedBytes = $swapUsed }; disk = $disk; uptimeSeconds = ([DateTime]::UtcNow - $os.LastBootUpTime.ToUniversalTime()).TotalSeconds; loadAverage = @(); processCount = $after.Count }; notes = @('Process I/O counters include all Windows I/O, not only physical disk transfers. CPU is normalized by logical processor count. Linux load-average is not available on Windows.') }
+    return @{ available = $true; hostname = $env:COMPUTERNAME; sampledAt = Timestamp; sampleSeconds = [Math]::Round($elapsed,2); portCount = @($listeners | ForEach-Object { $_.port } | Sort-Object -Unique).Count; applications = @($rows); overview = (Get-ServerOverview $os $before $after $elapsed $cpuCount $firstNetwork $lastNetwork); system = @{ cpuPercent = (($cpus | Measure-Object LoadPercentage -Average).Average); cpuCount = $cpuCount; memory = @{ totalBytes = $totalMemory; usedBytes = $usedMemory; percent = [Math]::Round($usedMemory/$totalMemory*100,2); swapTotalBytes = $swapTotal; swapUsedBytes = $swapUsed }; disk = $disk; uptimeSeconds = ([DateTime]::UtcNow - $os.LastBootUpTime.ToUniversalTime()).TotalSeconds; loadAverage = @(); processCount = $after.Count }; notes = @('Process I/O counters include all Windows I/O, not only physical disk transfers. CPU is normalized by logical processor count. Linux load-average is not available on Windows.') }
 }
 
 function File-Capabilities {
@@ -614,15 +715,148 @@ function Invoke-Versions($Request) {
     if ($Request.action -eq 'capabilities') { return @{ available = $false; readOnly = $true; automatic = $false; roots = @($script:AllowedRoots); root = ''; ignore = @(); reason = 'Windows Git integration is not enabled. Repository mutation, registration and history UI require a compatible read-only adapter; use Git directly.' } }
     Fail 'Windows repository operations are not implemented; existing repositories were not modified.' 501
 }
+function Assert-ServiceRequest($Request) {
+    if (!$Request -or $Request.action -notin @('list','details','logs','start','stop','restart','automatic','manual','disabled')) { Fail 'Unsupported Windows service action.' }
+    $fields = if ($Request.action -eq 'list') { @('action') } elseif ($Request.action -eq 'details') { @('action','name') } elseif ($Request.action -eq 'logs') { @('action','name','limit') } else { @('action','name','token') }
+    $keys = if ($Request -is [Collections.IDictionary]) { @($Request.Keys) } else { @($Request.PSObject.Properties.Name) }
+    if ($keys.Count -ne $fields.Count -or @($keys | Where-Object { $_ -notin $fields }).Count) { Fail 'Invalid service fields.' }
+    if ($Request.action -ne 'list' -and ($Request.name -isnot [string] -or $Request.name -notmatch '^[A-Za-z0-9_][A-Za-z0-9_.@ -]{0,159}$')) { Fail 'Invalid service name.' }
+    if ($Request.action -eq 'logs' -and (($Request.limit -isnot [int] -and $Request.limit -isnot [long]) -or $Request.limit -lt 1 -or $Request.limit -gt 200)) { Fail 'Invalid log limit.' }
+    if ($Request.action -notin @('list','details','logs') -and ($Request.token -isnot [string] -or $Request.token -cnotmatch '^[a-f0-9]{64}$')) { Fail 'Invalid service identity.' }
+}
+function Service-Context {
+    $services = @(Get-CimInstance Win32_Service -Property Name,DisplayName,Description,State,StartMode,ProcessId,ServiceType,PathName,StartName -ErrorAction Stop)
+    $controllers = @{}; foreach ($service in @(Get-Service -ErrorAction Stop)) { $controllers[$service.Name] = $service }
+    $parents = @{}; foreach ($process in @(Get-CimInstance Win32_Process -Property ProcessId,ParentProcessId -ErrorAction Stop)) { $parents[[int]$process.ProcessId] = [int]$process.ParentProcessId }
+    $protected = New-Object 'System.Collections.Generic.HashSet[int]'; $cursor = [int]$PID
+    while ($parents.ContainsKey($cursor) -and $protected.Add($cursor)) { $cursor = $parents[$cursor] }
+    $identity = [Security.Principal.WindowsIdentity]::GetCurrent(); $principal = New-Object Security.Principal.WindowsPrincipal($identity)
+    return @{services=$services;controllers=$controllers;protected=$protected;administrator=$principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)}
+}
+function Service-Row($Service, $Context) {
+    $name = [string]$Service.Name; $controller = $Context.controllers[$name]; $reason = ''; $actions = @(); $started = 0
+    if ($Service.ProcessId -gt 0) { try { $started = [ViiOS.ProcessGuard]::Inspect([int]$Service.ProcessId).Started } catch {} }
+    $allowed = @($script:Configuration.services | Where-Object { $_.name -eq $name }).Count -eq 1
+    if ($name -match '(?i)(ssh|winrm|viios|rpc|dcom|eventlog|lanman|winmgmt|bfe|mpssvc|cryptsvc|samss|lsm|plugplay|schedule|w32time|wuauserv|trustedinstaller|windefend|sense|securityhealth|wdnissvc)' -or ($Service.ProcessId -gt 0 -and $Context.protected.Contains([int]$Service.ProcessId))) { $reason = 'System or management service is protected.' }
+    elseif (!$allowed) { $reason = 'Administrator service allowlist required.' }
+    elseif (!$Context.administrator) { $reason = 'Administrator privileges are required.' }
+    elseif ($Service.ServiceType -ne 'Own Process' -or !$controller) { $reason = 'Only standalone application services can be managed.' }
+    elseif ($Service.State -notin @('Running','Stopped')) { $reason = 'Service is changing state or is paused.' }
+    elseif ($Service.State -eq 'Running' -and !$started) { $reason = 'Service process identity cannot be inspected.' }
+    $dependencies = @(); $dependents = @()
+    if ($controller) {
+        try { $dependencies = @($controller.ServicesDependedOn | ForEach-Object {$_.Name}); $dependents = @($controller.DependentServices | ForEach-Object {$_.Name}) }
+        catch { $reason = 'Service dependencies cannot be inspected.' }
+    }
+    if (!$reason) {
+        if ($Service.State -eq 'Stopped' -and $Service.StartMode -ne 'Disabled') { $actions += 'start' }
+        if ($Service.State -eq 'Running' -and $controller.CanStop) { $actions += 'stop'; if ($Service.StartMode -ne 'Disabled') { $actions += 'restart' } }
+        if ($Service.StartMode -ne 'Auto') { $actions += 'automatic' }
+        if ($Service.StartMode -ne 'Manual') { $actions += 'manual' }
+        if ($Service.StartMode -ne 'Disabled') { $actions += 'disabled' }
+    }
+    $token = Hash-Text (([ordered]@{name=$name;path=$Service.PathName;account=$Service.StartName;pid=$Service.ProcessId;started=$started;state=$Service.State;startup=$Service.StartMode;kind=$Service.ServiceType;dependencies=(($dependencies | Sort-Object) -join ',');dependents=(($dependents | Sort-Object) -join ',')} | ConvertTo-Json -Compress))
+    return @{name=$name;displayName=[string]$Service.DisplayName;description=[string]$Service.Description;state=[string]$Service.State;subState='';startup=[string]$Service.StartMode;pid=[int]$Service.ProcessId;token=$token;actions=@($actions);reason=$reason;dependencies=@($dependencies);dependents=@($dependents);canLogs=$false}
+}
+function Service-Selected($Context, [string]$Name) {
+    $matches = @($Context.services | Where-Object { $_.Name -eq $Name }); if ($matches.Count -ne 1) { Fail 'Service not found.' 404 }; return $matches[0]
+}
+function Invoke-Services($Request) {
+    Assert-ServiceRequest $Request
+    $context = Service-Context
+    if ($Request.action -eq 'list') { return @{ok=$true;available=$true;platform='windows';sampledAt=(Timestamp);partial=($context.services.Count -gt 2000);services=@($context.services | Select-Object -First 2000 | ForEach-Object { Service-Row $_ $context })} }
+    $selected = Service-Selected $context $Request.name
+    if ($Request.action -eq 'details') { return @{ok=$true;service=(Service-Row $selected $context)} }
+    if ($Request.action -eq 'logs') { return @{ok=$true;available=$false;entries=@();reason='Windows Event Log integration is not part of this phase.'} }
+    $mutex = New-Object Threading.Mutex($false,'Global\ViiOSServiceControl'); $locked=$false
+    try {
+        $locked=$mutex.WaitOne(0); if (!$locked) { Fail 'Another service operation is running.' 409 }
+        $context=Service-Context; $selected=Service-Selected $context $Request.name; $current=Service-Row $selected $context
+        if ($current.token -cne $Request.token) { Fail 'Service configuration or state changed; refresh details.' 409 }
+        if ($Request.action -notin $current.actions) { Fail 'Service mutation is protected.' 403 }
+        $controller=$context.controllers[$selected.Name]
+        if ($Request.action -in @('start','restart') -and @($controller.ServicesDependedOn | Where-Object { [string]$_.Status -ne 'Running' }).Count) { Fail 'Start dependencies separately.' 409 }
+        if ($Request.action -in @('stop','restart')) {
+            if (@($controller.DependentServices | Where-Object { [string]$_.Status -ne 'Stopped' }).Count) { Fail 'Other active services depend on this service.' 409 }
+            $result=Invoke-CimMethod -InputObject $selected -MethodName StopService
+            if ($result.ReturnValue -ne 0) { Fail 'Windows refused to stop the service.' 409 }
+            $controller.WaitForStatus([ServiceProcess.ServiceControllerStatus]::Stopped,[TimeSpan]::FromSeconds(15))
+        }
+        if ($Request.action -in @('start','restart')) {
+            $result=Invoke-CimMethod -InputObject $selected -MethodName StartService
+            if ($result.ReturnValue -notin @(0,10)) { Fail 'Windows refused to start the service.' 409 }
+            $controller.WaitForStatus([ServiceProcess.ServiceControllerStatus]::Running,[TimeSpan]::FromSeconds(15))
+        }
+        if ($Request.action -in @('automatic','manual','disabled')) {
+            $mode=@{automatic='Automatic';manual='Manual';disabled='Disabled'}[$Request.action]
+            $result=Invoke-CimMethod -InputObject $selected -MethodName ChangeStartMode -Arguments @{StartMode=$mode}
+            if ($result.ReturnValue -ne 0) { Fail 'Windows refused the startup change.' 409 }
+        }
+        $updatedContext=Service-Context; $updated=Service-Selected $updatedContext $Request.name
+        $expected=@{start='Running';stop='Stopped';restart='Running';automatic='Auto';manual='Manual';disabled='Disabled'}[$Request.action]
+        $actual=if($Request.action -in @('start','stop','restart')){$updated.State}else{$updated.StartMode}
+        if ($actual -ne $expected) { Fail 'Resulting service state was not confirmed; refresh details.' 409 }
+        return @{ok=$true;service=(Service-Row $updated $updatedContext)}
+    } finally { if($locked){$mutex.ReleaseMutex()};$mutex.Dispose() }
+}
+function Assert-ProcessRequest($Request) {
+    $fields = @{list=@('action');details=@('action','pid');terminate=@('action','pid','token')}
+    if (!$Request -or $Request.action -notin @('list','details','terminate')) { Fail 'Invalid process action.' }
+    $keys = if ($Request -is [Collections.IDictionary]) { @($Request.Keys) } else { @($Request.PSObject.Properties.Name) }
+    if ($keys.Count -ne $fields[$Request.action].Count -or @($keys | Where-Object { $_ -notin $fields[$Request.action] }).Count) { Fail 'Invalid process fields.' }
+    if ($Request.action -ne 'list' -and (($Request.pid -isnot [int] -and $Request.pid -isnot [long]) -or $Request.pid -lt 1 -or $Request.pid -gt [int]::MaxValue)) { Fail 'Invalid PID.' }
+    if ($Request.action -eq 'terminate' -and ($Request.token -isnot [string] -or $Request.token -cnotmatch '^[a-f0-9]{64}$')) { Fail 'Invalid process identity.' }
+}
+function Process-Identity([int]$ProcessId, [long]$Started) { Hash-Text "$($ProcessId):$Started" }
+function Process-Row($Item, $Before, [double]$Elapsed, [int]$CpuCount, $ProtectedIds) {
+    $metadata = $null
+    try { $metadata = [ViiOS.ProcessGuard]::Inspect($Item.id) } catch { }
+    $blocked = !$metadata -or $metadata.Critical -or !$metadata.Sid -or $metadata.Sid -in @('S-1-5-18','S-1-5-19','S-1-5-20') -or $Item.id -le 4 -or $ProtectedIds.Contains([int]$Item.id)
+    $token = $null; $started = $null; $owner = ''
+    if ($metadata) { $token = Process-Identity $Item.id $metadata.Started; $started = [DateTime]::FromFileTimeUtc($metadata.Started).ToString('o'); $owner = $metadata.User }
+    $cpu = $null; $old = $Before[$Item.id]
+    if ($old -and $old.sampled -and $Item.sampled -and $old.started -eq $Item.started -and $Elapsed -gt 0 -and $CpuCount -gt 0 -and $Item.cpu -ge $old.cpu -and $Item.id -gt 0) { $cpu = [Math]::Round([Math]::Min([double]100, ($Item.cpu - $old.cpu) / 10000000 / $Elapsed / $CpuCount * 100),2) }
+    $reason = if ($blocked) { 'System, service, inaccessible or management process is protected.' } else { '' }
+    # The local lab sets this server-side restriction. It cannot be supplied by a request.
+    if ($null -ne $script:LabProcessId -and ($Item.id -ne $script:LabProcessId -or $token -ne $script:LabProcessToken)) { $blocked = $true; $reason = 'Local lab: only the dedicated test process may be terminated.' }
+    return @{pid=$Item.id;name=$Item.name;user=$owner;state=if($metadata){'Running'}else{'Unknown'};parentPid=$Item.parent;cpuPercent=$cpu;memoryBytes=if($Item.memoryAvailable){$Item.memory}else{$null};startedAt=$started;token=$token;canTerminate=(!$blocked);reason=$reason}
+}
+function Invoke-Processes($Request) {
+    Assert-ProcessRequest $Request
+    $before = Get-ProcessSnapshot; $watch = [Diagnostics.Stopwatch]::StartNew(); Start-Sleep -Milliseconds 650; $after = Get-ProcessSnapshot; $elapsed = $watch.Elapsed.TotalSeconds
+    $protectedIds = New-Object 'System.Collections.Generic.HashSet[int]'
+    $cursor = [int]$PID
+    while ($after.ContainsKey($cursor) -and $protectedIds.Add($cursor)) { $cursor = [int]$after[$cursor].parent }
+    # Fail closed if service ownership cannot be determined.
+    foreach ($service in @(Get-CimInstance Win32_Service -Property ProcessId -ErrorAction Stop)) { if ($service.ProcessId -gt 0) { [void]$protectedIds.Add([int]$service.ProcessId) } }
+    $cpuCount = [Math]::Max(1,[Environment]::ProcessorCount)
+    if ($Request.action -ne 'list') {
+        if (!$after.ContainsKey([int]$Request.pid)) { Fail 'Process no longer exists.' 404 }
+        $item = $after[[int]$Request.pid]; $row = Process-Row $item $before $elapsed $cpuCount $protectedIds
+        if ($Request.action -eq 'details') { return @{ok=$true;process=$row} }
+        if ($row.token -ne $Request.token) { Fail 'Process identity changed; refresh the list.' 409 }
+        if (!$row.canTerminate) { Fail $row.reason 403 }
+        try {
+            $metadata = [ViiOS.ProcessGuard]::Inspect($Request.pid)
+            if ((Process-Identity $Request.pid $metadata.Started) -ne $Request.token) { Fail 'Process identity changed; refresh the list.' 409 }
+            $exited = [ViiOS.ProcessGuard]::Terminate($Request.pid,$metadata.Started)
+            return @{ok=$true;exited=$exited}
+        } catch { if ($_.Exception.Data['public']) { throw }; Fail 'Process exited or termination was denied.' 409 }
+    }
+    $rows = @($after.Values | Select-Object -First 10000 | ForEach-Object { Process-Row $_ $before $elapsed $cpuCount $protectedIds })
+    return @{ok=$true;available=$true;platform='windows';sampledAt=(Timestamp);processes=$rows;partial=($after.Count -gt 10000)}
+}
 function Agent-Capabilities {
     $identity = [Security.Principal.WindowsIdentity]::GetCurrent(); $principal = New-Object Security.Principal.WindowsPrincipal($identity); $admin = $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-    return @{ available = $true; os = 'windows'; agentVersion = 1; administrator = $admin; powershell = $PSVersionTable.PSVersion.ToString(); capabilities = @{ inventory = $true; resources = $true; storage = $true; files = $true; control = @($script:Configuration.services | Where-Object { $_.name -and @($_.ports).Count }).Count -gt 0; versions = $false; models = $true; concurrency = $false }; limitations = @{ fileStreaming = $false; directoryCopy = $false; httpProbing = 'Bounded local HTTP/HTTPS GET; no external addresses or redirects'; control = 'Requires explicit registration in administrator-owned windows-agent.json; no service is enabled automatically.'; models = 'Local Ollama metadata only'; resources = 'Process I/O is total Windows I/O, not physical disk I/O'; versions = 'Unavailable'; concurrency = 'Windows model concurrency telemetry is not implemented.' } }
+    return @{ available = $true; os = 'windows'; agentVersion = 1; administrator = $admin; powershell = $PSVersionTable.PSVersion.ToString(); capabilities = @{ inventory = $true; resources = $true; processes = $true; services = $true; storage = $true; files = $true; control = @($script:Configuration.services | Where-Object { $_.name -and @($_.ports).Count }).Count -gt 0; versions = $false; models = $true; concurrency = $false }; limitations = @{ fileStreaming = $false; directoryCopy = $false; httpProbing = 'Bounded local HTTP/HTTPS GET; no external addresses or redirects'; control = 'Requires explicit registration in administrator-owned windows-agent.json; no service is enabled automatically.'; models = 'Local Ollama metadata only'; resources = 'Process I/O is total Windows I/O, not physical disk I/O'; versions = 'Unavailable'; concurrency = 'Windows model concurrency telemetry is not implemented.' } }
 }
 function Invoke-Agent([string]$SelectedHelper, $Request) {
     switch ($SelectedHelper) {
         'capabilities' { return Agent-Capabilities }
         'scan' { return Invoke-Scan $Request }
         'resources' { return Invoke-Resources }
+        'processes' { return Invoke-Processes $Request }
+        'services' { return Invoke-Services $Request }
         'storage' { return Invoke-Storage $Request }
         'files' { $result = Invoke-Files $Request; $result.ok = $true; return $result }
         'control' { return Invoke-Control $Request }

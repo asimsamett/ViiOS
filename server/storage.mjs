@@ -8,6 +8,21 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const catalog = JSON.parse(readFileSync(new URL('./projects.json', import.meta.url), 'utf8'));
 const invalid = message => Object.assign(new Error(message), { status: 400 });
 const unavailable = () => Object.assign(new Error('Depolama ölçümü yapılamadı. Yol, yönetim erişimi veya yardımcı programı denetleyin.'), { status: 503 });
+export function storageTopology(value) {
+  if (!value || !Array.isArray(value.devices)) return { available: false, devices: [], reason: 'Disk eşleştirmesi için güncel agent gereklidir.' };
+  const text = item => typeof item === 'string' ? item.slice(0, 256) : '';
+  const number = item => typeof item === 'number' && Number.isFinite(item) && item >= 0 ? item : null;
+  const ids = items => Array.isArray(items) ? [...new Set(items.filter(item => typeof item === 'string').map(text))].slice(0, 512) : [];
+  const seen = new Set();
+  const devices = value.devices.slice(0, 512).filter(row => row && typeof row.id === 'string' && row.id && !seen.has(row.id) && seen.add(row.id)).map(row => ({
+    id: text(row.id), name: text(row.name), kind: ['disk', 'partition', 'logical'].includes(row.kind) ? row.kind : 'unknown',
+    sizeBytes: number(row.sizeBytes), parentIds: ids(row.parentIds), volumeIds: ids(row.volumeIds),
+    model: text(row.model), partitionStyle: text(row.partitionStyle),
+    readBytesPerSecond: number(row.readBytesPerSecond), writeBytesPerSecond: number(row.writeBytesPerSecond),
+  }));
+  return { available: value.available === true && devices.length > 0, partial: !!value.partial || value.devices.length > 512,
+    sampledAt: Date.now(), devices, reason: text(value.reason) };
+}
 function hasControl(value) {
   for (let index = 0; index < value.length; index++) {
     const code = value.charCodeAt(index);
@@ -160,7 +175,7 @@ export function createStorageMonitor(config, { applications = () => [], run, now
       if (overview && now() - overviewAt < 5000) return overview;
       if (!overviewPending) overviewPending = runner.run({ action: 'overview' }).then(value => {
         if (!value || !Array.isArray(value.volumes) || !value.summary) throw unavailable();
-        overview = { ...value, serverId: config.id, host: config.host };
+        overview = { ...value, topology: storageTopology(value.topology), serverId: config.id, host: config.host };
         overviewAt = now();
         return overview;
       }).catch(() => {

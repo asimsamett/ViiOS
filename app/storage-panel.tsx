@@ -5,6 +5,7 @@ import { AlertCircle, ArrowRight, Boxes, ChevronRight, Clock3, Database, File, F
 import { Button } from '@/components/ui/button';
 import { useTarget } from './target-context';
 import { storageBytes, storagePercent } from './storage-format';
+import StorageDevices, { type StorageTopology } from './storage-devices';
 
 type Capacity = {
   totalBytes: number | null;
@@ -21,6 +22,8 @@ type Overview = {
   hostname: string;
   summary: (Capacity & { volumeCount: number }) | null;
   volumes: Volume[];
+  topology?: StorageTopology;
+  labRoot?: string;
   reason?: string;
 };
 type Scan = {
@@ -33,7 +36,7 @@ type Scan = {
 type FolderEntry = { name: string; path: string; kind: 'directory' | 'file'; bytes: number | null; partial?: boolean; mount?: boolean; navigable?: boolean; reason?: string };
 type FolderUsage = Scan & { path: string; totalBytes: number | null; entries: FolderEntry[] };
 type AppUsage = Scan & { applications: { id: string; name: string; path: string | null; bytes: number | null; partial?: boolean; reason?: string }[] };
-type Tab = 'volumes' | 'folders' | 'applications';
+type Tab = 'devices' | 'volumes' | 'folders' | 'applications';
 
 function measuredBytes(value: number | null | undefined, partial?: boolean) {
   return `${partial && value != null ? 'En az ' : ''}${storageBytes(value)}`;
@@ -126,13 +129,14 @@ function ScanToolbar({ data, fetching, reload, children }: { data?: Scan; fetchi
   return <div className="storage-scan-toolbar"><div>{children}<span className="storage-scan-time"><Clock3 size={13} aria-hidden="true"/>{scanning ? 'Tarama sürüyor' : 'Son tarama'} · {sampledTime(data?.scannedAt)}</span></div><Button variant="outline" disabled={fetching || scanning} onClick={reload}><RefreshCw size={15} className={scanning || fetching ? 'spin' : ''}/>{scanning ? 'Taranıyor…' : 'Yeniden tara'}</Button></div>;
 }
 
-function FolderDetails({ path, visible, onPath }: { path: string; visible: boolean; onPath: (path: string) => void }) {
+function FolderDetails({ path, visible, onPath, onFiles }: { path: string; visible: boolean; onPath: (path: string) => void; onFiles: (path:string)=>void }) {
   const { data, error, fetching, reload } = useStorageRead<FolderUsage>(`/storage/usage?path=${encodeURIComponent(path)}`, visible);
   const parts = path.split('/').filter(Boolean);
   const entries = [...(data?.entries || [])].sort((a, b) => (b.bytes ?? -1) - (a.bytes ?? -1) || a.name.localeCompare(b.name, 'tr'));
   return <>
     <nav className="storage-breadcrumbs" aria-label="Depolama klasör yolu"><Button variant="ghost" onClick={() => onPath('/')} aria-current={path === '/' ? 'location' : undefined}><HardDrive size={15}/>Kök /</Button>{parts.map((part, index) => { const target = `/${parts.slice(0, index + 1).join('/')}`; return <span key={target}><ChevronRight size={13} aria-hidden="true"/><Button variant="ghost" onClick={() => onPath(target)} aria-current={target === path ? 'location' : undefined}>{part}</Button></span>; })}</nav>
     <ScanToolbar data={data} fetching={fetching} reload={reload}><h3><FolderOpen size={18} aria-hidden="true"/><span>{path}</span></h3><p>Ölçülen alan <strong>{measuredBytes(data?.totalBytes, data?.partial)}</strong>{data?.partial ? ' · Kısmi ölçüm' : ''}</p></ScanToolbar>
+    <Button variant="outline" onClick={()=>onFiles(path)}><FolderOpen size={15}/>Dosya gezgininde aç</Button>
     <ScanNotice data={data} error={error}/>
     {!data && !error ? <EmptyState busy title="Klasör boyutları hesaplanıyor…" detail="Büyük dizinlerin taranması zaman alabilir."/> : entries.length ? <div className="storage-entry-list" aria-label={`${path} içindeki alan kullanımı`}>{entries.map(entry => {
       const relative = !entry.mount && entry.bytes != null && data?.totalBytes != null && data.totalBytes > 0 ? entry.bytes / data.totalBytes * 100 : null;
@@ -153,10 +157,10 @@ function ApplicationDetails({ visible, onPath }: { visible: boolean; onPath: (pa
   </>;
 }
 
-export default function StoragePanel({ visible }: { visible: boolean }) {
+export default function StoragePanel({ visible, onOpenFiles }: { visible: boolean; onOpenFiles:(path:string)=>void }) {
   const { id } = useTarget();
   const { data, error, fetching, reload } = useStorageRead<Overview>('/storage', visible, true);
-  const [tab, setTab] = useState<Tab>('volumes');
+  const [tab, setTab] = useState<Tab>('devices');
   const [path, setPath] = useState('/');
   const summary = data?.summary || undefined;
   const volumes = data?.volumes || [];
@@ -165,8 +169,8 @@ export default function StoragePanel({ visible }: { visible: boolean }) {
   return <section className="storage-panel" aria-label="Depolama">
     <header className="storage-heading"><span className="storage-heading-icon" aria-hidden="true"><HardDrive size={25}/></span><div><h2>Depolama</h2><p>{data?.hostname || id} · Diskler, klasörler ve uygulamalar</p></div><Button variant="outline" onClick={reload} disabled={fetching} aria-label="Depolama ölçümünü yenile"><RefreshCw size={15} className={fetching ? 'spin' : ''}/>Yenile</Button></header>
     {error && <div className="storage-notice error" role="alert"><AlertCircle size={17} aria-hidden="true"/><p>{error}{data?.sampledAt ? ' Son başarılı ölçüm gösteriliyor.' : ''}</p></div>}
-    {data && !data.available && data.volumes.length > 0 && <div className="storage-notice" aria-live="polite"><Info size={17} aria-hidden="true"/><p>{data.reason || 'Bazı disk bölümleri ölçülemedi. Bilinen bölümler gösteriliyor; sunucu toplamı hesaplanamadı.'}</p></div>}
-    {data && !data.available && !data.volumes.length ? <EmptyState title="Depolama bilgisi alınamıyor" detail={data.reason || 'Bu sunucu disk ölçümlerini sağlayamıyor.'}/> : <>
+    {data && !data.available && (data.volumes.length > 0 || data.topology?.available) && <div className="storage-notice" aria-live="polite"><Info size={17} aria-hidden="true"/><p>{data.reason || 'Bazı disk bölümleri ölçülemedi. Bilinen bölümler gösteriliyor; sunucu toplamı hesaplanamadı.'}</p></div>}
+    {data && !data.available && !data.volumes.length && !data.topology?.available ? <EmptyState title="Depolama bilgisi alınamıyor" detail={data.reason || 'Bu sunucu disk ölçümlerini sağlayamıyor.'}/> : <>
       <div className="storage-summary">
         <article><span><HardDrive size={16} aria-hidden="true"/>Toplam kapasite</span><strong>{storageBytes(summary?.totalBytes)}</strong><small>{summary ? `${summary.volumeCount} disk bölümü · Sunucu toplamı` : 'Ölçüm bekleniyor'}</small></article>
         <article><span><Database size={16} aria-hidden="true"/>Kullanılan</span><strong>{storageBytes(summary?.usedBytes)}</strong><small>{summary ? `${storagePercent(summary.percent)} doluluk` : 'Ölçüm bekleniyor'}</small></article>
@@ -174,9 +178,11 @@ export default function StoragePanel({ visible }: { visible: boolean }) {
         <article><span><HardDrive size={16} aria-hidden="true"/>Sisteme ayrılan</span><strong>{storageBytes(summary?.reservedBytes)}</strong><small>{summary ? `${storageBytes(summary.freeBytes)} toplam boş alan içinde` : 'Ayrılmış boş alan'}</small></article>
       </div>
       {!!highUsage.length && <div className={`storage-notice ${highUsage.some(volume => volumePressure(volume) === 'critical') ? 'error' : ''}`}><AlertCircle size={17} aria-hidden="true"/><p><strong>Kullanılabilir alan az:</strong> {highUsage.map(volume => `${volume.mount} (${storageBytes(volume.availableBytes)} kullanılabilir)`).join(' · ')}. Sunucu toplamındaki boş alan bu bölümlerin doluluğunu azaltmaz.</p></div>}
-      <nav className="storage-tabs" aria-label="Depolama görünümleri">{([{ id: 'volumes', label: 'Disk bölümleri', Icon: HardDrive }, { id: 'folders', label: 'Klasörler', Icon: Folder }, { id: 'applications', label: 'Uygulamalar', Icon: Boxes }] as const).map(item => <Button key={item.id} variant="ghost" aria-pressed={tab === item.id} onClick={() => setTab(item.id)}><item.Icon size={16}/>{item.label}</Button>)}</nav>
+      <nav className="storage-tabs" aria-label="Depolama görünümleri">{([{ id: 'devices', label: 'Diskler ve I/O', Icon: HardDrive }, { id: 'volumes', label: 'Disk bölümleri', Icon: HardDrive }, { id: 'folders', label: 'Klasörler', Icon: Folder }, { id: 'applications', label: 'Uygulamalar', Icon: Boxes }] as const).map(item => <Button key={item.id} variant="ghost" aria-pressed={tab === item.id} onClick={() => setTab(item.id)}><item.Icon size={16}/>{item.label}</Button>)}</nav>
+      {data?.labRoot&&<div className="storage-notice"><Info size={17}/><p>Yerel testte klasör erişimi yalnız örnek dosyalarla sınırlıdır.</p><Button variant="outline" onClick={()=>inspect(data.labRoot!)}>Demo klasörünü incele</Button></div>}
+      {tab === 'devices' && (!data && fetching ? <EmptyState busy title="Disk yapısı ölçülüyor…"/> : <StorageDevices topology={data?.topology} volumes={volumes} onInspect={inspect} onFiles={onOpenFiles}/>)}
       {tab === 'volumes' && <div className="storage-volumes">{!data && !error ? <EmptyState busy title="Disk bölümleri ölçülüyor…"/> : volumes.length ? volumes.map(volume => <article className="storage-volume" key={volume.id}><header><span className="storage-entry-icon" aria-hidden="true"><HardDrive size={21}/></span><div><h3>{volume.mount}</h3><p><code>{volume.source}</code><span>{volume.filesystem}</span></p></div><strong className={volumePressure(volume) === 'critical' ? 'storage-critical-text' : volumePressure(volume) === 'warning' ? 'storage-warning-text' : ''}>{storagePercent(volume.percent)}</strong></header><CapacityBar value={volume.percent} label={volume.mount} pressure={volumePressure(volume)}/>{volume.reason && <p className="storage-entry-reason">{volume.reason}</p>}<dl><div><dt>Kullanılan / kapasite</dt><dd>{storageBytes(volume.usedBytes)} <span>/ {storageBytes(volume.totalBytes)}</span></dd></div><div><dt>Kullanılabilir</dt><dd>{storageBytes(volume.availableBytes)}</dd></div><div><dt>Sisteme ayrılan</dt><dd>{storageBytes(volume.reservedBytes)}</dd></div></dl><footer><span>{volumePressure(volume) === 'critical' ? 'Kullanılabilir alan kritik' : volumePressure(volume) === 'warning' ? 'Kullanılabilir alan az' : volume.percent == null ? 'Ölçüm alınamadı' : 'Bağlı disk bölümü'}</span><Button variant="ghost" onClick={() => inspect(volume.mount)} aria-label={`${volume.mount} klasörlerini incele`}>Klasörleri incele<ArrowRight size={14}/></Button></footer></article>) : <EmptyState title={error ? 'Disk ölçümü alınamadı' : 'Bağlı disk bölümü bulunamadı'} detail={error ? 'Yenile ile tekrar deneyebilirsiniz.' : undefined}/>}</div>}
-      {tab === 'folders' && <FolderDetails key={`${id}:${path}`} path={path} visible={visible} onPath={setPath}/>}
+      {tab === 'folders' && <FolderDetails key={`${id}:${path}`} path={path} visible={visible} onPath={setPath} onFiles={onOpenFiles}/>}
       {tab === 'applications' && <ApplicationDetails key={id} visible={visible} onPath={inspect}/>}
       <footer className="storage-footer"><span><Clock3 size={13} aria-hidden="true"/>Disk ölçümü · {sampledTime(data?.sampledAt)}</span><span>1 GiB = 1024 MiB · 1 TiB = 1024 GiB</span></footer>
       {tab === 'volumes' && <p className="storage-explanation"><Info size={15} aria-hidden="true"/>Sunucu toplamı bağlı kalıcı disk bölümlerini kapsar. Kullanılabilir alan, sisteme ayrılan boş alanı içermez; toplam boş alan bu ikisinin toplamıdır. Klasörleri inceleyerek bölümün içinde hangi dosyaların yer kapladığını görebilirsiniz.</p>}

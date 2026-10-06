@@ -107,6 +107,22 @@ export function createDemoController({ origin = globalThis.location?.origin || '
       if (path === '/inventory' && read) return json({ ...server.inventory, unread: server.events.filter(event => !event.read && event.notify).length });
       if (['/scan', '/previews'].includes(path) && method === 'POST') return json({ ok: true, demo: true, message: 'Örnek görünüm yenilendi; ağ taraması yapılmadı.' }, 202);
       if (path === '/resources' && read) return json({ ...server.resources, sampledAt: Date.now() });
+      if (path === '/overview' && read) return json({ ...server.overview, sampledAt: Date.now() });
+      if (path === '/processes' && read) return json({ available: true, demo: true, platform: server.connection.platform, sampledAt: Date.now(), partial: false, processes: server.processes });
+      if (path.startsWith('/processes/')) {
+        if (!read) return readonly();
+        const match = /^\/processes\/(\d+)$/.exec(path);
+        const process = match && server.processes.find(row => row.pid === Number(match[1]));
+        return process ? json({ process }) : missing();
+      }
+      if (path === '/services' && read) return json({ available: true, demo: true, platform: server.connection.platform, sampledAt: Date.now(), partial: false, services: server.services });
+      if (path.startsWith('/services/')) {
+        if (!read) return readonly();
+        const match = /^\/services\/([^/]+)(\/logs)?$/.exec(path);
+        const service = match && server.services.find(row => row.name === decodeURIComponent(match[1]));
+        if (!service) return missing();
+        return match[2] ? json({ available: service.canLogs, reason: service.canLogs ? 'Temsili demo günlükleri.' : 'Windows olay günlükleri bu sürümde desteklenmiyor.', entries: service.canLogs ? [{ at: Date.now(), priority: 6, message: 'Demo servisi hazır. Bu kayıt örnek veridir.' }] : [] }) : json({ ok: true, service });
+      }
       if (path === '/storage' && read) return json(server.storage);
       if (path === '/storage/apps' && read) return json(server.appUsage);
       if (path === '/storage/usage' && read) {

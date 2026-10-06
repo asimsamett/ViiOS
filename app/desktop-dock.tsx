@@ -1,6 +1,8 @@
 'use client';
 
-import { useEffect, useRef, type ReactNode } from 'react';
+import { Children, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { dockLayout } from './desktop-dock-layout';
 
 /** Keep pointer animation outside React so open windows do not rerender. */
 export default function DesktopDock({ children, autoHide = false, keepOpen = false }: {
@@ -8,7 +10,25 @@ export default function DesktopDock({ children, autoHide = false, keepOpen = fal
   autoHide?: boolean;
   keepOpen?: boolean;
 }) {
+  const area = useRef<HTMLDivElement>(null);
   const dock = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(0);
+  const [offset, setOffset] = useState(0);
+  const items = Children.toArray(children);
+  const layout = dockLayout(width, items.length);
+  const shortcuts = items.slice(1, -1);
+  const page = Math.min(Math.floor(offset / layout.pageSize), layout.pages - 1);
+  const visible = layout.pages > 1
+    ? [items[0], ...shortcuts.slice(page * layout.pageSize, (page + 1) * layout.pageSize), items.at(-1)]
+    : items;
+
+  useEffect(() => {
+    const stage = area.current?.parentElement;
+    if (!stage) return;
+    const observer = new ResizeObserver(() => setWidth(stage.clientWidth));
+    observer.observe(stage);
+    return () => observer.disconnect();
+  }, []);
   const frame = useRef(0);
   const pointer = useRef<number | null>(null);
 
@@ -33,7 +53,7 @@ export default function DesktopDock({ children, autoHide = false, keepOpen = fal
       const size = parseFloat(style.getPropertyValue('--dock-size'));
       const gap = parseFloat(style.columnGap) || 0;
       const rect = root.getBoundingClientRect();
-      // Fixed resting centers prevent feedback as the Dock expands sideways.
+      // Resting centers remain stable while the icons expand inside this page.
       const width = items.length * size + Math.max(0, items.length - 1) * gap;
       const start = rect.left + rect.width / 2 - width / 2;
       const radius = size * 2.5;
@@ -60,19 +80,22 @@ export default function DesktopDock({ children, autoHide = false, keepOpen = fal
 
   return (
     <div
+      ref={area}
+      style={{ '--dock-size': `${layout.size}px`, '--dock-gap': `${layout.gap}px` } as CSSProperties}
       className={`desktop-dock-area ${autoHide ? 'auto-hide' : ''} ${keepOpen ? 'is-open' : ''}`}
       onPointerDown={event => { if (event.pointerType === 'touch') dock.current?.querySelector<HTMLButtonElement>('button:not(:disabled)')?.focus(); }}
     >
-      <div
-        ref={dock}
-        className="macos-dock"
-        role="toolbar"
-        aria-label="ViiOS Dock · Uygulamalar ve açık pencereler"
-        onPointerMove={event => { if (event.pointerType !== 'touch') magnify(event.clientX); }}
-        onPointerLeave={reset}
-        onPointerCancel={reset}
-      >
-        {children}
+      <div className="macos-dock" role="toolbar" aria-label="ViiOS Dock · Uygulamalar ve açık pencereler">
+        {layout.pages > 1 && <button type="button" className="dock-page-button" aria-label="Önceki uygulamalar" title="Önceki uygulamalar" disabled={page === 0} onPointerEnter={reset} onClick={() => { reset(); setOffset((page - 1) * layout.pageSize); }}><ChevronLeft size={18}/></button>}
+        <div
+          ref={dock}
+          className="dock-items"
+          onPointerMove={event => { if (event.pointerType !== 'touch') magnify(event.clientX); }}
+          onPointerLeave={reset}
+          onPointerCancel={reset}
+        >{visible}</div>
+        {layout.pages > 1 && <button type="button" className="dock-page-button" aria-label="Sonraki uygulamalar" title="Sonraki uygulamalar" disabled={page === layout.pages - 1} onPointerEnter={reset} onClick={() => { reset(); setOffset((page + 1) * layout.pageSize); }}><ChevronRight size={18}/></button>}
+        {layout.pages > 1 && <output className="dock-page-status" aria-label="Görev çubuğu sayfası">{page + 1} / {layout.pages}</output>}
       </div>
     </div>
   );

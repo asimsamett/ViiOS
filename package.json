@@ -1,10 +1,15 @@
 {
   "name": "viios-standalone",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "license": "SEE LICENSE IN LICENSE",
-  "repository": { "type": "git", "url": "https://github.com/asimsamett/ViiOS.git" },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/asimsamett/ViiOS.git"
+  },
   "homepage": "https://asimsamett.github.io/ViiOS/",
-  "bugs": { "url": "https://github.com/asimsamett/ViiOS/issues" },
+  "bugs": {
+    "url": "https://github.com/asimsamett/ViiOS/issues"
+  },
   "private": true,
   "engines": {
     "node": ">=22.13.0"
@@ -15,6 +20,7 @@
     "demo:serve": "node scripts/serve-demo.mjs",
     "build": "vinext build",
     "start": "node server/index.mjs",
+    "lab": "node scripts/server-lab.mjs",
     "lint": "oxlint",
     "format": "oxfmt",
     "set-password": "node scripts/set-password.mjs",

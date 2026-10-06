@@ -70,6 +70,36 @@ test('every demo panel has a usable browser-only response on Linux and Windows',
   }
 });
 
+test('management preview panels use synthetic data and reject process/service mutations without networking', async t => {
+  const originalFetch = globalThis.fetch;
+  let calls = 0;
+  globalThis.fetch = () => { calls++; throw new Error('No network allowed'); };
+  t.after(() => { globalThis.fetch = originalFetch; });
+  const demo = controller();
+  for (const id of DEMO_SERVER_IDS) {
+    const get = async path => { const response = await demo.fetch(scoped(id, path)); assert.equal(response.status, 200, path); return response.json(); };
+    const overview = await get('/overview');
+    assert.equal(overview.serverId, id);
+    assert.equal(overview.demo, true);
+    assert.ok(overview.topProcesses.length && overview.disks.length && overview.network.length);
+    const processes = (await get('/processes')).processes;
+    assert.ok(processes.length && processes.every(row => !row.canTerminate && row.token === null));
+    assert.equal((await get(`/processes/${processes[0].pid}`)).process.pid, processes[0].pid);
+    const services = (await get('/services')).services;
+    assert.ok(services.length && services.every(row => !row.actions.length && row.token === null));
+    assert.equal((await get(`/services/${services[0].name}`)).service.name, services[0].name);
+    assert.equal((await get(`/services/${services[0].name}/logs`)).available, id === 'demo-linux');
+    const storage = await get('/storage');
+    assert.ok(storage.topology.devices.filter(row => row.kind === 'partition').every(row => storage.volumes.some(volume => row.volumeIds.includes(volume.id))));
+    for (const path of [`/processes/${processes[0].pid}/terminate`, `/services/${services[0].name}/action`]) assert.equal((await demo.fetch(...write(scoped(id, path), { action: 'stop', token: 'a'.repeat(64) }))).status, 403);
+    assert.deepEqual((await get('/processes')).processes, processes);
+    assert.deepEqual((await get('/services')).services, services);
+    assert.equal((await demo.fetch(scoped(id, '/processes/999999'))).status, 404);
+    assert.equal((await demo.fetch(scoped(id, '/services/missing'))).status, 404);
+  }
+  assert.equal(calls, 0);
+});
+
 test('demo never delegates unknown requests, server probes or credentials to network', async t => {
   const originalFetch = globalThis.fetch;
   let calls = 0;

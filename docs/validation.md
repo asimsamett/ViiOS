@@ -10,6 +10,19 @@
 
 These are dated validation records, not a claim that every check has been rerun for the current commit. Test counts, file counts, and limitations describe the revision tested on each date. Current automated results are available in [GitHub Actions](https://github.com/asimsamett/ViiOS/actions).
 
+## October 6, 2026 — v0.4.0 server management and Feature Guide
+
+The release candidate includes Server Monitor, Process Manager, Services, disk topology/I/O, responsive Dock navigation and the 23-chapter Feature Guide. The GitHub demo includes synthetic data for the new management panels and rejects process/service mutations without networking.
+
+- Node: **208 tests passed**. TypeScript, lint and production build passed.
+- Python: **40 passed, 1 skipped** across packaging, overview, processes, services, storage topology and versioning access errors. The skipped check requires Windows symbolic-link privileges.
+- PowerShell 5.1: Windows agent, process, service and storage test scripts passed. Live enumeration/measurements and the restricted local SSH fixture were exercised; service mutations used isolated doubles or the disposable lab process, not host SCM changes.
+- Static demo built successfully with the `/ViiOS` project base path.
+- Feature Guide browser checks covered search, categories, pagination, menu/Dock entry, direct application launch, unavailable capabilities, narrow layouts and light/dark themes.
+- Source audit accepted **351 explicitly listed files** and preserved the current upstream license. Known private environment identifiers and local runtime credentials were checked without copying runtime data into the release.
+
+Live Linux/systemd management, a fresh production Windows OpenSSH bootstrap and Docker execution were not verified locally. The Windows/Linux GitHub Actions matrix validates the published commit separately; consult that run for its result.
+
 ## October 6, 2026 — Initial GitHub publication
 
 The standalone preview was published with a synthetic-data Pages demo. The [Windows/Linux validation workflow](https://github.com/asimsamett/ViiOS/actions/runs/37422213622) and [Pages deployment workflow](https://github.com/asimsamett/ViiOS/actions/runs/37422213627) both completed successfully. The publication included 292 reviewed source files. The earlier lint errors recorded below were fixed before publication. These results supersede earlier statements that GitHub publication or CI had not yet run.

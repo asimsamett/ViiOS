@@ -1,4 +1,7 @@
 import { createDesktopLayoutStore, desktopLayoutRouter } from './desktop-layout.mjs';
+import { serviceRouter } from './services.mjs';
+import { processRouter } from './processes.mjs';
+import { serverOverview } from './overview.mjs';
 import {fileRouter} from './files.mjs';
 import {createModelCatalog,modelCatalogRouter} from './model-catalog.mjs';
 import {versionRouter} from './versioning.mjs';
@@ -23,8 +26,9 @@ const fleet=createFleet({dataDir}),routers=new Map(),modelTargets=new Map(),cred
 function modelsFor(target){if(!modelTargets.has(target))modelTargets.set(target,createModelCatalog({dataDir:target.dataDir,mode:'ssh',sshTarget:target.inventory().serverId,privileged:true}));return modelTargets.get(target);}
 function credentialServices(target){if(!credentialTargets.has(target)){const store=createAppCredentialStore({dataDir:target.dataDir});const sync=createAppCredentialSync({store,dataDir:target.dataDir,enabled:false,disabledReason:'Erişim bilgilerini bu sunucu için elle ekleyebilirsiniz.'});credentialTargets.set(target,{store,sync});}return credentialTargets.get(target);}
 let auth;
-const setup=await createAdminSetup({dataDir,onConfigured:hash=>{auth=createAuth(hash,{secure:process.env.COOKIE_SECURE==='true'});}});
-if(setup.passwordHash())auth=createAuth(setup.passwordHash(),{secure:process.env.COOKIE_SECURE==='true'});
+const authOptions={secure:process.env.COOKIE_SECURE==='true',cookieName:process.env.SESSION_COOKIE_NAME || 'viios_session'};
+const setup=await createAdminSetup({dataDir,onConfigured:hash=>{auth=createAuth(hash,authOptions);}});
+if(setup.passwordHash())auth=createAuth(setup.passwordHash(),authOptions);
 const manager=createConnectionManager({dataDir,onReady:profile=>fleet.add(profile),onRemove:async id=>{const target=fleet.targets.get(id);routers.delete(id);await modelTargets.get(target)?.shutdown();modelTargets.delete(target);await credentialTargets.get(target)?.sync.close();credentialTargets.delete(target);await fleet.remove(id);}});
 await manager.initialize();
 const app=express();app.disable('x-powered-by');
@@ -50,11 +54,14 @@ function targetRouter(target) {
  const credentials=credentialServices(target);
  router.use('/credentials',appCredentialsRouter(credentials.store,{sync:credentials.sync}));
  router.use('/files',fileRouter(target.files));
+ router.use('/processes',processRouter(target.processes));
+ router.use('/services',serviceRouter(target.services));
  router.use('/versions',versionRouter({id:inventory().serverId,host:inventory().host,mode:'ssh',platform:inventory().platform,capabilities:inventory().capabilities}));
  router.use('/ops',(_req,res)=>res.status(501).json({error:'UAT ortamı bu taşınabilir sürümde yapılandırılmadı.'}));
  router.use('/models',modelCatalogRouter(modelsFor(target)));
 router.get('/inventory',(_req,res)=>res.json(inventory()));
 router.get('/resources',async(_req,res)=>res.json(await target.resources.read()));
+router.get('/overview',async(_req,res)=>res.json(serverOverview(await target.resources.read())));
 router.get('/storage',async(_req,res)=>res.json(await target.storage.read()));
 router.get('/storage/usage',(req,res)=>res.json(target.storage.usage(req.query)));
 router.get('/storage/apps',(req,res)=>res.json(target.storage.apps(req.query)));

@@ -5,7 +5,7 @@ import express from 'express';
 
 const MAX_BYTES = 256 * 1024;
 const stores = new Map();
-const views = new Set(['managed', 'apps', 'ports', 'reports', 'help', 'endpoints', 'people', 'models', 'servers', 'credentials', 'storage']);
+const views = new Set(['managed', 'apps', 'ports', 'reports', 'help', 'endpoints', 'people', 'models', 'servers', 'credentials', 'storage', 'overview', 'processes', 'services', 'history', 'notifications', 'versions', 'guide', 'appearance', 'features']);
 const fixedKinds = new Set(['applications', 'trash', 'tasks', 'repo', 'knowledge']);
 const uuidId = /^link:[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
 const fail = (message, status = 400) => Object.assign(new Error(message), { status });

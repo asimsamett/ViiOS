@@ -116,6 +116,61 @@ def valid_path(value):
     return value
 
 
+def block_snapshot(base=pathlib.Path('/sys/class/block')):
+    """Kernel block graph; partitions and stacked devices remain separate rows."""
+    rows = []
+    for device in sorted(base.iterdir()):
+        if re.match(r'^(loop|ram|zram)\d', device.name):
+            continue
+        try:
+            identity = (device / 'dev').read_text().strip()
+            partition = (device / 'partition').exists()
+            parents = []
+            if partition:
+                parents.append((device.resolve().parent / 'dev').read_text().strip())
+            else:
+                for parent in (device / 'slaves').iterdir():
+                    parents.append((parent / 'dev').read_text().strip())
+            fields = (device / 'stat').read_text().split()
+            rows.append({'id': identity, 'name': '/dev/' + device.name,
+                         'kind': 'partition' if partition else 'logical' if parents else 'disk',
+                         'sizeBytes': int((device / 'size').read_text()) * 512,
+                         'parentIds': sorted(set(parents)), 'volumeIds': [],
+                         'readCounter': int(fields[2]) * 512, 'writeCounter': int(fields[6]) * 512})
+        except (OSError, ValueError, IndexError):
+            # A device can disappear between reads. Keep the graph explicitly partial.
+            rows.append({'id': device.name, 'name': '/dev/' + device.name, 'kind': 'unknown',
+                         'sizeBytes': None, 'parentIds': [], 'volumeIds': [],
+                         'readCounter': None, 'writeCounter': None})
+        if len(rows) >= 512:
+            break
+    return rows
+
+
+def storage_topology(volumes, snapshot=block_snapshot, sleep=time.sleep, clock=time.monotonic):
+    try:
+        first = {row['id']: row for row in snapshot()}
+        started = clock()
+        sleep(.25)
+        rows = snapshot()
+        elapsed = clock() - started
+        for row in rows:
+            previous = first.get(row['id'], {})
+            for counter, rate in [('readCounter', 'readBytesPerSecond'), ('writeCounter', 'writeBytesPerSecond')]:
+                current, old = row.pop(counter, None), previous.get(counter)
+                row[rate] = round((current - old) / elapsed, 2) if elapsed > 0 and current is not None and old is not None and current >= old else None
+            for volume in volumes:
+                identity = volume['id'].split(':', 2)[:2]
+                matches = ':'.join(identity) == row['id'] or os.path.realpath(volume['source']) == row['name']
+                if matches:
+                    row['volumeIds'].append(volume['id'])
+        return {'available': bool(rows), 'partial': len(rows) >= 512 or any(row['kind'] == 'unknown' for row in rows),
+                'sampleSeconds': elapsed, 'devices': rows,
+                'reason': 'Block devices, partitions and stacked layers are separate; their capacities and I/O must not be added together.'}
+    except (OSError, ValueError):
+        return {'available': False, 'partial': True, 'devices': [], 'reason': 'Block topology or I/O counters are unavailable.'}
+
+
 def validate_request(request):
     if not isinstance(request, dict) or request.get('action') not in ('overview', 'usage', 'apps'):
         raise ValueError('Geçersiz depolama isteği.')
@@ -301,7 +356,9 @@ def handle_request(request):
     validate_request(request)
     mounts = parse_mounts(pathlib.Path('/proc/self/mountinfo').read_text())
     if request['action'] == 'overview':
-        return filesystem_overview(mounts)
+        result = filesystem_overview(mounts)
+        result['topology'] = storage_topology(result['volumes'])
+        return result
     try:
         os.nice(15)
     except OSError:

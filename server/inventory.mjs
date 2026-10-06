@@ -1,4 +1,6 @@
 import { createFileManager } from './files.mjs';
+import { createServiceManager } from './services.mjs';
+import { createProcessManager } from './processes.mjs';
 import { createResourceMonitor } from './resources.mjs';
 import { createStorageMonitor } from './storage.mjs';
 import { spawn } from './ssh-transport.mjs';
@@ -28,6 +30,8 @@ if (!/^[a-zA-Z0-9_.@-]+$/.test(sshTarget) || sshTarget.startsWith('-')) throw ne
 const sshBase = ['-o','BatchMode=yes','-o','ConnectTimeout=10','-o','ServerAliveInterval=15','-o','ServerAliveCountMax=2'];
 const state = { apps: [], scannedAt: null, scanning: false, capturing: false, controlling: null, pendingControlScan:false, controlError: null, error: config.initialError || null, previewError: null, serverId: config.id || 'none', networkOnly:mode==='network', networkAutoFull:config.networkAutoFull!==false, networkProgress:null, networkCoverage:null, host: config.host || process.env.TARGET_HOST || '', hostname: config.name || sshTarget, mode, platform:config.platform || 'linux', capabilities:config.capabilities || {}, start, end, events: [], lastDailyAuditDay: localDay(), lastDailyAttemptAt: null };
 const files=createFileManager({id:config.id || 'none',mode,host:state.host,log:async(type,message)=>{state.events.push(event(type,message));await persist();}});
+const services=createServiceManager({id:config.id || 'none',mode,host:state.host});
+const processes=createProcessManager({id:config.id || 'none',mode,host:state.host});
 const resources=createResourceMonitor({id:config.id || 'none',mode,host:state.host});
 const storage=createStorageMonitor({id:config.id || 'none',mode,host:state.host},{applications:()=>inventory().apps});
 const tunnels = new Map();
@@ -314,7 +318,7 @@ async function updateAnnotation(port,patch) {
   state.events.push(event('annotation_updated','Port adı, notu veya takip tercihleri güncellendi.',annotate(app,annotations)));
   await persist();return {ok:true,annotation:next};
 }
-async function shutdown() {closed=true;files.shutdown();resources.shutdown();storage.shutdown();for(const {child,proxy} of tunnels.values()){proxy?.close();child.kill();}for(const child of workers)child.kill();await browser?.close().catch(()=>{});await writeQueue.catch(()=>{});}
+async function shutdown() {closed=true;files.shutdown();resources.shutdown();processes.shutdown();services.shutdown();storage.shutdown();for(const {child,proxy} of tunnels.values()){proxy?.close();child.kill();}for(const child of workers)child.kill();await browser?.close().catch(()=>{});await writeQueue.catch(()=>{});}
 
 function networkProgress(progress) {state.networkProgress=progress;}
 async function ingestNetwork(result) {
@@ -337,5 +341,5 @@ async function ingestNetwork(result) {
   if(result.full){state.lastDailyAuditDay=localDay();state.events.push(event('daily_audit','1–65535 TCP portunun ağ denetimi tamamlandı. Yanıtsız portlar boş kabul edilmez.',null,at));}
   state.events=state.events.slice(-10000);await persist();void capture(false);
 }
-return {files,resources,storage,inventory,scan,capture,applicationUrl,initialize,shutdown,dataDir,scheduledScan,history,markRead,controlStatus,controlApplication,updateAnnotation,ingestNetwork,networkProgress};
+return {files,resources,processes,services,storage,inventory,scan,capture,applicationUrl,initialize,shutdown,dataDir,scheduledScan,history,markRead,controlStatus,controlApplication,updateAnnotation,ingestNetwork,networkProgress};
 }

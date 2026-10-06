@@ -19,10 +19,9 @@
   .desktop-dock-area.auto-hide:focus-within { transform: translate(-50%, 0); }
 }
 .macos-dock {
-  --dock-size: 54px;
   display: flex;
   align-items: flex-end;
-  gap: 10px;
+  gap: 8px;
   width: max-content;
   max-width: 100%;
   padding: 12px 14px 17px;
@@ -88,8 +87,8 @@
 .dock-brand-icon > .vii-brand-icon { width:100%; height:100%; }
 .dock-item[data-dock-kind='file'] .dock-icon { background: linear-gradient(155deg, #fff, #e3eaf5); color: #567aaa; }
 .dock-item[data-dock-kind='trash'] .dock-icon { background: linear-gradient(155deg, #fafcffd9, #d4e1eed9); color: #62778d; }
-.dock-item[data-dock-kind='trash'] { margin-left: 12px; }
-.dock-item[data-dock-kind='trash']:before { content: ''; position: absolute; width: 1px; height: 40px; left: -12px; bottom: 0; background: #ffffff70; }
+.dock-item[data-dock-kind='trash'] { margin-left: 0; }
+.dock-item[data-dock-kind='trash']:before { content: ''; position: absolute; width: 1px; height: 40px; left: -6px; bottom: 0; background: #ffffff70; }
 .macos-dock .dock-button:after {
   content: '';
   position: absolute;
@@ -147,10 +146,8 @@
 }
 @media (max-width: 760px) {
   .desktop-dock-area { max-width: calc(100% - 16px); padding-bottom: 8px; }
-  .macos-dock { --dock-size: 36px; gap: 6px; max-width: 100%; padding: 10px 10px 15px; border-radius: 19px; overflow-x: auto; scrollbar-width: none; }
-  .macos-dock::-webkit-scrollbar { display: none; }
+  .macos-dock { max-width: 100%; padding: 10px 10px 15px; border-radius: 19px; }
   .dock-item { --dock-scale: 1 !important; }
-  .dock-item[data-dock-kind='trash'] { margin-left: 6px; }
   .dock-item[data-dock-kind='trash']:before { height: 30px; left: -6px; }
   .desktop-topline .desktop-clock > span { display: none; }
   .desktop-stage:has(.desktop-dock-area) .desktop-folders { top: 10px; bottom: 86px; }
@@ -162,11 +159,29 @@
 /* Prominent application shortcuts and bounded overflow for open tool windows. */
 .dock-item[data-dock-kind='models'] .dock-icon { background:linear-gradient(155deg,#d394ff,#8550d4); }
 .dock-item[data-dock-kind='credentials'] .dock-icon { background:linear-gradient(155deg,#ffcf6f,#d89531); }
-.macos-dock:has(.dock-item:nth-child(12)) { overflow-x:auto; overflow-y:hidden; scrollbar-width:none; }
-.macos-dock:has(.dock-item:nth-child(12))::-webkit-scrollbar { display:none; }
-.macos-dock:has(.dock-item:nth-child(12)) .dock-item { --dock-scale:1 !important; }
-@media(min-width:761px) and (max-width:1100px) {
-  .macos-dock { --dock-size:44px; gap:8px; overflow-x:auto; overflow-y:hidden; scrollbar-width:none; }
-  .macos-dock::-webkit-scrollbar { display:none; }
-  .dock-item { --dock-scale:1 !important; }
-}
+/* Each built-in app retains its own glyph and recognizable colour. */
+.dock-item[data-dock-kind='overview'] .dock-icon { background:linear-gradient(155deg,#42d9bd,#098e87); }
+.dock-item[data-dock-kind='processes'] .dock-icon { background:linear-gradient(155deg,#79b8ff,#4566c8); }
+.dock-item[data-dock-kind='services'] .dock-icon { background:linear-gradient(155deg,#ffb679,#c45f39); }
+.dock-item[data-dock-kind='servers'] .dock-icon { background:linear-gradient(155deg,#849bb9,#3d5270); }
+.dock-item[data-dock-kind='storage'] .dock-icon { background:linear-gradient(155deg,#60d4ec,#247797); }
+.dock-item[data-dock-kind='people'] .dock-icon { background:linear-gradient(155deg,#ee97c5,#b44987); }
+.dock-item[data-dock-kind='endpoints'] .dock-icon { background:linear-gradient(155deg,#64ccd6,#287597); }
+.dock-item[data-dock-kind='ports'] .dock-icon { background:linear-gradient(155deg,#9cce70,#518943); }
+.dock-item[data-dock-kind='reports'] .dock-icon { background:linear-gradient(155deg,#adb9ff,#655ba5); }
+.dock-item[data-dock-kind='history'] .dock-icon { background:linear-gradient(155deg,#a2a7c5,#5b617f); }
+.dock-item[data-dock-kind='notifications'] .dock-icon { background:linear-gradient(155deg,#ffce70,#c58325); }
+.dock-item[data-dock-kind='versions'] .dock-icon { background:linear-gradient(155deg,#cf9c77,#8e6145); }
+.dock-item[data-dock-kind='guide'] .dock-icon { background:linear-gradient(155deg,#8fb8eb,#4f759c); }
+.dock-item[data-dock-kind='help'] .dock-icon { background:linear-gradient(155deg,#88d5d0,#3b9297); }
+.dock-item[data-dock-kind='appearance'] .dock-icon { background:linear-gradient(140deg,#e893b8,#927cda,#5aadd3); }
+
+/* Keep the original glass Dock and floating labels; overflow changes pages. */
+.dock-items { display:flex; align-items:flex-end; gap:var(--dock-gap); width:max-content; flex:none; }
+.dock-page-button { display:grid; place-items:center; width:24px; height:var(--dock-size); flex:0 0 24px; color:var(--desktop-ink); border-radius:8px; }
+.dock-page-button:hover:not(:disabled) { background:#ffffff30; }
+.dock-page-button:disabled { opacity:.25; cursor:default; }
+.dock-page-button:focus-visible { outline:2px solid var(--desktop-ink); outline-offset:2px; }
+.dock-page-status { position:absolute; bottom:3px; left:50%; transform:translateX(-50%); font-size:9px; line-height:10px; color:var(--desktop-ink); pointer-events:none; }
+
+.dock-item[data-dock-kind='features'] .dock-icon { background:linear-gradient(155deg,#70d7b0,#287f70); }

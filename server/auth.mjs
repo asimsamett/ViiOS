@@ -10,12 +10,13 @@ export function verifyPassword(password, encoded) {
   if (algorithm !== 'scrypt' || !/^[a-f0-9]{32}$/.test(salt) || !/^[a-f0-9]{128}$/.test(hash)) return false;
   return timingSafeEqual(scryptSync(password, salt, 64), Buffer.from(hash, 'hex'));
 }
-export function createAuth(passwordHash, { secure = false, now = Date.now } = {}) {
+export function createAuth(passwordHash, { secure = false, now = Date.now, cookieName = 'viios_session' } = {}) {
+  if (!/^viios_[a-z0-9_]{1,48}$/.test(cookieName)) throw new Error('Invalid session cookie name');
   const sessions = new Map();
   const attempts = new Map();
   const maxAge = 8 * 60 * 60 * 1000;
-  const cookie = (token, age) => `viios_session=${token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=${age}${secure ? '; Secure' : ''}`;
-  const tokenFrom = req => (req.headers.cookie || '').split(';').map(v => v.trim()).find(v => v.startsWith('viios_session='))?.slice(14);
+  const cookie = (token, age) => `${cookieName}=${token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=${age}${secure ? '; Secure' : ''}`;
+  const tokenFrom = req => (req.headers.cookie || '').split(';').map(v => v.trim()).find(v => v.startsWith(`${cookieName}=`))?.slice(cookieName.length + 1);
   const clean = () => {
     for (const [key, expiry] of sessions) if (expiry <= now()) sessions.delete(key);
     for (const [key, item] of attempts) if (item.until <= now()) attempts.delete(key);

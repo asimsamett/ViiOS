@@ -97,7 +97,7 @@ export function parseSshArguments(args) {
 }
 
 const helperMap = {
-  'scan.py': 'scan', 'resources.py': 'resources', 'storage.py': 'storage', 'files.py': 'files',
+  'services.py': 'services', 'processes.py': 'processes', 'scan.py': 'scan', 'resources.py': 'resources', 'storage.py': 'storage', 'files.py': 'files',
   'control.py': 'control', 'versioning.py': 'versions', 'versioning_access.py': 'versions',
   'model_catalog.py': 'models', 'model_concurrency.py': 'concurrency',
 };

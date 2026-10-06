@@ -148,6 +148,18 @@ try {
     $passed.Add('Mock CIM: TCP/UDP inventory, no argument exposure, application allowlist, system-service protection and stale control tokens passed.')
     $resources = Invoke-Agent 'resources' @{}
     Assert-True ($resources.available -and $resources.applications.Count -eq 2 -and $resources.system.cpuPercent -eq 25 -and $resources.system.memory.totalBytes -eq 8GB) 'Resource wire shape and mock values'
+    $firstNet = @{at=0;counters=@{Ethernet=@{read=100;write=200};Reset=@{read=100;write=200}}}
+    $lastNet = @{at=[Diagnostics.Stopwatch]::Frequency;counters=@{Ethernet=@{read=300;write=600};Reset=@{read=10;write=10}}}
+    $beforeTop = @{0=@{sampled=$true;started='idle';cpu=0};7=@{sampled=$true;started='same';cpu=0};8=@{sampled=$true;started='old';cpu=0}}
+    $afterTop = @{0=@{sampled=$true;started='idle';cpu=40000000;name='Idle';memoryAvailable=$true;memory=0};7=@{sampled=$true;started='same';cpu=10000000;name='Worker';memoryAvailable=$true;memory=100};8=@{sampled=$true;started='new';cpu=90000000;name='Reused';memoryAvailable=$false;memory=0}}
+    $extended = Get-ServerOverview @{Caption='Test Windows';Version='Test'} $beforeTop $afterTop 1 4 $firstNet $lastNet
+    Assert-True ($extended.version -eq 1 -and $extended.platform -eq 'windows' -and $null -eq $extended.cpuTemperatureC) 'Overview platform and missing temperature'
+    Assert-True ($extended.topProcesses.Count -eq 2 -and @($extended.topProcesses | Where-Object {$_.pid -eq 0}).Count -eq 0) 'Idle process excluded'
+    Assert-True (($extended.topProcesses | Where-Object {$_.pid -eq 7}).cpuPercent -eq 25) 'Process CPU normalized by logical CPU count'
+    Assert-True ($null -eq ($extended.topProcesses | Where-Object {$_.pid -eq 8}).cpuPercent) 'Reused PID not assigned old CPU usage'
+    Assert-True (($extended.network | Where-Object {$_.name -eq 'Ethernet'}).readBytesPerSecond -eq 200) 'Network uses elapsed sample duration'
+    Assert-True ($null -eq ($extended.network | Where-Object {$_.name -eq 'Reset'}).readBytesPerSecond) 'Reset network counter is unknown instead of negative or zero'
+    $passed.Add('Overview: idle PID exclusion, process identity, normalized CPU, adapter rate/reset and unavailable temperature passed.')
     Assert-True (@($resources.applications | Where-Object { $_.listenerPids[0] -eq 101 -and $null -eq $_.cpuPercent }).Count -eq 1) 'Missing listener process CPU remains null'
     $overview = Invoke-Agent 'storage' @{action='overview'}
     Assert-True ($overview.available -and $overview.volumes.Count -eq 1 -and $overview.summary.volumeCount -eq 1 -and $overview.summary.totalBytes -gt 0) 'Storage overview deduplicates same volume and has summary'

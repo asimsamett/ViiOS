@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Entry } from './file-manager';
 import type { App } from './types';
 
-export type DesktopView = 'managed' | 'apps' | 'ports' | 'reports' | 'help' | 'endpoints' | 'people' | 'models' | 'servers' | 'credentials' | 'storage';
+export type DesktopView = 'managed' | 'apps' | 'ports' | 'reports' | 'help' | 'endpoints' | 'people' | 'models' | 'servers' | 'credentials' | 'storage' | 'overview' | 'processes' | 'services' | 'history' | 'notifications' | 'versions' | 'guide' | 'appearance' | 'features';
 export type LaunchItem = {
   id: string;
   kind: 'app' | 'folder' | 'file' | 'action' | 'trash' | 'tasks' | 'repo' | 'applications' | 'project' | 'link';
@@ -24,6 +24,15 @@ export function newLinkId() {
   return `link:${value.slice(0,8)}-${value.slice(8,12)}-${value.slice(12,16)}-${value.slice(16,20)}-${value.slice(20)}`;
 }
 export const launcherActions: LaunchItem[] = [
+  {id:'action:features',kind:'action',label:'Özellik Rehberi',detail:'Tüm uygulamaların kullanım kitapçığı ve özellikleri',view:'features'},
+  {id:'action:history',kind:'action',label:'İşlem geçmişi',detail:'Sunucu işlemleri ve olay kayıtları',view:'history'},
+  {id:'action:notifications',kind:'action',label:'Bildirimler',detail:'Uyarılar ve okunmamış bildirimler',view:'notifications'},
+  {id:'action:versions',kind:'action',label:'Sürüm Yönetimi',detail:'Dosya sürümleri ve geri yükleme',view:'versions'},
+  {id:'action:guide',kind:'action',label:'Masaüstü rehberi',detail:'Pencereler, kısayollar ve Dock kullanımı',view:'guide'},
+  {id:'action:appearance',kind:'action',label:'Görünüm',detail:'Tema ve duvar kâğıdı seçenekleri',view:'appearance'},
+  {id:'action:services',kind:'action',label:'Servisler',detail:'Servis durumu, ba\u015flang\u0131\u00e7 ve y\u00f6netim',view:'services'},
+  {id:'action:processes',kind:'action',label:'Süreç Yöneticisi',detail:'Süreçleri ara, incele ve sonlandır',view:'processes'},
+  {id:'action:overview',kind:'action',label:'Sunucu Monitörü',detail:'CPU, bellek, disk I/O, ağ ve sistem bilgileri',view:'overview'},
   {id:'applications',kind:'applications',label:'Uygulamalar',detail:'Projeler, servisler, portlar ve dosyalar'},
   {id:'action:models',kind:'action',label:'Modeller',detail:'Model bağlantıları, çalışan modeller ve kullanım',view:'models'},
   {id:'action:credentials',kind:'action',label:'Uygulamalar ve Şifreler',detail:'Yönetim paneli adresleri, kullanıcı adları ve şifreler',view:'credentials'},

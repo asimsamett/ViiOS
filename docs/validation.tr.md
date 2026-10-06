@@ -10,6 +10,18 @@
 
 Bu kayıtlar tarihseldir; tüm kontrollerin güncel commit üzerinde yeniden çalıştırıldığı anlamına gelmez. Test ve dosya sayıları ilgili tarihteki sürüme aittir. Güncel otomatik sonuçlar [GitHub Actions](https://github.com/asimsamett/ViiOS/actions) ekranındadır.
 
+## 6 Ekim 2026 — v0.4.0 sunucu yönetimi ve Özellik Rehberi
+
+Sürüm adayı Sunucu Monitörü, Süreç Yöneticisi, Servisler, disk yapısı/I/O, sayfalı Dock ve 23 bölümlük Özellik Rehberi'ni içerir. GitHub demosundaki yeni yönetim ekranları temsili veri kullanır; süreç/servis değiştirme istekleri ağ bağlantısı kurulmadan reddedilir.
+
+- **208 Node testi geçti.** Tip, lint ve üretim derlemesi başarılı.
+- Paketleme, ölçüm, süreç, servis, disk yapısı ve sürüm erişimi için **40 Python testi geçti, 1 test atlandı**. Atlanan kontrol Windows sembolik bağlantı yetkisi gerektirir.
+- PowerShell 5.1'de Windows agent, süreç, servis ve depolama testleri geçti. Gerçek listeleme/ölçümler ve sınırlı yerel SSH akışı denendi. Servis değişiklikleri test nesneleri veya ayrı laboratuvar süreci üzerinde doğrulandı; sistemin gerçek servisleri değiştirilmedi.
+- Statik demo `/ViiOS` alt yoluyla derlendi. Rehberin arama, kategori, sayfalama, menü/Dock erişimi, uygulama açma, destek sınırları, dar ekran ve açık/koyu tema kontrolleri tamamlandı.
+- Yayın listesinde **351 kaynak dosyası** var. Güncel lisans korundu; bilinen özel ortam bilgileri ve yerel çalışma parolaları kaynakta tarandı. Gerçek çalışma verileri pakete kopyalanmadı.
+
+Canlı Linux/systemd yönetimi, sıfırdan üretim Windows OpenSSH kurulumu ve Docker çalıştırması yerelde doğrulanmadı. Yayınlanan commit'in Windows/Linux sonucu ayrıca GitHub Actions üzerinden izlenebilir.
+
 ## 6 Ekim 2026 — İlk GitHub yayını
 
 Standalone önizleme ve örnek verili demo yayımlandı. [Windows/Linux doğrulaması](https://github.com/asimsamett/ViiOS/actions/runs/37422213622) ve [Pages yayını](https://github.com/asimsamett/ViiOS/actions/runs/37422213627) başarılı tamamlandı. Yayında 292 incelenmiş kaynak dosyası vardı. Aşağıdaki tarihsel kayıtlarda belirtilen lint hataları yayından önce düzeltildi. GitHub yayını veya CI'ın henüz yapılmadığını belirten eski notlar ilgili tarihe aittir.

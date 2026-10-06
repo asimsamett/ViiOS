@@ -24,6 +24,18 @@
 
 **AI araçları:** Depo bağlantısını AI IDE’ye vermek ek hak sağlamaz. Üçüncü taraf hizmetine kod yükleme veya aldırma izin gerektirir; izinli özel/yerel değişiklikler de lisansa tabidir. Bunlar hukuki koşullardır, teknik kopyalama engeli değildir. [AI kullanımına ilişkin lisans notlarını okuyun](docs/licensing.tr.md#ai-araçları-ve-otomatik-kullanım).
 
+## v0.4.0 yenilikleri
+
+- **Özellik Rehberi:** 23 aracı beş kategoride anlatan; arama, kullanım adımları, destek notları ve uygulamaya geçiş içeren kitapçık. ViiOS menüsünden veya `?view=features` adresinden açılır; Dock'a da eklenebilir.
+- **Sunucu Monitörü:** CPU, bellek, takas alanı, çalışma süresi, disk I/O, ağ sayaçları ve yoğun süreçler.
+- **Süreç Yöneticisi:** arama, sıralama, ayrıntılar ve süreç kimliğini yeniden doğrulayan korumalı sonlandırma.
+- **Servisler:** listeleme, ayrıntılar, izin verilen servislerin yönetimi ve sınırlı Linux günlükleri. Değişiklikler yönetici tarafından tanımlanan izin listesine bağlıdır.
+- **Depolama:** fiziksel diskler, bölümler, dosya sistemi ilişkileri ve kapasiteyi çift saymadan cihaz bazlı I/O.
+- **Masaüstü:** yeni araç kısayolları, dar ekranlarda sayfalı Dock, simge büyütme davranışının korunması ve sadeleştirilmiş kilit/masaüstü görünümü.
+- **GitHub demosu:** yeni ekranlar temsili verilerle açılır; süreç sonlandırma ve servis değiştirme işlemleri kapalıdır.
+
+Normal kurulum **3180**, isteğe bağlı Windows Server Lab **3280** portunu kullanır. [Sürüm ve yükseltme notları (English)](docs/releases/v0.4.0.md).
+
 ## Örnek verili demo ve GitHub önizlemesi
 
 Arayüzü sunucu eklemeden görmek için `npm ci`, `npm run demo:build`, ardından `npm run demo:serve` çalıştırın. Terminaldeki 4180 portlu adres örnek Linux/Windows sunucuları, uygulamalar, depolama ve dosya ekranlarını açar. Demo hiçbir gerçek sunucuya bağlanmaz; bağlantı bilgileri ve şifreler istenmez.

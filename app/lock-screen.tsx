@@ -63,9 +63,7 @@ export default function LockScreen({ onLogin, pending = false, notice = '' }: { 
         <span className="vii-lock-time" aria-hidden="true">{now ? timeFormat.format(now) : '—:—'}</span>
       </time>
 
-      <section className="vii-lock-identity" aria-labelledby={`${fieldId}-title`}>
-        <div className="vii-brand-tile vii-lock-avatar" aria-hidden="true"><ViiBrandIcon/></div>
-        <h1 id={`${fieldId}-title`}>ViiOS</h1>
+      <section className="vii-lock-identity" aria-label="Yönetici girişi">
         <p className="vii-lock-tagline">Visual Infrastructure Intelligence</p>
         <p className="vii-lock-account">Yönetici</p>
         {notice && <p className="vii-lock-hint" aria-live="polite">{notice}</p>}

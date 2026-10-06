@@ -3,6 +3,14 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { PointerEvent, ReactNode } from 'react';
 import {
   Activity,
+  ChartNoAxesCombined,
+  ListTree,
+  Waypoints,
+  Cable,
+  BookOpen,
+  Palette,
+  ArchiveRestore,
+  Cog,
   Bell,
   Cpu,
   History,
@@ -62,6 +70,7 @@ import TaskManager from './task-manager';
 import VersionPanel, { type VersionCapabilities } from './version-panel';
 import RepoCenter from './repo-center';
 import DesktopDock from './desktop-dock';
+import FeatureGuide from './feature-guide';
 import DesktopCustomizer from './desktop-customizer';
 import { useDesktopLayout } from './desktop-layout';
 import ViiBrandIcon from './vii-brand-icon';
@@ -110,7 +119,8 @@ const nameOf = (w: DesktopWindow) =>
           ? 'Bu sunucu'
           : w.path.split('/').filter(Boolean).at(-1) || 'Dosya Gezgini';
 function ToolIcon({view,size=18}:{view:string;size?:number}) {
-  const Icon=view==='models'?Cpu:view==='credentials'?KeyRound:view==='people'?Users:view==='servers'?Server:view==='storage'?HardDrive:view==='help'?CircleHelp:view==='reports'?FileText:Network;
+  const icons: Record<string, typeof Activity> = { overview:ChartNoAxesCombined, processes:ListTree, services:Cog, models:Cpu, credentials:KeyRound, people:Users, servers:Server, storage:HardDrive, help:CircleHelp, reports:FileText, endpoints:Waypoints, ports:Cable, history:History, notifications:Bell, versions:ArchiveRestore, guide:BookOpen, features:BookOpen, appearance:Palette };
+  const Icon=icons[view] || Grid2X2;
   return <Icon size={size}/>;
 }
 function WindowIcon({
@@ -456,6 +466,7 @@ export default function FileDesktop({
     setRequestedRepoId(null);
     open('repo','@repo');
   }
+  const [appearanceOpen, setAppearanceOpen] = useState(false);
   function activate(item: LaunchItem) {
     if (item.kind === 'link') { remember(item); setStart(false); setPreviewGroup(null); return; }
     const reason = shortcutUnavailable(item);
@@ -478,6 +489,15 @@ export default function FileDesktop({
       return;
     }
     if (item.kind === 'action' && item.view) {
+      if (['history','notifications','versions','guide','appearance'].includes(item.view)) {
+        remember(item); setStart(false); setPreviewGroup(null);
+        if (item.view==='history') onHistory(null);
+        else if (item.view==='notifications') onNotifications();
+        else if (item.view==='versions') setVersions({});
+        else if (item.view==='guide') setHelp(true);
+        else setAppearanceOpen(true);
+        return;
+      }
       open('tool',item.view);
       return;
     }
@@ -556,13 +576,14 @@ export default function FileDesktop({
     ...(cap.available ? [{ id: 'trash', kind: 'trash' as const, label: 'Çöp kutusu' }] : [])];
   function shortcutUnavailable(item: LaunchItem): string {
     if (['folder', 'file', 'trash'].includes(item.kind) && !cap.available) return 'Bu sunucuda dosya erişimi kullanılamıyor.';
+    if (item.view === 'versions' && (!versionCapability?.available || busy || dirty)) return !versionCapability?.available ? 'Bu sunucuda Sürüm Yönetimi kullanılamıyor.' : 'Önce açık dosyaları kaydedin ve devam eden işlemin bitmesini bekleyin.';
     if (item.kind === 'repo' && !versionCapability?.available) return 'Bu sunucuda Repo Merkezi kullanılamıyor.';
     if (item.kind === 'project' && !projects.some(project => project.id === item.projectId)) return 'Bu uygulama mevcut sunucu envanterinde bulunamadı.';
     if (item.kind === 'app' && !apps.some(app => app.port === item.port)) return 'Bu uygulama mevcut sunucu envanterinde bulunamadı.';
     return '';
   }
   function windowTarget(item: LaunchItem): { kind: DesktopWindow['kind']; path: string } | null {
-    if (item.kind === 'link') return null;
+    if (item.kind === 'link' || (item.kind === 'action' && ['history','notifications','versions','guide','appearance'].includes(item.view!))) return null;
     if (item.kind === 'action') return ['apps', 'managed'].includes(item.view!) ? { kind: 'applications', path: '@applications' } : { kind: 'tool', path: item.view! };
     if (item.kind === 'applications' || item.kind === 'project') return { kind: 'applications', path: item.projectId || '@applications' };
     if (item.kind === 'app') { const app = apps.find(entry => entry.port === item.port); return app?.project ? { kind: 'applications', path: app.project.id } : null; }
@@ -614,7 +635,7 @@ export default function FileDesktop({
             <DropdownMenuContent align="start" className="desktop-menu-content">
               <div className="desktop-menu-label">Çalışma alanı</div>
               <DropdownMenuItem onClick={()=>open('applications','@applications')}><Grid2X2/>Uygulamalar</DropdownMenuItem>
-              {launcherActions.filter(item=>item.kind==='action' && !['apps','managed'].includes(item.view!)).map(item=><DropdownMenuItem key={item.id} onClick={()=>activate(item)}><ToolIcon view={item.view!}/>{item.label}</DropdownMenuItem>)}
+              {launcherActions.filter(item=>item.kind==='action' && !['apps','managed','history','notifications','versions','guide','appearance'].includes(item.view!)).map(item=><DropdownMenuItem key={item.id} onClick={()=>activate(item)}><ToolIcon view={item.view!}/>{item.label}</DropdownMenuItem>)}
               {versionCapability?.available && <DropdownMenuItem disabled={busy || dirty} onClick={()=>setVersions({})}><FolderGit2/>Sürüm Yönetimi</DropdownMenuItem>}
               <DropdownMenuSeparator/>
               <DropdownMenuItem onClick={()=>onHistory(null)}><History/>İşlem geçmişi</DropdownMenuItem>
@@ -662,7 +683,7 @@ export default function FileDesktop({
           </div>
           <button type="button" title="Uygulamaları yeniden tara" aria-label="Uygulamaları yeniden tara" disabled={scanning || busy || controlBusy} onClick={onScan}><RefreshCw size={17} className={scanning?'spin':''}/></button>
           <button type="button" className="desktop-notifications" title="Bildirimler" aria-label={notificationCount?`Bildirimler · ${notificationCount} okunmamış`:'Bildirimler'} onClick={onNotifications}><Bell size={17}/>{notificationCount>0 && <b>{notificationCount>99?'99+':notificationCount}</b>}</button>
-          <Appearance/>
+          <Appearance open={appearanceOpen} onOpenChange={setAppearanceOpen}/>
           <button
             title="Masaüstü nasıl kullanılır?"
             aria-label="Masaüstü nasıl kullanılır?"
@@ -706,8 +727,7 @@ export default function FileDesktop({
         )}
         {!windows.some((w) => !w.minimized) && (
           <div className="desktop-welcome">
-            <span className="vii-brand-tile desktop-welcome-icon" aria-hidden="true"><ViiBrandIcon/></span>
-            <h1>ViiOS</h1><p>Visual Infrastructure Intelligence</p>
+            <p>Visual Infrastructure Intelligence</p>
             <button
               type="button"
               className="desktop-search-bar"
@@ -863,7 +883,7 @@ export default function FileDesktop({
                     else windowSources.current.delete(w.id);
                   }}
                 >
-                  {w.kind === 'tool' && <div className={`desktop-tool-panel desktop-tool-${w.path}`}>{renderPanel(w.path as DesktopView,active===w.id && !w.minimized)}</div>}
+                  {w.kind === 'tool' && <div className={`desktop-tool-panel desktop-tool-${w.path}`}>{w.path === 'features' ? <FeatureGuide onOpen={activate} unavailable={shortcutUnavailable} renderIcon={item => <ShortcutIcon item={item}/>}/> : renderPanel(w.path as DesktopView,active===w.id && !w.minimized)}</div>}
                   {w.kind === 'applications' && <ProjectApps key={`${w.id}:${w.launchRevision || 0}`} visible={active===w.id && !w.minimized} inventory={inventory} busy={controlBusy || busy} onAction={onAction} onSelect={onApp} onHistory={onHistory} onFiles={path=>open('folder',path)} onRepo={openProjectRepo} repoAvailable={!!versionCapability?.available} initialProjectId={w.initialPath==='@applications'?undefined:w.initialPath}/>}
                   {w.kind === 'tasks' && (
                     <TaskManager

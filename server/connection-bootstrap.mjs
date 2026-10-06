@@ -9,7 +9,7 @@ const projectDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url
 const shellQuote = value => "'" + String(value).replaceAll("'", "'\\''") + "'";
 const psQuote = value => "'" + String(value).replaceAll("'", "''") + "'";
 export const powershellCommand = script => 'powershell.exe -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -EncodedCommand ' + Buffer.from('$env:PSModulePath=[IO.Path]::Combine($PSHOME,"Modules");\n' + script, 'utf16le').toString('base64');
-const requiredLinux = ['scan.py', 'resources.py', 'storage.py', 'files.py', 'control.py', 'versioning.py', 'versioning_access.py', 'model_catalog.py', 'model_concurrency.py'];
+const requiredLinux = ['services.py', 'processes.py', 'scan.py', 'resources.py', 'storage.py', 'files.py', 'control.py', 'versioning.py', 'versioning_access.py', 'model_catalog.py', 'model_concurrency.py'];
 const linuxToolPath = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 
 export async function readAgentBundle(platform, { projectRoot = projectDirectory } = {}) {
@@ -106,7 +106,7 @@ export function linuxInstaller({ stage, release, files, username, host }) {
     'catalog=target/"model-catalog-targets.json"',
     'if catalog.exists():',
     ' data=json.loads(catalog.read_text()); data["primaryHost"]=c["host"]; data["allowedHosts"]=["127.0.0.1","localhost",c["host"]]; catalog.write_text(json.dumps(data))',
-    'helpers=["scan.py 1 65535","resources.py","storage.py","files.py","control.py","versioning_access.py","model_catalog.py","model_concurrency.py"]',
+    'helpers=["services.py","processes.py","scan.py 1 65535","resources.py","storage.py","files.py","control.py","versioning_access.py","model_catalog.py","model_concurrency.py"]',
     'sudoers=c["username"]+" ALL=(root) NOPASSWD: "+", ".join("/usr/bin/python3 -I /opt/viios-agent/"+h for h in helpers)+"\\n"',
     'sudoers+=c["username"]+" ALL=(viios-agent) NOPASSWD: /usr/bin/python3 -I /opt/viios-agent/versioning.py\\n"',
     'rules=pathlib.Path("/etc/sudoers.d")/("viios-agent-"+hashlib.sha256(c["username"].encode()).hexdigest()[:16])',
@@ -213,7 +213,7 @@ export async function bootstrapConnection(profile, { sudoPassword, onProgress = 
       const response = parseResult(await io.executeSsh(client, 'powershell.exe -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File "C:\\ProgramData\\ViiOS\\agent\\windows-agent.ps1" -Helper capabilities'));
       if (!response?.available || !response.capabilities) throw connectionError('VERIFY_FAILED', 'Windows bileşeni kuruldu ancak doğrulama yanıtı alınamadı.', 503);
       const capabilities = { reasons: response.limitations || {} };
-      for (const key of ['inventory', 'resources', 'storage', 'files', 'control', 'versions', 'models', 'concurrency']) capabilities[key] = response.capabilities[key] === true;
+      for (const key of ['inventory', 'resources', 'processes', 'services', 'storage', 'files', 'control', 'versions', 'models', 'concurrency']) capabilities[key] = response.capabilities[key] === true;
       capabilities.uat = false;
       return capabilities;
     }
@@ -249,7 +249,9 @@ export async function bootstrapConnection(profile, { sudoPassword, onProgress = 
     if (!aclTools) capabilities.reasons.aclTools = 'İsteğe bağlı ACL komut satırı araçları bulunamadı veya doğrulanamadı. Bu, dosya sisteminin ACL desteği hakkında bilgi vermez.';
     const checks = [
       ['inventory', 'scan.py 1 65535', '', data => Array.isArray(data?.apps)],
+      ['services', 'services.py', '{"action":"list"}', data => data?.available === true && Array.isArray(data.services)],
       ['resources', 'resources.py', '', data => data?.available === true],
+      ['processes', 'processes.py', '{"action":"list"}', data => data?.available === true && Array.isArray(data.processes)],
       ['storage', 'storage.py', '{"action":"overview"}', data => data?.available === true],
       ['files', 'files.py', '{"action":"capabilities"}', data => data?.available === true],
       ['control', 'control.py', '{"action":"status"}', data => data?.ok === true],
