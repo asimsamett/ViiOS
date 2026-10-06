@@ -12,7 +12,7 @@ Copyright (c) 2026 asimsamett (https://github.com/asimsamett)
 
 ViiOS — Visual Infrastructure Intelligence
 
-The project uses ViiOS Private Noncommercial License 1.0. Private noncommercial modification is permitted; distribution, commercial use, organizational deployment, and third-party services are not granted. This is not an open-source license. Rights not expressly granted remain reserved.
+The project uses ViiOS Private Noncommercial License 1.1. Private noncommercial modification is permitted; distribution, commercial use, organizational deployment, and third-party services are not granted. This is not an open-source license. Rights not expressly granted remain reserved.
 
 Read the [license guide](licensing.md), the [complete English license](../LICENSE), and [third-party notices](../THIRD_PARTY_NOTICES.md). Independent platform rights and earlier license grants remain applicable.
 

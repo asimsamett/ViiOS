@@ -20,7 +20,9 @@
 
 > **Application language:** the interface is currently Turkish. This English documentation includes the Turkish labels needed to follow the setup steps.
 
-**Private noncommercial use only:** From v0.3.2, ViiOS uses the [ViiOS Private Noncommercial License 1.0](docs/licensing.md). Private modification is permitted; distribution, commercial use, organizational deployment, and third-party services are not granted. This is **not open source**. Keep the license, attribution, and [copyright notices](docs/notices.md). Independent platform rights, earlier licenses, and [third-party licenses](THIRD_PARTY_NOTICES.md) remain applicable; see [license scope and history](docs/licensing.md) and the [Turkish explanation](docs/licensing.tr.md).
+**Private noncommercial use only:** The current revision of ViiOS uses the [ViiOS Private Noncommercial License 1.1](docs/licensing.md). Private modification is permitted; distribution, commercial use, organizational deployment, and third-party services are not granted. This is **not open source**. Keep the license, attribution, and [copyright notices](docs/notices.md). Independent platform rights, earlier licenses, and [third-party licenses](THIRD_PARTY_NOTICES.md) remain applicable; see [license scope and history](docs/licensing.md) and the [Turkish explanation](docs/licensing.tr.md).
+
+**AI tools:** Using an AI IDE or supplying a repository URL does not grant extra rights. Third-party code uploads or retrieval require permission; permitted private local modifications remain subject to the license. These are legal conditions, not a technical copying barrier. Read the [AI-use license notes](docs/licensing.md#ai-tools-and-automated-use).
 
 ## Explore the demo
 

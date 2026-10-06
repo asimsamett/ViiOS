@@ -12,7 +12,7 @@ Telif hakkı (c) 2026 asimsamett (https://github.com/asimsamett)
 
 ViiOS — Visual Infrastructure Intelligence
 
-Proje ViiOS Private Noncommercial License 1.0 kullanır. Özel ortamda ticari olmayan değişikliklere izin verilir; dağıtım, ticari kullanım, kurumsal kurulum ve üçüncü kişilere hizmet sunma hakkı verilmez. Bu bir açık kaynak lisansı değildir. Açıkça verilmeyen haklar saklıdır.
+Proje ViiOS Private Noncommercial License 1.1 kullanır. Özel ortamda ticari olmayan değişikliklere izin verilir; dağıtım, ticari kullanım, kurumsal kurulum ve üçüncü kişilere hizmet sunma hakkı verilmez. Bu bir açık kaynak lisansı değildir. Açıkça verilmeyen haklar saklıdır.
 
 [Türkçe lisans rehberini](licensing.tr.md) ve [üçüncü taraf bildirimlerini](../THIRD_PARTY_NOTICES.tr.md) okuyun. Bağımsız platform hakları ve önceki lisansların verdiği haklar saklıdır.
 

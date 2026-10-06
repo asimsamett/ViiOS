@@ -10,11 +10,22 @@
 
 **[Lisansın tamamını Türkçe oku](license-text.tr.md)** · [İngilizce özgün metin](../LICENSE)
 
-Türkçe tam metin, lisansın 11 maddesinin tamamının çevirisidir. Aşağıdaki bölüm kısa açıklama ve kullanım örneklerini içerir. Çeviri ek hak vermez; anlam farkı olursa İngilizce özgün metin esas alınır. Lisans açık kaynak lisansı değildir ve OSI onayı iddiası taşımaz.
+Türkçe tam metin, lisansın 12 maddesinin tamamının çevirisidir. Aşağıdaki bölüm kısa açıklama ve kullanım örneklerini içerir. Çeviri ek hak vermez; anlam farkı olursa İngilizce özgün metin esas alınır. Lisans açık kaynak lisansı değildir ve OSI onayı iddiası taşımaz.
 
 Temel kural: **Değiştirmek serbest; dağıtmak yasak.** Bu kural, yalnız lisansın
 kendi verdiği haklar bakımındandır. Kanundan, platform koşullarından, önceki
 lisanslardan veya ayrıca verilmiş yazılı izinden doğan bağımsız haklar saklıdır.
+
+## AI araçları ve otomatik kullanım
+
+**AI IDE kullanmak lisans için istisna oluşturmaz.** Depo bağlantısını bir araca vermek, ilgili izinlerin dışında korunan kodu kopyalama, yükleme, dağıtma, ticari kullanma veya kendisine ait gösterme yetkisi vermez. Bulut AI hizmetine kodu aldırmak, olağan referans bağlantısı paylaşmakla aynı değildir.
+
+- Üçüncü taraf AI hizmetine kod yükleme, kod bağlamını eşitleme, uzaktan indeksleme ve kod içeren eğitim/ince ayar veri kümeleri; 10. madde kapsamında bağımsız hak yoksa ayrıca izin gerektirir. Özel hesap veya eğitimde kullanmama taahhüdü yeterli izin değildir.
+- Tamamen yerel çalışan araçlarla, korunan kod dışarı aktarılmadan veya üçüncü kişinin erişimine açılmadan, izinli kişisel ve ticari olmayan inceleme/değişiklik yapılabilir.
+- AI ile yeniden yazdırma, ad değiştirme veya çeviri, korunan yazılım ifadelerini içeren ya da uyarlayan çıktılardaki kısıtları kaldırmaz. Bağımsız kod ve korunmayan fikirler sırf benzer oldukları için sahiplenilmez.
+- Zorunlu atıflar korunur; otomatik değişiklikler eser sahibini yanlış göstermek için kullanılamaz. İhlaller lisansın sona erme maddesine tabidir.
+
+Bu notlar [tam lisans çevirisinin 12. maddesini](license-text.tr.md) açıklar. **Teknik kopyalama engeli değildir; bir AI aracını kurallara uymaya zorlayamaz.** Bağımsız GitHub/platform hakları, emredici hukuk, üçüncü taraf lisansları ve önceki izinler saklıdır. Hak sahibinin kendi araç kullanımı, diğer kullanıcılara genel izin vermez.
 
 ## Maddeler tek tek ne anlama geliyor?
 
@@ -77,6 +88,8 @@ lisanslardan veya ayrıca verilmiş yazılı izinden doğan bağımsız haklar s
     sonraki lisans sürümü eski kopyanın koşullarını kendiliğinden değiştirmez.
     Uygulanacak ülke hukuku veya mahkeme bu metinde ayrıca seçilmemiştir.
 
+12. **AI araçları:** AI IDE/ajan kullanımı ek izin vermez. Üçüncü taraf hizmetine kod aktarma veya aldırma, izinli yerel araç kullanımı ve AI çıktılarında devam eden kısıtlar açıkça düzenlenir. Teknik engelleme garantisi verilmez.
+
 ## Kullanım örnekleri
 
 | Senaryo | Standart lisansa göre |
@@ -101,8 +114,7 @@ lisanslardan veya ayrıca verilmiş yazılı izinden doğan bağımsız haklar s
 
 **Eski sürüm geriye dönük yasaklanmaz.** [v0.3.1](https://github.com/asimsamett/ViiOS/releases/tag/v0.3.1)
 PolyForm Noncommercial 1.0.0 ile yayımlandı. Tag ve arşivi tarihsel haliyle
-korunur. Yeni lisans v0.3.2 ve bu lisansı açıkça taşıyan sonraki revizyonlarla
-başlar. Daha önce PolyForm ile lisanslanmış aynı kod, o lisansın verdiği
+korunur. v0.3.2, özel lisansın 1.0 sürümünü taşır. 6 Ekim 2026 tarihli sonraki revizyon, AI araçlarını açıklayan 12. maddeyle 1.1 sürümünü taşır. Önceki 1.0 izinleri geriye dönük değiştirilmez. Daha önce PolyForm ile lisanslanmış aynı kod, o lisansın verdiği
 haklardan sırf main dalındaki LICENSE değişti diye arındırılamaz. Yeni eklenen
 kod da kendiliğinden eski lisansı almaz. [Önceki PolyForm metni (İngilizce)](https://polyformproject.org/licenses/noncommercial/1.0.0).
 

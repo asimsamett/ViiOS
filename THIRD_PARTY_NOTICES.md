@@ -8,7 +8,7 @@
 [Demo](docs/demo.md) · [Server connections](docs/connections.md) · [Windows support](docs/windows-support.md) · [Validation](docs/validation.md) · [Copyright notices](docs/notices.md) · **Third parties**
 <!-- docs-nav:end -->
 
-ViiOS-specific code in v0.3.2 and later revisions expressly carrying this license is licensed under the ViiOS Private Noncommercial License 1.0 (see LICENSE). Earlier licenses remain applicable to previously licensed material; see docs/licensing.md. The following third-party material retains its own license; ViiOS does not replace or restrict rights granted by those upstream licenses.
+ViiOS-specific code in revisions expressly carrying license version 1.1 is licensed under the ViiOS Private Noncommercial License 1.1 (see LICENSE). Earlier licenses remain applicable to previously licensed material; see docs/licensing.md. The following third-party material retains its own license; ViiOS does not replace or restrict rights granted by those upstream licenses.
 
 ## shadcn/ui
 

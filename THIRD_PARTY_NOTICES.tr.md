@@ -8,7 +8,7 @@
 [Demo](docs/demo.tr.md) · [Sunucu bağlantıları](docs/connections.tr.md) · [Windows desteği](docs/windows-support.tr.md) · [Doğrulama](docs/validation.tr.md) · [Telif bildirimleri](docs/notices.tr.md) · **Üçüncü taraflar**
 <!-- docs-nav:end -->
 
-v0.3.2 ve bu lisansı açıkça taşıyan sonraki revizyonlardaki ViiOS'a özgü kod, ViiOS Private Noncommercial License 1.0 kapsamındadır. [Türkçe lisans rehberi ve geçmiş sürüm notları](docs/licensing.tr.md) kapsamı açıklar. Önceden verilmiş lisans hakları korunur. Üçüncü taraf bileşenlerin kendi lisansları geçerlidir; ViiOS bu hakları değiştirmez veya kısıtlamaz.
+Lisansın 1.1 sürümünü açıkça taşıyan revizyonlardaki ViiOS'a özgü kod, ViiOS Private Noncommercial License 1.1 kapsamındadır. [Türkçe lisans rehberi ve geçmiş sürüm notları](docs/licensing.tr.md) kapsamı açıklar. Önceden verilmiş lisans hakları korunur. Üçüncü taraf bileşenlerin kendi lisansları geçerlidir; ViiOS bu hakları değiştirmez veya kısıtlamaz.
 
 ## shadcn/ui
 

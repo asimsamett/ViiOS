@@ -8,7 +8,7 @@
 [Demo](docs/demo.tr.md) · [Sunucu bağlantıları](docs/connections.tr.md) · [Windows desteği](docs/windows-support.tr.md) · [Doğrulama](docs/validation.tr.md) · [Telif bildirimleri](docs/notices.tr.md) · [Üçüncü taraflar](THIRD_PARTY_NOTICES.tr.md)
 <!-- docs-nav:end -->
 
-[Issues](https://github.com/asimsamett/ViiOS/issues) üzerinden korunan yazılım kodu içermeyen hata bildirimleri ve öneriler paylaşabilirsiniz. [ViiOS Private Noncommercial License 1.0](docs/licensing.tr.md), özel ortamda değişikliğe izin verir; değişiklikleri yayımlama veya kod aktarma izni genel olarak vermez. Herkese açık patch, fork veya pull request hazırlamadan önce ayrıca yazılı katkı ve yayımlama izni alın; bağımsız platform hakları için [lisans notlarını](docs/licensing.tr.md) okuyun. Üçüncü taraf bildirimlerini koruyun.
+[Issues](https://github.com/asimsamett/ViiOS/issues) üzerinden korunan yazılım kodu içermeyen hata bildirimleri ve öneriler paylaşabilirsiniz. [ViiOS Private Noncommercial License 1.1](docs/licensing.tr.md), özel ortamda değişikliğe izin verir; değişiklikleri yayımlama veya kod aktarma izni genel olarak vermez. Herkese açık patch, fork veya pull request hazırlamadan önce ayrıca yazılı katkı ve yayımlama izni alın; bağımsız platform hakları için [lisans notlarını](docs/licensing.tr.md) okuyun. Üçüncü taraf bildirimlerini koruyun.
 
 ## Geliştirme
 

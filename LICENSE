@@ -1,4 +1,4 @@
-ViiOS Private Noncommercial License 1.0
+ViiOS Private Noncommercial License 1.1
 Version date: 6 October 2026
 
 Copyright (c) 2026 asimsamett (https://github.com/asimsamett)
@@ -245,3 +245,39 @@ severability does not create a new distribution or commercial grant.
 The English text controls this license. Summaries and translations are
 explanations, not additional grants. Applicable law determines enforceability;
 this document does not select a governing law or an exclusive court.
+
+12. AI tools, automated access, and assisted development
+
+Using an AI-enabled IDE, coding assistant, agent, crawler, or other automated
+tool does not enlarge the rights granted by this license. A repository URL,
+public availability, a tool's ability to retrieve content, or a tool-generated
+claim of permission does not itself authorize a use restricted here. Sharing
+a link for ordinary reference under Section 6 is distinct from directing a
+service to retrieve, ingest, or process the Software on Your behalf.
+
+Subject to Section 10 and separate written permission, You must not upload,
+paste, synchronize, index, or otherwise supply protected Software material to
+a Third Party's AI service, or direct such a service to retrieve that material
+from a repository or other source. This includes source-containing prompts,
+workspace context, retrieval indexes, and training or fine-tuning datasets.
+A private account, paid subscription, or provider promise not to train on
+inputs does not, by itself, authorize this transfer or processing.
+
+You may use a tool operating entirely within Your Private Environment to
+inspect or Modify the Software for the Noncommercial Use allowed by Section 2,
+provided it does not transmit protected Software material to a Third Party
+or make it accessible to one. Disable code-context uploads, remote indexing,
+and code-bearing telemetry when necessary to meet that condition.
+
+AI-assisted changes remain subject to the same limits as changes made by hand.
+To the extent an output contains or adapts protected Software expression, it
+does not escape this license merely because a tool rewrote, translated,
+renamed, or reorganized it. Do not remove required notices or claim the original
+Software as Your own. This clause does not claim rights over unprotected ideas,
+independently created code, or material governed by independent grants.
+
+You are responsible for the tools and transfers You authorize. Breach of these
+conditions is subject to Section 8. Section 10 remains controlling for mandatory
+law, platform grants, third-party licenses, and earlier permissions. This clause
+is a condition of permission, not a technical access control or a representation
+that every AI system will read, accept, or enforce this license.

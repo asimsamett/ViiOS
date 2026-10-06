@@ -1,10 +1,10 @@
-# ViiOS Özel Ticari Olmayan Kullanım Lisansı 1.0
+# ViiOS Özel Ticari Olmayan Kullanım Lisansı 1.1
 
 [English — original license](../LICENSE) | **Türkçe — tam çeviri**
 
 [Ana sayfa](../README.tr.md) · [Katkı](../CONTRIBUTING.tr.md) · [Lisans rehberi](licensing.tr.md) · [Güvenlik](../SECURITY.tr.md)
 
-**Özgün ad:** ViiOS Private Noncommercial License 1.0  
+**Özgün ad:** ViiOS Private Noncommercial License 1.1
 **Sürüm tarihi:** 6 Ekim 2026
 
 Telif hakkı (c) 2026 asimsamett (https://github.com/asimsamett)
@@ -104,3 +104,15 @@ Ticari kullanım, kurumsal kullanım, dağıtım, katkı ve hizmet hakları, Tel
 Bu belge, bu lisans kapsamında verilen hakların tamamını içerir. Telif Hakkı Sahibinin ayrı yazılı anlaşması, yalnızca açık hükümleri ölçüsünde önceliklidir. Sonraki bir lisans sürümü, önceden lisanslanmış kopyanın izinlerini otomatik değiştirmez. Bir hüküm uygulanamazsa, kalan hükümler uygulanacak hukukun izin verdiği ölçüde devam eder; hükümlerin ayrılabilirliği yeni dağıtım veya ticari kullanım hakkı oluşturmaz.
 
 Bu lisans bakımından İngilizce metin esas alınır. Özetler ve çeviriler açıklamadır; ek hak tanımaz. Uygulanabilirliği ilgili hukuk belirler; bu belge uygulanacak hukuku veya münhasır yetkili mahkemeyi seçmez.
+
+## 12. AI araçları, otomatik erişim ve destekli geliştirme
+
+AI özellikli IDE, kodlama asistanı, ajan, tarayıcı bot veya başka otomatik araç kullanılması bu lisansın verdiği hakları genişletmez. Depo URL'si, herkese açık erişim, aracın içeriği alabilmesi veya aracın izin bulunduğuna ilişkin ürettiği ifade, burada kısıtlanan kullanımlara tek başına yetki vermez. 6. madde kapsamında olağan referans amacıyla bağlantı paylaşmak, bir hizmeti Sizin adınıza Yazılımı almaya, sisteme aktarmaya veya işlemeye yönlendirmekten farklıdır.
+
+10. madde ve ayrıca verilmiş yazılı izin saklı kalmak üzere, korunan Yazılım materyalini Üçüncü Kişinin AI hizmetine yükleyemez, yapıştıramaz, eşitleyemez, indeksleyemez veya başka şekilde sağlayamaz; böyle bir hizmeti materyali depodan ya da başka kaynaktan almaya yönlendiremezsiniz. Kaynak kodu içeren istemler, çalışma alanı bağlamı, erişim amaçlı indeksler ve eğitim veya ince ayar veri kümeleri buna dahildir. Özel hesap, ücretli abonelik veya sağlayıcının girdileri eğitimde kullanmama taahhüdü tek başına bu aktarım veya işleme izni vermez.
+
+Korunan Yazılım materyalini Üçüncü Kişiye iletmemesi veya onun erişimine açmaması koşuluyla, tamamen Özel Ortamınızda çalışan bir aracı 2. maddenin izin verdiği Ticari Olmayan Kullanım için Yazılımı incelemek veya Değiştirmek amacıyla kullanabilirsiniz. Bu koşulu sağlamak için gerektiğinde kod bağlamı yüklemelerini, uzaktan indekslemeyi ve kod içeren telemetriyi kapatın.
+
+AI destekli değişiklikler elle yapılan değişikliklerle aynı sınırlara tabidir. Çıktı, Yazılımın korunan ifade unsurlarını içerdiği veya uyarladığı ölçüde, araç tarafından yeniden yazılması, çevrilmesi, adlarının değiştirilmesi veya yeniden düzenlenmesi nedeniyle bu lisansın kapsamından çıkmaz. Gerekli bildirimleri kaldırmayın ve orijinal Yazılımı kendinize ait göstermeyin. Bu hüküm korunmayan fikirler, bağımsız oluşturulan kod veya bağımsız izinlere tabi materyal üzerinde hak iddia etmez.
+
+Yetki verdiğiniz araçlardan ve aktarımlardan Siz sorumlusunuz. Bu koşulların ihlali 8. maddeye tabidir. Emredici hukuk, platformun verdiği haklar, üçüncü taraf lisansları ve önceki izinler bakımından 10. madde öncelikle uygulanır. Bu hüküm bir izin koşuludur; teknik erişim kontrolü veya her AI sisteminin lisansı okuyacağı, kabul edeceği ya da uygulayacağı yönünde beyan değildir.

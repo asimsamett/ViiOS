@@ -8,7 +8,7 @@
 [Demo](docs/demo.md) · [Server connections](docs/connections.md) · [Windows support](docs/windows-support.md) · [Validation](docs/validation.md) · [Copyright notices](docs/notices.md) · [Third parties](THIRD_PARTY_NOTICES.md)
 <!-- docs-nav:end -->
 
-Use [Issues](https://github.com/asimsamett/ViiOS/issues) for factual bug reports and feature suggestions without protected Software code. The project uses the [ViiOS Private Noncommercial License 1.0](LICENSE): private modification is permitted, but publishing changes or transferring code is not generally permitted. Obtain separate written contribution and publication permission before creating a public patch, fork, or pull request; independently existing platform rights are explained in [licensing notes](docs/licensing.md). Preserve third-party notices.
+Use [Issues](https://github.com/asimsamett/ViiOS/issues) for factual bug reports and feature suggestions without protected Software code. The project uses the [ViiOS Private Noncommercial License 1.1](LICENSE): private modification is permitted, but publishing changes or transferring code is not generally permitted. Obtain separate written contribution and publication permission before creating a public patch, fork, or pull request; independently existing platform rights are explained in [licensing notes](docs/licensing.md). Preserve third-party notices.
 
 ## Development
 

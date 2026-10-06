@@ -8,10 +8,21 @@
 [Demo](demo.md) · [Server connections](connections.md) · [Windows support](windows-support.md) · [Validation](validation.md) · [Copyright notices](notices.md) · [Third parties](../THIRD_PARTY_NOTICES.md)
 <!-- docs-nav:end -->
 
-The complete license is [ViiOS Private Noncommercial License 1.0](../LICENSE).
+The complete license is [ViiOS Private Noncommercial License 1.1](../LICENSE).
 A [complete Turkish translation](license-text.tr.md) is also available; the English original controls.
 It is an original project-specific license, not an open-source license or an
 OSI-approved license. This page explains it and does not add permissions.
+
+## AI tools and automated use
+
+**An AI IDE does not grant an exception to the license.** Giving a repository URL to a tool does not itself authorize the tool or its user to copy, upload, redistribute, commercially use, or rebrand protected code outside the applicable permissions. Directing a cloud AI service to fetch code is not the same as sharing a reference link.
+
+- Third-party AI uploads, code-context synchronization, remote indexing, and code-containing training/fine-tuning datasets require separate permission unless an independent right under Section 10 applies. A private account or a no-training promise is not sufficient permission.
+- Entirely local tools may assist permitted private noncommercial inspection and modification when protected code is not transmitted or exposed to a third party.
+- AI rewriting, renaming, or translation does not remove restrictions from outputs containing or adapting protected Software expression. Independent code and unprotected ideas are not claimed merely because they are similar.
+- Required attribution remains mandatory; automated changes cannot be used to misrepresent authorship. Violations are subject to the license's termination provision.
+
+These notes explain [Section 12 of LICENSE](../LICENSE). They are **not a technical anti-copying measure** and cannot force an AI tool to obey. Independent GitHub/platform rights, mandatory law, third-party licenses, and earlier grants remain applicable. The Copyright Holder's own use of tools is not a general grant to other users.
 
 ## Current permissions
 
@@ -38,8 +49,10 @@ and your own data do not become Software merely because you used ViiOS.
 
 - v0.3.1 was released under PolyForm Noncommercial 1.0.0. Its tag and release
   archive are historical artifacts and retain that license.
-- v0.3.2 and later revisions expressly carrying the new license use ViiOS
-  Private Noncommercial License 1.0. A future version is not automatically
+- v0.3.2 was released under ViiOS Private Noncommercial License 1.0.
+  A subsequent revision on 6 October 2026 introduces license 1.1, adding
+  Section 12 on AI tools. Earlier 1.0 permissions are not retroactively changed.
+  A future version is not automatically
   covered merely because of its number; inspect its accompanying license.
 - This transition does not cancel earlier grants. Previously licensed code may
   remain available under its earlier terms. Changing the license on `main`
