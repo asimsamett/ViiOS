@@ -27,6 +27,7 @@ BLOCKED_SUFFIXES = {'.pem', '.key', '.p12', '.pfx', '.ppk', '.log', '.sqlite', '
 IMAGE_FILES = {
     'public/favicon.ico', 'public/favicon.png', 'public/apple-touch-icon.png',
     'public/brand/viios-mark.png',
+    'public/brand/viios-wordmark-dark.png', 'public/brand/viios-wordmark-light.png',
     *('public/brand/viios-icon-%s.png' % size for size in (16, 32, 48, 64, 180, 192, 512)),
 }
 PRIVATE_NETWORKS = tuple(ipaddress.ip_network(net) for net in ((0x0A000000, 8), (0xAC100000, 12), (0xC0A80000, 16)))

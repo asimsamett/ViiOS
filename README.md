@@ -2,7 +2,11 @@
 
 **English** | [Türkçe](README.tr.md)
 
-<img src="public/brand/viios-icon-192.png" alt="ViiOS" width="80" height="80">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="public/brand/viios-wordmark-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="public/brand/viios-wordmark-light.png">
+  <img src="public/brand/viios-wordmark-light.png" alt="ViiOS" width="160">
+</picture>
 
 **Visual Infrastructure Intelligence** — a self-hosted workspace for managing your Windows and Linux servers. Run ViiOS on Windows or Linux, start with an empty workspace, and connect your own servers. No AI account, AI tool, or developer-specific SSH configuration is required.
 

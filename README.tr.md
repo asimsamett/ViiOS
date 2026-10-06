@@ -2,7 +2,11 @@
 
 [English](README.md) | **Türkçe**
 
-<img src="public/brand/viios-icon-192.png" alt="ViiOS" width="80" height="80">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="public/brand/viios-wordmark-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="public/brand/viios-wordmark-light.png">
+  <img src="public/brand/viios-wordmark-light.png" alt="ViiOS" width="160">
+</picture>
 
 **Visual Infrastructure Intelligence** — Windows veya Linux üzerinde çalışır; kendi Windows ve Linux sunucularınızı yönetmek için boş çalışma alanıyla başlar. AI hesabı, AI aracı veya geliştiricinin SSH ayarları gerekmez. Arayüz Türkçedir.
 
