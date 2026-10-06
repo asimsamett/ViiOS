@@ -1,67 +1,78 @@
-# Sunucu ekleme ve otomatik hazırlık
+# Server connections and automatic setup
 
-ViiOS denetleyicisi Windows veya Linux üzerinde Node.js ile çalışır. Sunucular arayüzde **Sunucular → Sunucu ekle** üzerinden eklenir. Bilgisayardaki kişisel SSH yapılandırması, SSH agent veya bir yapay zekâ servisi kullanılmaz. SSH bağlantıları uygulamanın içindeki SSH2 istemcisiyle kurulur.
+**English** | [Türkçe](connections.tr.md)
 
-## Ön koşullar
+The ViiOS controller runs on Windows or Linux using Node.js. Add targets through **Servers → Add server** (**Sunucular → Sunucu ekle**). Connections use the application's SSH2 client, without the computer's personal SSH configuration, an SSH agent, or an AI service.
 
-- Hedefe ağ üzerinden erişilmeli ve SSH/SFTP hizmeti açık olmalı. ViiOS, henüz SSH erişimi olmayan bir makineye uzaktan SSH kuramaz.
-- Linux hedefte root veya sudo ile yönetici olabilen yerel bir hesap gerekir. Kurulum, eksikse Python 3, Git, iproute2, sudo, ACL ve kullanıcı yönetimi araçlarını apt, dnf, yum, zypper, apk veya pacman ile hazırlar. Desteklenmeyen paket yöneticileri açık bir kurulum hatası verir.
-- Windows hedefte Windows PowerShell 5.1 ve Windows OpenSSH Server/SFTP gerekir. Hesap, SSH oturumunda yönetici yetkilerine sahip olmalıdır. UAC nedeniyle yükseltilmemiş bir oturum yeterli değildir. ViiOS uzaktan UAC ayarlarını değiştirmez.
-- Linux bağımlılık kurulumunda hedefin paket depolarına erişmesi gerekir. Windows bileşeni ek bir Python veya Node.js kurulumu istemez.
+## Prerequisites
 
-## Ekleme akışı
+- The target must be reachable over the network with SSH/SFTP enabled. ViiOS cannot remotely install its initial SSH transport on a machine without existing SSH access.
+- Linux requires a local root account or an account that can gain administrative access through sudo. If missing, setup installs Python 3, Git, iproute2, sudo, and user-management tools through apt, dnf, yum, zypper, apk, or pacman. Unsupported package managers produce an explicit setup error. The `acl` package and `getfacl` / `setfacl` commands are optional; their absence does not block setup or trigger installation.
+- Windows requires Windows PowerShell 5.1 and Windows OpenSSH Server/SFTP. The account must have administrator privileges within its SSH session; a session not elevated because of UAC is insufficient. ViiOS does not remotely change UAC settings.
+- Linux dependency installation requires access to the target's package repositories. The Windows adapter does not require an additional Python or Node.js installation.
 
-1. Görünen adı, IP/DNS adresini, SSH portunu ve hedef işletim sistemini girin.
-2. **Sunucu anahtarını denetle** adımı, kullanıcı adı veya parola göndermeden SSH anahtarının SHA256 parmak izini alır. Bu değeri sunucu konsolu veya yöneticiniz gibi ayrı, güvendiğiniz bir kaynaktan doğrulayın. Arayüzde parmak izini onaylayın.
-3. SSH kullanıcı adını ve parola veya özel anahtar bilgisini girin. Şifreli özel anahtarların parolası desteklenir. Linux sudo şifresi farklıysa ayrıca girin.
-4. ViiOS önce onayladığınız anahtarı doğrular, ardından kimlik doğrular. İşletim sistemi/yetki denetimi, bağımlılıklar, dosya aktarımı, kurulum ve özellik doğrulaması adımları arayüzde izlenir.
-5. Hazır sunucu envantere eklenir. Desteklenmeyen veya doğrulanamayan özellikler ayrı yetenek alanlarında gösterilir; boş ölçüm veya sıfır kullanım diye sunulmaz.
+## Onboarding flow
 
-Sunucunun anahtarı değişirse bağlantı durdurulur. Normal yeniden deneme, kayıtlı parmak izini değiştirmez. Planlı anahtar değişiminde eski yerel kaydı kaldırıp yeni anahtarı ayrı bir kaynaktan doğrulayarak sunucuyu yeniden ekleyin.
+1. Enter the display name, IP/DNS address, SSH port, and target operating system.
+2. **Check server key** (**Sunucu anahtarını denetle**) retrieves the SSH key's SHA-256 fingerprint without sending a username or password. Verify it through a separate trusted source, such as the server console or administrator, then confirm it in the interface.
+3. Enter the SSH username and password or private key. Encrypted private-key passphrases are supported. Supply a separate Linux sudo password if necessary.
+4. ViiOS verifies the confirmed host key before authentication. The interface tracks platform/privilege checks, dependencies, file transfer, installation, and capability verification.
+5. The ready server is added to the inventory. Unsupported or unverified capabilities are identified separately, rather than represented as empty measurements or zero usage.
 
-## Sunucuda yapılan kurulum
+A changed host key stops the connection. A normal retry does not replace the saved fingerprint. For a planned key change, open the connection editor, verify the new fingerprint independently, and explicitly confirm it before saving and reconnecting. Removing and re-adding the local record is also possible, but does not preserve that record's identity and layout.
 
-Linux dosyaları paketin açık manifesti üzerinden aktarılır. Geçici dosyalar özel bir SFTP dizinine konur; boyutları ve SHA256 özetleri doğrulanır. Python dosyaları derlenebilirlik açısından kontrol edilir. Yalnız bu paket içindeki dosyalar kurulur.
+## What is installed on the target?
 
-- Sürümler: /opt/viios-agent-releases/release-*
-- Etkin sürüm bağlantısı: /opt/viios-agent
-- Durum dizini: /var/lib/viios-agent
-- Git işlemleri: oturum açamayan viios-agent sistem hesabı
-- Sudo: /etc/sudoers.d/viios-agent-* altında belirli, tam yardımcı komutları
+Linux files are transferred using the package's explicit manifest. Temporary files are uploaded to a private SFTP directory, with sizes and SHA-256 digests verified. Python files are checked for syntax errors. Only bundled helper files are installed.
 
-Yardımcı kod ve kurallar root tarafından sahiplenilir. Kurallar visudo ile doğrulanır. Genel kabuk veya sınırsız sudo kuralı eklenmez. Mevcut, ViiOS olarak tanımlanmayan kurulum dizini otomatik olarak değiştirilmez. Eski ViiOS sürüm dizinleri geri dönüş için saklanır.
+- Releases: `/opt/viios-agent-releases/release-*`
+- Active release link: `/opt/viios-agent`
+- State directory: `/var/lib/viios-agent`
+- Git operations: the `viios-agent` system account, without interactive login
+- Sudo rules: exact helper commands under `/etc/sudoers.d/viios-agent-*`
 
-Windows bileşeni C:\ProgramData\ViiOS\agent\windows-agent.ps1 konumuna kurulur. Dosyanın SHA256 özeti doğrulanır. Dizin ve mevcut dosyaların izinleri Administrators ve SYSTEM ile sınırlandırılır. Güncelleme dosyayı atomik değiştirir ve önceki sürümü windows-agent.previous.ps1 olarak saklar. Mevcut sunucu uygulamaları veya hizmetleri kurulum sırasında başlatılmaz/durdurulmaz.
+Helper code and rules are owned by root; rules are validated with `visudo`. No unrestricted sudo rule or general shell access is added. Existing installation directories not recognized as ViiOS are not automatically replaced. Previous ViiOS release directories are retained for rollback.
 
-## Kimlik bilgileri
+The Windows adapter is installed at `C:\ProgramData\ViiOS\agent\windows-agent.ps1`, with its SHA-256 digest verified. Access to the directory and existing files is restricted to Administrators and SYSTEM. Updates replace the script atomically and retain the previous version as `windows-agent.previous.ps1`. Existing server applications and services are not started or stopped during installation.
 
-SSH parolası veya özel anahtarı denetleyicinin veri dizinindeki connections/servers.json içinde AES-256-GCM ile şifrelenir. Kimlik bilgileri sunucu kimliği, adresi, portu, kullanıcı adı, işletim sistemi, kimlik doğrulama türü ve sabitlenmiş sunucu anahtarına bağlanır. API listeleri şifrelenmiş veya açık kimlik bilgilerini döndürmez.
+## Credentials
 
-Şifreleme anahtarı connections/master.key dosyasındadır. POSIX'te dizinler 0700 ve dosyalar 0600; Windows'ta denetleyiciyi çalıştıran kullanıcı ve SYSTEM erişimi kullanılır. Bu, aynı kullanıcı hesabını ele geçiren birine karşı ayrı bir kasa koruması değildir. Veri yedeğinde sunucu kayıtlarıyla anahtarı birlikte, güvenli yerde koruyun. Anahtar kaybolursa mevcut kayıtlar için sessizce yeni anahtar üretilmez.
+The controller stores SSH passwords or private keys in `connections/servers.json` within its private data directory, encrypted using AES-256-GCM. Credentials are bound to the server ID, address, port, username, operating system, authentication type, and pinned host key. List APIs do not return encrypted or plaintext credentials.
 
-Sudo şifresi yalnız etkin kurulum işinin belleğinde tutulur; dosyaya kaydedilmez. Parolalar komut satırına konmaz. SSH komutunun stdin akışından sudo'ya aktarılır. Hata yanıtlarında ham uzak çıktı veya kimlik bilgileri gösterilmez.
+The encryption key is stored in `connections/master.key`. POSIX permissions are 0700 for directories and 0600 for files. On Windows, access is limited to the account running the controller and SYSTEM. This is not a separate vault protecting against compromise of that same operating-system account. Keep server records and their key together in a secure backup. If the key is lost, it is not silently regenerated for existing records.
 
-## Hata, yeniden deneme ve kaldırma
+A sudo password is kept only in the active installation job's memory and is never saved to disk. Passwords are not placed on command lines; they are passed to sudo through the SSH command's standard input. Errors do not expose raw remote output or credentials.
 
-Aynı anda en fazla iki sunucu hazırlanır; diğerleri sırada bekler. Aynı sunucu için yeniden denemeler birleştirilir. İşlemler zaman aşımı ve çıktı sınırlarıyla çalışır. ViiOS kurulum sırasında kapanırsa kayıt “yarıda kaldı” durumuna alınır; uygulama yeniden açıldığında parola gerektirebilecek kurulum otomatik tekrar başlatılmaz.
+## Edit, retry, and remove
 
-**Yeniden dene**, kayıtlı SSH bilgileri ve parmak iziyle kurulumu tekrar dener. Farklı bir sudo parolası verilebilir. Yanlış SSH şifresi, özel anahtar veya IP bilgisi için sunucuyu kaldırıp yeniden ekleyin. **Kaldır**, yerel kaydı ve etkin bağlantıları kaldırır; uzak ViiOS dosyalarını veya sunucu uygulamalarını silmez.
+Use **Edit** (**Düzenle**) in the Servers screen to update an existing connection. You can replace its address, platform, username, or authentication details and verify its fingerprint again. Keeping saved credentials does not reveal them in the interface. Saving and reconnecting preserves the server ID, data directory, and desktop layout. An existing installation attempt is cancelled before restarting setup.
 
-Linux/Windows desteği eşit özellik seti anlamına gelmez. Windows Git sürümleme ve model eşzamanlılık ölçümleri bu sürümde kullanılamaz. Windows dosya/kontrol sınırları için [Windows destek belgesi](windows-support.md) geçerlidir. UAT çalışma ortamları iki platformda da devre dışıdır.
+At most two servers are prepared concurrently; other jobs wait in the queue. Retries for the same server are coalesced. Operations enforce timeouts and output limits. If ViiOS closes during setup, the job is marked interrupted; restarting the application does not automatically rerun setup that may require a password.
 
-## API sözleşmesi
+**Retry** (**Yeniden dene**) reuses saved SSH credentials and the pinned fingerprint. A different sudo password may be supplied. For an incorrect SSH password, key, or address, edit the connection. **Remove** (**Kaldır**) deletes the local record and closes active connections; it does not remove remote helpers or server applications.
 
-Bu uçlar ViiOS yönetici oturumu ve mutasyonlar için aynı kaynak koruması altında sunulur:
+Linux and Windows support do not imply identical capabilities. Windows Git version management and model concurrency measurements are unavailable in this version. See [Windows target support](windows-support.md) for file and service-control limits. UAT environments are disabled on both platforms.
 
-- GET /api/connections → servers dizisi.
-- POST /api/connections/probe → host, port ve platform alır; fingerprint ve algorithm döner. Kimlik bilgisi almaz.
-- POST /api/connections → name, host, port, username, platform, authType, fingerprint ve ilgili password/privateKey/passphrase alanlarını alır. İsteğe bağlı sudoPassword yalnız bu kurulum içindir. HTTP 202 ve server kaydı döner.
-- GET /api/connections/:id → server kaydı.
-- POST /api/connections/:id/retry → isteğe bağlı sudoPassword; HTTP 202 ve server kaydı.
-- DELETE /api/connections/:id → yalnız yerel kayıt kaldırılır; ok yanıtı.
+## Optional ACL tools
 
-Sunucu durumları pending, installing, ready ve error değerlerini alır. phase, message, capabilities, updatedAt ve errorCode alanları ilerlemeyi açıklar. Özel kimlik bilgileri bu kayıtta yoktur. Her sunucu rastgele srv- önekli kimliğe sahiptir. Mutasyonlar ve anahtar sorguları IP başına dakikada 20 istekle sınırlıdır.
+Linux setup checks whether `getfacl` and `setfacl` can be found, and reports the result as `capabilities.aclTools`. Missing tools are informational and do not stop installation. This check does not establish whether a filesystem supports ACLs. Project access preparation uses Python directly. If an actual ACL operation is unsupported or denied, the application displays an explanatory popup; monitoring and operations permitted by existing access rights can continue.
 
-## Doğrulama kapsamı
+## API contract
 
-Bağlantı testleri yerel SSH2 test sunucusuyla anahtar sabitleme, parmak izi sorgusunun kimlik bilgisi göndermemesi, parola/şifreli anahtar oturumu, JSON stdin, Windows komut eşlemesi ve yerel tünelleri doğrular. Kurulum testleri Linux/Windows komutlarını, SFTP aktarım manifestini, yetki kontrolünü, parola sızıntısını ve kısmi özellik durumlarını sahte uzak çalıştırıcıyla denetler. Gerçek üretim sunucusuna bu testler kapsamında bağlanılmaz. Gerçek, yeni bir Linux/Windows hedefinde tam uzaktan kurulum henüz doğrulanmış değildir.
+These endpoints require a ViiOS administrator session. Mutations also enforce same-origin protection.
+
+| Method | Endpoint | Behavior |
+|---|---|---|
+| GET | `/api/connections` | Returns the `servers` array. |
+| POST | `/api/connections/probe` | Accepts `host`, `port`, and `platform`; returns `fingerprint` and `algorithm`. Does not accept credentials. |
+| POST | `/api/connections` | Accepts `name`, `host`, `port`, `username`, `platform`, `authType`, `fingerprint`, and applicable `password`/`privateKey`/`passphrase` fields. Optional `sudoPassword` applies only to this setup attempt. Returns HTTP 202 and the `server` record. |
+| GET | `/api/connections/:id` | Returns the `server` record. |
+| PUT | `/api/connections/:id` | Updates the connection and restarts setup. Returns HTTP 202 and the `server` record. |
+| POST | `/api/connections/:id/retry` | Accepts an optional `sudoPassword`; returns HTTP 202 and the `server` record. |
+| DELETE | `/api/connections/:id` | Removes the local record and returns an `ok` response. |
+
+Server states are `pending`, `installing`, `ready`, and `error`. The `phase`, `message`, `capabilities`, `updatedAt`, and `errorCode` fields describe progress; private credentials are absent. Each server receives a random ID prefixed with `srv-`. Mutations and host-key probes are limited to 20 requests per minute per IP address.
+
+## Validation scope
+
+Connection tests use a local SSH2 test server to check host-key pinning, credential-free fingerprint probing, password/encrypted-key authentication, JSON standard input, Windows command mapping, and local tunnels. Setup tests use a fake remote executor to check Linux/Windows commands, SFTP manifests, privileges, credential leakage, and partial capabilities. These tests do not connect to production servers. A complete remote installation on a fresh real Linux or Windows target has not been verified by this test suite.

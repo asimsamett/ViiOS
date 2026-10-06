@@ -1,102 +1,114 @@
 # ViiOS Standalone
 
+**English** | [Türkçe](README.tr.md)
+
 <img src="public/brand/viios-icon-192.png" alt="ViiOS" width="80" height="80">
 
-**Visual Infrastructure Intelligence** — Windows veya Linux üzerinde çalışır; kendi Windows ve Linux sunucularınızı yönetmek için boş çalışma alanıyla başlar. AI hesabı, AI aracı veya geliştiricinin SSH ayarları gerekmez. Arayüz Türkçedir.
+**Visual Infrastructure Intelligence** — a self-hosted workspace for managing your Windows and Linux servers. Run ViiOS on Windows or Linux, start with an empty workspace, and connect your own servers. No AI account, AI tool, or developer-specific SSH configuration is required.
 
-[Canlı demo](https://asimsamett.github.io/viios/) · [Sürümler](https://github.com/asimsamett/viios/releases) · [Katkı rehberi](CONTRIBUTING.md) · [Güvenlik bildirimi](SECURITY.md)
+[Live demo](https://asimsamett.github.io/ViiOS/) · [Releases](https://github.com/asimsamett/ViiOS/releases) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)
 
-**Ticari olmayan kullanım:** ViiOS, [PolyForm Noncommercial 1.0.0](LICENSE.md) lisansıyla paylaşılır. Lisansın izin verdiği ticari olmayan amaçlarla kullanılabilir, değiştirilebilir ve dağıtılabilir. Bu lisans ticari kullanım izni vermez; ticari kullanım için hak sahibinden ayrıca izin alınması gerekir. Lisans metni ve [NOTICE](NOTICE) bildirimi korunmalıdır. Üçüncü taraf bileşenlerin kendi lisansları geçerlidir; [bildirimlere](THIRD_PARTY_NOTICES.md) bakın.
+> **Application language:** the interface is currently Turkish. This English documentation includes the Turkish labels needed to follow the setup steps.
 
-## Örnek verili demo ve GitHub önizlemesi
+**Noncommercial use:** ViiOS is distributed under [PolyForm Noncommercial 1.0.0](LICENSE.md). You may use, modify, and distribute it for purposes permitted by that license. Commercial use is not granted and requires separate permission from the rights holder. Preserve the license and [NOTICE](NOTICE). Third-party components retain their own licenses; see [Third-party notices](THIRD_PARTY_NOTICES.md).
 
-Arayüzü sunucu eklemeden görmek için `npm ci`, `npm run demo:build`, ardından `npm run demo:serve` çalıştırın. Terminaldeki 4180 portlu adres örnek Linux/Windows sunucuları, uygulamalar, depolama ve dosya ekranlarını açar. Demo hiçbir gerçek sunucuya bağlanmaz; bağlantı bilgileri ve şifreler istenmez.
+## Explore the demo
 
-GitHub'da **Settings → Pages → Source: GitHub Actions** seçin, ardından **Actions → Publish ViiOS demo to GitHub Pages** workflow'unu çalıştırın. Workflow dosyası bu pakette bulunur; sonraki `main` güncellemelerinde demo otomatik yayınlanır. Yayın adresi GitHub Pages ekranında görünür. [Demo kurulumu ve veri ayrımı](docs/demo.md).
+The [live demo](https://asimsamett.github.io/ViiOS/) uses synthetic Linux and Windows servers, applications, storage measurements, and files. It never connects to real servers or asks for connection credentials.
 
-## Başlatma
+```sh
+npm ci
+npm run demo:build
+npm run demo:serve
+```
 
-Node.js **22.13+** kurun, projeyi indirip klasörünü açın.
+Open the address printed in the terminal, normally `http://127.0.0.1:4180/`.
 
-- **Windows:** `start.cmd` dosyasını çalıştırın.
-- **Linux:** `sh start.sh` komutunu çalıştırın.
-- **Manuel:** `npm ci`, `npm run setup`, ardından `npm start`.
+To publish your own preview, select **Settings → Pages → Source: GitHub Actions**, then run **Actions → Publish ViiOS demo to GitHub Pages**. Subsequent pushes to `main` publish the demo automatically. GitHub displays the deployed URL in the Pages settings. See [Demo setup and data isolation](docs/demo.md).
 
-İlk hazırlık internetten npm paketlerini ve önizlemeler için Chromium'u indirir. Sonraki açılışlar kayıtlı kurulumu kullanır. Linux'ta tarayıcı sistem kütüphaneleri eksikse `npx playwright install --with-deps chromium` kullanın; sistem paketleri için yetki gerekir.
+## Quick start
 
-**http://127.0.0.1:3180** adresini açın. İlk kurulumda en az **8 karakterli** yönetici şifresini iki kez girip oluşturun, ardından bu şifreyle giriş yapın. Kurulum kodu istenmez; büyük harf, rakam veya özel karakter zorunluluğu yoktur.
+Install **Node.js 22.13+**, download the project, and open its directory.
 
-## Sunucu ekleme
+- **Windows:** run `start.cmd`.
+- **Linux:** run `sh start.sh`.
+- **Manual setup:** run `npm ci`, `npm run setup`, then `npm start`.
 
-1. **Sunucular → Sunucu ekle** ekranında hedefi **Linux** veya **Windows** seçin. Bu seçim ViiOS'un çalıştığı bilgisayardan bağımsızdır.
-2. IP/sunucu adı ve SSH portunu girin. Gösterilen SSH parmak izini sunucu yöneticisi veya konsolundan aldığınız değerle karşılaştırıp onaylayın.
-3. Kullanıcı adı ve şifre veya SSH özel anahtarı girin. Linux'ta gerektiğinde sudo şifresini girin.
-4. ViiOS bağlantıyı sınar, sabit yardımcılarını kurar ve özelliklerini doğrular. İlerleme ve hata nedenleri görünür; başarısız kurulum yeniden denenebilir.
-5. Hazır sunucuyu seçin. Ekranlar seçili sunucunun verilerini gösterir; kayıtlar yeniden açılışta korunur.
+The first setup downloads npm dependencies and Chromium for application previews. Later launches reuse the installation. If Linux browser libraries are missing, run `npx playwright install --with-deps chromium`; installing system packages requires appropriate privileges.
 
-Hedefte **erişilebilir SSH hizmeti**, geçerli giriş bilgileri ve kurulum yetkisi gerekir. Linux'ta root veya sudo; Windows'ta OpenSSH Server, SFTP ve yönetici hesabı gerekir. SSH kapalı bir bilgisayara yalnız IP ve şifreyle erişim kurulamaz. [Windows hazırlığı](docs/windows-support.md).
+Open **http://127.0.0.1:3180**. Create an administrator password of at least **8 characters**, enter it twice, and then sign in. No setup code is required. Uppercase letters, numbers, and special characters are not mandatory.
 
-Linux yardımcısı `/opt/viios-agent`, verileri `/var/lib/viios-agent`; Windows yardımcısı `C:\ProgramData\ViiOS\agent` altında bulunur. Linux'ta eksik bağımlılıklar desteklenen paket yöneticisiyle kurulur. Sunucu ekleme bu konumlara yazılmasına ve gerekli yardımcı yetkilerinin oluşturulmasına izin verir. Mevcut uygulamalar taşınmaz veya kendiliğinden yeniden başlatılmaz.
+## Add a server
 
-## Sunucu bağlantısını düzenleme
+1. Open **Servers → Add server** (**Sunucular → Sunucu ekle**) and select **Linux** or **Windows** as the target. This choice is independent of the computer running ViiOS.
+2. Enter the IP address or hostname and SSH port. Compare the displayed SSH fingerprint with a value obtained from the server console or administrator, then confirm it.
+3. Enter a username and password or SSH private key. Supply a sudo password for Linux if needed.
+4. ViiOS tests the connection, installs its bundled helpers, and checks available capabilities. Progress and error reasons are displayed; failed setup can be retried.
+5. Select the ready server. Screens show data for that server, and saved records persist across restarts.
 
-**Sunucular** ekranındaki **Düzenle** düğmesi hazır, hatalı, bekleyen veya kurulumu süren kaydın bağlantı sihirbazını açar. Görünen ad, Linux/Windows seçimi, IP veya sunucu adı, SSH portu, kullanıcı adı ve kimlik doğrulama yöntemi değiştirilebilir. **Sunucu → Kimlik → Bağlantı** adımlarında ilerleyin; SSH parmak izini yeniden kontrol edip onaylayın.
+The target needs a **reachable SSH service**, valid credentials, and installation privileges. Linux requires root or sudo access. Windows requires OpenSSH Server, SFTP, and an administrator account. An IP address and password alone cannot connect to a machine with SSH disabled. See [Server connections](docs/connections.md) and [Windows target support](docs/windows-support.md).
 
-**Kayıtlı SSH kimlik bilgilerini kullan** seçeneği mevcut şifreyi veya özel anahtarı korur; kayıtlı gizli bilgiler ekrana getirilmez. Değiştirmek için bu seçeneği kaldırıp yeni bilgileri girin. Kimlik doğrulama yöntemi değiştiğinde yeni yöntemin bilgileri gerekir. Linux'ta gerekiyorsa yalnız bu kurulum için sudo şifresi girin.
+Linux helpers use `/opt/viios-agent` and store state under `/var/lib/viios-agent`. The Windows helper lives under `C:\ProgramData\ViiOS\agent`. On Linux, missing required dependencies are installed using a supported package manager. Adding a server authorizes installation into these locations and creation of the required helper permissions. Existing applications are not moved or automatically restarted.
 
-**Kaydet ve yeniden bağlan**, aynı sunucu kaydını güncelleyip bağlantı ve kurulum adımlarını yeniden başlatır. Sunucu kimliği, veri klasörü ve Dock/masaüstü düzeni korunur. Kurulum sürüyorsa önce mevcut deneme durdurulur. Başka bir pencerede bağlantı bilgileri değiştirilmişse güncel kaydı yeniden açın; ekrandaki kurulum ilerlemesi tek başına düzenleme çakışması oluşturmaz.
+## Edit a server connection
 
-## Destek kapsamı
+In **Servers** (**Sunucular**), select **Edit** (**Düzenle**) to reopen the wizard for a ready, failed, pending, or installing server. You can change its display name, target platform, address, SSH port, username, and authentication method. Follow **Server → Identity → Connection** (**Sunucu → Kimlik → Bağlantı**) and verify the SSH fingerprint again.
 
-| İşlev | Linux hedef | Windows hedef |
+**Use saved SSH credentials** (**Kayıtlı SSH kimlik bilgilerini kullan**) preserves the saved password or private key without displaying it. Clear this option to provide replacements. Changing the authentication method requires credentials for the new method. If needed, provide a Linux sudo password for this installation attempt only.
+
+**Save and reconnect** (**Kaydet ve yeniden bağlan**) updates the same record and restarts connection and setup checks. The server ID, data directory, and Dock/desktop layout are preserved. An active installation attempt is stopped first. If another window has changed the connection settings, reopen the current record; installation progress alone does not cause an edit conflict.
+
+## Supported capabilities
+
+| Capability | Linux target | Windows target |
 |---|---|---|
-| Şifre/anahtar ile ekleme ve kurulum takibi | Var | Var; OpenSSH önkoşulu |
-| Port/uygulama envanteri, raporlar | Var | Var |
-| CPU, bellek, işlemler ve diskler | Var | Var; Windows sayaçları |
-| Genel depolama, klasör/uygulama kullanımı | Var | Var; bağlı sabit diskler |
-| Dosya gezgini ve temel dosya işlemleri | İzin verilen kökler | İzin verilen kökler |
-| Büyük yükleme ve ZIP aktarımı | Var | Bu sürümde desteklenmez |
-| Servis kontrolü | Doğrulanan, korunmayan servisler | Doğrulanan ve izin verilen Windows servisleri |
-| Git sürüm yönetimi | Var | Bu sürümde desteklenmez |
-| Model envanteri | Yerel yapılandırma/servis keşfi | Yerel Ollama varsa |
-| Özel UAT dağıtımı ve model yük testi | Bu dağıtımda yapılandırılmamış | Bu dağıtımda yapılandırılmamış |
+| Password/key onboarding and setup progress | Supported | Supported; OpenSSH required |
+| Port/application inventory and reports | Supported | Supported |
+| CPU, memory, processes, and disks | Supported | Supported; Windows counters |
+| Server storage and folder/application usage | Supported | Supported; mounted fixed volumes |
+| File browser and basic file operations | Allowed roots | Allowed roots |
+| Large uploads and ZIP transfer | Supported | Not supported in this version |
+| Service controls | Verified, unprotected services | Verified, explicitly allowed Windows services |
+| Git version management | Supported | Not supported in this version |
+| Model inventory | Local configuration/service discovery | Local Ollama, when available |
+| Custom UAT deployment and model load testing | Not configured in this distribution | Not configured in this distribution |
 
-Klasör ölçümleri süre/kayıt sınırlarına tabidir; eksik ölçümler belirtilir. Disk kapasitesi bağlı dosya sistemlerinden ölçülür; ağ diskleri ve ayrı havuz hesabı gerektiren depolar her zaman toplama dahil değildir. Chromium yoksa diğer ekranlar kullanılabilir. Yalnız hedef sunucu içinden erişilen uygulamalar için SSH tüneli ViiOS'un çalıştığı bilgisayarda açılır; başka bilgisayardaki tarayıcı için otomatik uygulama yayınlama servisi sağlanmaz.
+Folder measurements have time and entry limits; incomplete results are identified. Disk totals come from mounted filesystems. Network drives and storage requiring separate pool accounting are not always included. Other screens remain usable without Chromium. For applications reachable only from the target, an SSH tunnel is opened on the computer running ViiOS; this does not automatically publish applications to browsers on other computers.
 
-## Dock ve masaüstü kısayolları
+## Dock and desktop shortcuts
 
-Dock’taki ve masaüstündeki **+** düğmelerinden veya ViiOS menüsündeki **Masaüstünü düzenle** seçeneğinden düzenleyiciyi açın. Uygulama, yönetim aracı, klasör veya `http://` / `https://` adresi ekleyin; adını değiştirin, yukarı/aşağı taşıyın veya kaldırın. Dock ve masaüstü listeleri ayrı düzenlenir; **Kaydet** seçili sunucunun düzenini kalıcı olarak saklar.
+Open the editor using the **+** buttons on the Dock or desktop, or **Edit desktop** (**Masaüstünü düzenle**) in the ViiOS menu. Add an application, management tool, folder, or `http://` / `https://` URL; rename, reorder, or remove it. Dock and desktop lists are edited separately. **Save** (**Kaydet**) persists the selected server's layout.
 
-Düzen, tarayıcı belleği yerine ViiOS’un özel veri klasöründeki `servers/<sunucu-kimliği>/desktop-layout.json` dosyasındadır. Farklı tarayıcıdan aynı sunucuya girildiğinde kayıtlı düzen kullanılır. Yeni eklenen sunucu kendi varsayılan düzeniyle başlar; düzenleyici her sunucuda kullanılabilir.
+Layouts are stored in `servers/<server-id>/desktop-layout.json` in ViiOS's private data directory, rather than only in browser storage. Another browser connected to the same server uses the saved layout. New servers start with their own default layout, and the editor is available for every server.
 
-**Dışa aktar** ve **İçe aktar** ile düzeni JSON dosyası olarak başka bir ViiOS kurulumuna veya sunucuya taşıyabilirsiniz. Hedefte bulunmayan uygulama veya özellik kayıtları görünür kalır ve düzenlenebilir. **Varsayılan** seçili alanı ilk düzenine döndürür; değişikliği uygulamak için kaydedin. Dock en fazla 32, masaüstü en fazla 16 kısayol içerir. Başlat aramasındaki eski sabitlemeler ve son kullanılanlar ayrı kalır.
+Use **Export** (**Dışa aktar**) and **Import** (**İçe aktar**) to transfer a layout as JSON between installations or servers. Entries for unavailable applications or capabilities remain visible and editable. **Default** (**Varsayılan**) resets the selected area; save to apply it. The Dock supports up to 32 shortcuts and the desktop up to 16. Existing Start search pins and recent items are separate.
 
-Kaynak ZIP kişisel veri ve ayarları içermez. Mevcut kurulumun kaynaklarını güncellerken `data/` klasörünü koruyun; klasörün tamamını taşımak sunucu kayıtlarıyla birlikte kaydedilmiş düzenleri de taşır. `DATA_DIR` kullanılıyorsa aynı özel veri dizinini koruyun.
+The public source ZIP excludes personal data and settings. Preserve `data/` when updating an installation. Moving that directory transfers server records and layouts together. If you use `DATA_DIR`, preserve that private directory instead.
 
-## Veriler ve erişim
+## Data and access
 
-Linux hedeflerde **`acl` paketi isteğe bağlıdır**. Yalnız `getfacl` / `setfacl` eksik diye kurulum durmaz veya paket yöneticisi çalıştırılmaz. ViiOS, proje erişim izinlerini Python üzerinden doğrudan yönetir. Sunucu ekleme ekranı bu durumu açıklar; kurulumda ACL komutları bulunamadığında sunucu kartında bilgi gösterilir. Bu kontrol, dosya sisteminin ACL desteğini ölçmez.
+The Linux **`acl` package is optional**. Missing `getfacl` / `setfacl` commands do not stop setup or trigger package installation. ViiOS manages project access permissions directly through Python. The server wizard explains this, and the server card shows a notice if the commands cannot be verified. This check does not test filesystem ACL support.
 
-Dosya sistemi ACL işlemlerini desteklemiyorsa ya da izin değişikliğini reddediyorsa bazı proje klasörlerinde sürüm yönetimi için ek erişim hazırlama işlemi kullanılamayabilir. ViiOS bu tür bir işlem hatasında açıklayıcı bir popup gösterir; izleme ve mevcut izinlerle yapılabilen dosya işlemleri devam eder. `acl` paketini yüklemek tek başına dosya sistemi veya yetki sorunlarını çözmez. Yapılandırılmış sunuculardaki yardımcılar kaynak kodu güncellenince kendiliğinden değiştirilmez; yeni hata kodları güncel yardımcılarla yapılan kurulumlarda iletilir.
+If a filesystem does not support ACL operations or rejects permission changes, preparing additional access to some project folders for version management may be unavailable. ViiOS displays an explanatory popup for these errors; monitoring and file operations permitted by existing rights remain available. Installing `acl` alone does not resolve filesystem or permission problems. Updating controller source does not automatically replace helpers on configured servers; the new error codes require installation of updated helpers.
 
-`data/` yönetici şifre özetini, şifreli bağlantı bilgilerini ve sunucu kayıtlarını saklar. Şifreleme anahtarı aynı özel dizindedir; bu dizini birlikte yedekleyin. Windows ACL ve Linux dosya izinleri erişimi sınırlar. ViiOS yöneticisi eklenen sunuculara verilen yönetim yetkisini kullanabilir.
+`data/` contains the administrator password hash, encrypted connection credentials, and server records. The encryption key is in the same private directory; back them up together. Windows ACLs and Linux file permissions restrict access. A ViiOS administrator can exercise the management privileges granted to connected servers.
 
-**GitHub'a data, .env, outputs, logs veya özel anahtarlar koymayın.** `.gitignore` ve kaynak ZIP'i bunları dışlar. Sunucu kaydını kaldırmak hedefteki yardımcıları veya uygulamaları silmez.
+**Do not publish `data/`, `.env`, `outputs/`, logs, or private keys to GitHub.** `.gitignore` and the source packager exclude them. Removing a server record does not uninstall remote helpers or remove applications.
 
-### Paylaşılacak kaynak paketini hazırlama
+### Prepare a public source archive
 
-Klasörün tamamını elle ZIP'lemek yerine `python scripts/package-source.py` çalıştırın (paketi hazırlayan bilgisayarda Python 3.9+ gerekir). Paketleyici yalnız `public-source-files.json` içinde açıkça listelenmiş kaynak dosyalarını alır. Yeni dosyalar incelenip listeye eklenene kadar pakete girmez. `data/`, `outputs/`, ortam ayarları, özel anahtarlar, günlükler, yerel veritabanları ve AI geliştirme aracı dizinleri kaynak listesine eklense bile reddedilir. Sembolik bağlantılar, hard link dosyaları ve Windows junction noktaları kabul edilmez.
+Run `python scripts/package-source.py` instead of manually archiving the whole directory. Packaging requires Python 3.9+. Only files explicitly listed in `public-source-files.json` are included. Review new files before adding them. The packager rejects private data, environment settings, keys, logs, local databases, and AI development-tool directories even if listed. Symbolic links, hard-linked files, and Windows junctions are rejected.
 
-Paketleme, kaynaklardaki özel ağ IP'lerini, bazı anahtar/token biçimlerini ve boş olması gereken başlangıç envanterlerini kontrol eder. Bu tarama manuel içerik incelemesini tamamlar; her tür gizli bilgiyi tanıyacağı varsayılmamalıdır. Yalnız kontrol için `python scripts/package-source.py --check`; koruma testleri için `python -m unittest discover -s tests -p test_public_source.py` kullanın.
+The packager checks private-network IP addresses, some key/token formats, and initial inventories that must remain empty. These checks supplement manual review; they cannot detect every secret. Validate without producing an archive with `python scripts/package-source.py --check`. Check the packaging safeguards with `python -m unittest discover -s tests -p test_public_source.py`.
 
-Sonuç `outputs/releases/ViiOS-Standalone-<sürüm>-public-source-<özet>.zip` dosyasıdır. İçindeki `ViiOS-Standalone/` klasörü paylaşılacak kaynaktır; yanındaki `.sha256` dosyası ZIP'in doğrulama özetidir. ZIP içindeki `PUBLIC-SOURCE-MANIFEST.json`, her dosyanın boyutunu ve SHA-256 özetini içerir. Paket yazıldıktan sonra giriş listesi ve tüm dosya içerikleri tekrar doğrulanır. Önceden üretilmiş ZIP'ler otomatik güncellenmez; komutun son verdiği paketi kullanın.
+Output is `outputs/releases/ViiOS-Standalone-<version>-public-source-<digest>.zip`. Its `ViiOS-Standalone/` directory contains the public source; the adjacent `.sha256` file contains the archive checksum. `PUBLIC-SOURCE-MANIFEST.json` inside the archive records each file's size and SHA-256 digest. Entries and contents are verified after writing. Existing ZIPs are not updated automatically; use the latest archive produced by the command.
 
-Şifre değiştirme: `npm run set-password`, sonra ViiOS'u yeniden başlatın. Ağdan kullanım için `.env.example` temelinde `APP_HOST` ayarlayın; HTTPS ters vekil kullanıp `COOKIE_SECURE=true` ve doğru `APP_ORIGIN` değerini girin.
+To change the administrator password, run `npm run set-password`, then restart ViiOS. For network access, configure `APP_HOST` using `.env.example`, use an HTTPS reverse proxy, and set `COOKIE_SECURE=true` and the correct `APP_ORIGIN`.
 
-## Docker ve geliştirme
+## Docker and development
 
-İsteğe bağlı: `docker compose up --build -d`. İlk açılışta tarayıcıdan yönetici şifrenizi oluşturun. Veri named volume içinde kalır; varsayılan port yereldir. Bu çalışma ortamında Docker motoru bulunmadığından imaj çalıştırma testi yapılmamıştır.
+Optional Docker setup: `docker compose up --build -d`. Create your administrator password in the browser on first launch. Data persists in a named volume, and the default port binding is local. Docker image execution has not been verified in the development environment used for this release.
 
-Kontroller: `npm test`, `npm run check`, `npm run build`. Geliştirme için bir terminalde `npm start`, diğerinde `npm run dev`; vekil 3180'e bağlanır. Windows yardımcı testleri PowerShell 5.1, Linux yardımcı testleri Linux gerektirir.
+Run `npm test`, `npm run check`, `npm run lint`, and `npm run build` for validation. For development, run `npm start` in one terminal and `npm run dev` in another; the proxy connects to port 3180. Windows helper tests require PowerShell 5.1, and Linux helper tests require Linux. See the [validation history](docs/validation.md) for earlier checks and their limits.
 
-Proje: [asimsamett/viios](https://github.com/asimsamett/viios). Kullanım koşulları için [LICENSE.md](LICENSE.md), katkı göndermek için [CONTRIBUTING.md](CONTRIBUTING.md) dosyasını okuyun.
+Project: [asimsamett/ViiOS](https://github.com/asimsamett/ViiOS). Read [LICENSE.md](LICENSE.md) for the terms of use and [CONTRIBUTING.md](CONTRIBUTING.md) before submitting changes.

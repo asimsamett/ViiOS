@@ -2,9 +2,9 @@
   "name": "viios-standalone",
   "version": "0.3.1",
   "license": "PolyForm-Noncommercial-1.0.0",
-  "repository": { "type": "git", "url": "https://github.com/asimsamett/viios.git" },
-  "homepage": "https://asimsamett.github.io/viios/",
-  "bugs": { "url": "https://github.com/asimsamett/viios/issues" },
+  "repository": { "type": "git", "url": "https://github.com/asimsamett/ViiOS.git" },
+  "homepage": "https://asimsamett.github.io/ViiOS/",
+  "bugs": { "url": "https://github.com/asimsamett/ViiOS/issues" },
   "private": true,
   "engines": {
     "node": ">=22.13.0"

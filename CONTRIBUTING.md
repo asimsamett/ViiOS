@@ -1,10 +1,12 @@
-# ViiOS'a katkı
+# Contributing to ViiOS
 
-Hata bildirimleri ve geliştirme önerileri için [Issues](https://github.com/asimsamett/viios/issues), kod değişiklikleri için pull request kullanabilirsiniz. Proje [PolyForm Noncommercial 1.0.0](LICENSE.md) ile paylaşılır; katkılar aynı proje lisansı altında sunulmalıdır. Başkalarına ait kodların lisans ve telif bildirimlerini koruyun.
+**English** | [Türkçe](CONTRIBUTING.tr.md)
 
-## Geliştirme
+Use [Issues](https://github.com/asimsamett/ViiOS/issues) for bug reports and feature suggestions, and pull requests for code changes. The project is distributed under [PolyForm Noncommercial 1.0.0](LICENSE.md); contributions must be submitted under the same project license. Preserve the license and copyright notices of third-party code.
 
-Node.js 22.13+ ve paket kontrolleri için Python 3.9+ gerekir.
+## Development
+
+You need Node.js 22.13+ and Python 3.9+ for packaging checks.
 
 ```sh
 npm ci
@@ -16,15 +18,19 @@ python scripts/package-source.py --check
 python -m unittest discover -s tests -p test_public_source.py
 ```
 
-Arayüzü gerçek sunucu bağlamadan denemek için `npm run demo:build` ve `npm run demo:serve` kullanın. Windows ve Linux hedeflerinin destek farkları README'de açıklanır.
+Use `npm run demo:build` and `npm run demo:serve` to explore the interface without connecting a real server. The README explains differences between Linux and Windows target support.
 
-## Değişiklik gönderme
+## Submit a change
 
-1. Ayrı bir dalda, tek bir soruna odaklanan değişiklik hazırlayın.
-2. Hatanın nasıl oluştuğunu, beklenen davranışı ve yaptığınız kontrolleri açıklayın.
-3. Yeni yayımlanacak kaynak dosyalarını içeriklerini inceledikten sonra `public-source-files.json` listesine ekleyin.
-4. Otomatik kontrollerin geçtiğini doğrulayarak pull request açın.
+1. Use a separate branch and focus the change on one issue.
+2. Explain how to reproduce the problem, the expected behavior, and the checks you ran.
+3. Review new public source files before adding them to `public-source-files.json`.
+4. Open a pull request and confirm that automated checks pass.
 
-Gerçek sunucu adreslerini, kullanıcı bilgilerini, parolaları, anahtarları, envanterleri, günlükleri veya müşteri verilerini issue, ekran görüntüsü ve commitlere eklemeyin. Örneklerde dokümantasyon adresleri ve yapay veriler kullanın. `data/`, `.env`, `outputs/` ve geliştirme aracı oturumları kaynak pakete dahil edilmez.
+Do not include real server addresses, account information, passwords, keys, inventories, logs, or customer data in issues, screenshots, or commits. Use documentation addresses and synthetic examples. `data/`, `.env`, `outputs/`, and development-tool sessions are excluded from the public source package.
 
-Güvenlik açıkları için [SECURITY.md](SECURITY.md) yönergesini izleyin.
+For security vulnerabilities, follow [SECURITY.md](SECURITY.md).
+
+## Documentation languages
+
+The default README and documentation are English. Turkish counterparts use the `.tr.md` suffix and link back to the English version. Keep both aligned when changing setup instructions or supported behavior. The application interface is currently Turkish; include its displayed Turkish label when translating UI instructions.

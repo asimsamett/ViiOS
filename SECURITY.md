@@ -1,13 +1,15 @@
-# Güvenlik bildirimi
+# Security policy
 
-Güvenlik düzeltmeleri en son yayımlanan ViiOS sürümüne uygulanır. Eski sürümler için ayrı bir bakım takvimi taahhüt edilmez.
+**English** | [Türkçe](SECURITY.tr.md)
 
-## Açık bildirme
+Security fixes target the latest published ViiOS release. No separate maintenance schedule is promised for older releases.
 
-Depodaki **Security → Report a vulnerability** üzerinden özel bildirim gönderin. Bu seçenek görünmüyorsa gizli ayrıntı paylaşmadan bir issue açarak özel iletişim kanalı isteyin.
+## Report a vulnerability
 
-Etkilenen sürümü, beklenen ve gerçekleşen davranışı, etkisini ve mümkünse tamamen yapay verilerle yeniden üretme adımlarını yazın. Gerçek sunucu IP'leri, parolalar, özel anahtarlar, oturum bilgileri veya kullanıcı verileri eklemeyin. Açığın ayrıntılarını ve çalışır saldırı örneklerini herkese açık issue'lara koymayın.
+Submit a private report through **Security → Report a vulnerability** in the repository. If that option is unavailable, open an issue requesting a private contact channel without disclosing sensitive details.
 
-## Kurulum
+Include the affected version, expected and actual behavior, impact, and reproduction steps using entirely synthetic data where possible. Do not include real server IP addresses, passwords, private keys, session information, or user data. Do not publish vulnerability details or working exploits in public issues.
 
-ViiOS bağlı sunucularda yönetim işlemleri gerçekleştirebilir. Kendi kurulumunuzun erişimini yetkili kullanıcılarla sınırlandırın; kayıtlı bağlantıların bulunduğu `data/` dizinini kaynak koduyla yayımlamayın. Ağdan erişimde HTTPS ve uygun erişim kontrolleri kullanın. GitHub Pages demosu yalnız yapay veri kullanır ve gerçek sunuculara bağlanmaz.
+## Deployment
+
+ViiOS can perform administrative operations on connected servers. Restrict your installation to authorized users and do not publish the `data/` directory with your source code. Use HTTPS and appropriate access controls for network access. The GitHub Pages demo uses only synthetic data and never connects to real servers.

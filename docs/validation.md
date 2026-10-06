@@ -1,60 +1,66 @@
-# Doğrulama
+# Validation history
 
-## 5 Ekim 2026 — GitHub Pages için örnek verili demo
+**English** | [Türkçe](validation.tr.md)
 
-Statik demo ayrı bir kaynak kopyasında, GitHub proje adresini taklit eden `/viios-demo/` alt yoluyla derlendi. `dist/client` ve yerel yönetici/sunucu verileri bu işlemde değiştirilmedi. Pages workflow'u yalnız statik demo çıktısını yayınlar; GitHub deposu/Pages ayarı henüz verilmediğinden gerçek GitHub yayını yapılmadı.
+These are dated validation records, not a claim that every check has been rerun for the current commit. Test counts, file counts, and limitations describe the revision tested on each date. Current automated results are available in [GitHub Actions](https://github.com/asimsamett/ViiOS/actions).
 
-- `npm test`: **175 test başarılı**, 0 başarısız. Demo API izolasyonu, statik dosya sunumu, kaynak kopyalama sınırları ve dosya yüklemenin ağ isteğinden önce reddi dahil.
-- TypeScript kontrolü ve değişen ön yüz/demo dosyalarının hedefli lint kontrolü başarılı.
-- Statik üretim derlemesi başarılı. HTML'deki alt yol içeren 16 varlık bağlantısı HTTP 200 döndü; `index.txt`, `.nojekyll` ve göreli webmanifest yolları doğrulandı. Demo sunucusunda gerçek API uçları bulunmuyor.
-- Paylaşım kontrolü **282 kaynak dosyasını** kabul ediyor. Paketleme testlerinde **9 başarılı**, Windows sembolik bağlantı yetkisi nedeniyle 1 atlanan test var.
-- Son derlemede **12/12 tarayıcı kontrolü geçti**: masaüstü, uygulamalar, depolama sekmeleri/klasör inceleme, model kataloğu, Linux/Windows geçişi, örnek metin dosyası, tema ve 390 px mobil görünüm. Sunucu ekleme kapalı ve şifre alanı yok. İzlenen **112 statik istekte** gerçek `/api` veya dış sunucu erişimi, başarısız istek/404 ve tarayıcı hatası görülmedi.
+## October 6, 2026 — Initial GitHub publication
 
-## 5 Ekim 2026 — Sunucu verileri olmadan kaynak paylaşımı
+The standalone preview was published with a synthetic-data Pages demo. The [Windows/Linux validation workflow](https://github.com/asimsamett/ViiOS/actions/runs/37422213622) and [Pages deployment workflow](https://github.com/asimsamett/ViiOS/actions/runs/37422213627) both completed successfully. The publication included 292 reviewed source files. The earlier lint errors recorded below were fixed before publication. These results supersede earlier statements that GitHub publication or CI had not yet run.
 
-Kaynak paketi yalnız `public-source-files.json` içindeki 269 dosyadan hazırlanır. Yerel yönetici/sunucu verileri, şifreleme anahtarları, ortam dosyaları, çıktılar, ekran görüntüleri, yedekler ve eski özel kaynaklar alınmaz. Başlangıç envanterlerinin ve hedef yapılandırmalarının genel, boş varsayılanlarla eşleşmesi zorunludur. Üretilen ZIP'in giriş listesi ve her dosyanın içeriği paketleme sonrasında doğrulanır.
+## October 5, 2026 — Synthetic-data GitHub Pages demo
 
-Eski kurulumun SSH hedefi/servisiyle bağlantılı uzak model keşif kodu kaldırıldı. Seçili sunucunun yerel model keşfi korunuyor; eski ek uzak hedef ayarları çalıştırılmıyor. Testlerdeki eski sunucu/proje adları ve iç ağ adresleri yapay örneklerle değiştirildi.
+The static demo was built from an isolated source copy using `/viios-demo/` to simulate a GitHub project subpath. `dist/client` and local administrator/server data were unchanged. The Pages workflow publishes only static demo output. At this stage the GitHub repository/Pages configuration had not yet been supplied, so no live GitHub deployment was performed.
 
-- `npm test`: **163 test başarılı**, 0 başarısız.
-- Paketleme koruma testleri: **9 başarılı**, Windows sembolik bağlantı oluşturma yetkisi bulunmadığı için 1 atlandı. Gerçek hard link reddi, veri/anahtar/ortam dosyalarının dışlanması, bilinmeyen yapılandırma alanlarının reddi ve ZIP içerik/özet eşleşmesi doğrulandı.
-- Python model testleri: **20 başarılı**, Linux gerektiren model bağlantısı modülü bu Windows ortamında atlandı. NIM/Ollama testleri ayrıca çalıştırıldı ve geçti.
-- Kaynak içerik kontrolü: **269 dosya başarılı**. Bilinen eski ortam tanımlayıcıları ve özel ağ IP'leri için hedefli kaynak taraması temiz.
-- Bu çalışma yerel hesapları veya sunucu kayıtlarını değiştirmez; üretim sunucusuna ve GitHub'a dağıtım yapılmadı. Önceden oluşturulmuş kaynak ZIP'leri güncellenmedi; yeni `public-source` adlı paket kullanılmalıdır.
+- `npm test`: **175 passed**, 0 failed. Coverage included demo API isolation, static serving, source-copy boundaries, and rejection of file uploads before network requests.
+- TypeScript checks and targeted lint for changed frontend/demo files passed.
+- The static production build passed. Sixteen HTML asset links containing the base path returned HTTP 200; `index.txt`, `.nojekyll`, and relative webmanifest paths were verified. The demo server had no real API endpoints.
+- Packaging validation accepted **282 source files**. Packaging tests had **9 passes** and 1 skip because Windows symbolic-link privileges were unavailable.
+- **12/12 browser checks passed**: desktop, applications, storage tabs/folder inspection, model catalog, Linux/Windows switching, a sample text file, themes, and a 390 px mobile layout. Server addition was disabled and no password field was present. Among **112 observed static requests**, there were no real `/api` or external-server requests, failed requests/404s, or browser errors.
 
-Kaynak taraması her tür gizli bilginin yokluğuna dair kapsamlı güvenlik garantisi değildir; dosya listesine yeni kaynak eklenirken içerik incelemesi gerekir. İlk kurulum doğrulamasında aşağıda kaydedilen genel lint sorunları bu kapsamda değiştirilmedi.
+## October 5, 2026 — Source sharing without server data
 
-## 5 Ekim 2026 — İlk kurulum değişikliği
+The source package used only the 269 files explicitly listed in `public-source-files.json` at that revision. Local administrator/server records, encryption keys, environment files, outputs, screenshots, backups, and old private sources were excluded. Initial inventories and target configurations had to match generic empty defaults. The ZIP's entry list and every file's contents were verified after packaging.
 
-İlk kurulum ekranı yalnız yönetici şifresi ve şifre tekrarını ister. Kurulum kodu alanı ve `VIIOS_SETUP_TOKEN` ayarı kaldırıldı. Şifre alt sınırı 8 karakterdir; büyük harf, rakam veya özel karakter zorunluluğu yoktur. Kurulum isteği yalnız `password` ve `confirmPassword` alanlarını gönderir. Yönetici şifresini kullanıcı belirler.
+Remote model-discovery code tied to the old installation's SSH target/service was removed. Local model discovery on the selected server was retained. Old server/project identifiers and internal-network addresses in tests were replaced with synthetic examples.
 
-- İlgili kurulum, HTTP ve kimlik doğrulama testleri: **6 başarılı**, 0 başarısız.
-- `npm run check`, `npm run build` ve değişen kod dosyalarının hedefli lint kontrolü başarılı.
-- Tarayıcıda kurulum kodu alanının kaldırılması, 7 karakterin reddedilmesi, yalnız rakamlardan oluşan 8 karakterlik ve karma 9 karakterlik şifrelerin kabul edilmesi doğrulandı. İstek yalnız iki şifre alanını gönderiyor; tarayıcı hatası yok. Mevcut yönetici kaydını değiştirmemek için ilk kurulum API yanıtları tarayıcı testinde taklit edildi.
-- Yerel sürüm `http://127.0.0.1:3180` adresinde yeniden başlatıldı; HTTP yanıtı ve kurulum durumu doğrulandı.
-- Genel `npm run lint`, bu değişiklikte düzenlenmeyen `server/connection-routes.mjs` ve `app/desktop-layout.ts` dosyalarındaki toplam 3 hata nedeniyle geçmedi.
+- `npm test`: **163 passed**, 0 failed.
+- Packaging safeguards: **9 passed**, 1 skipped because Windows symbolic-link creation privileges were unavailable. Tests covered rejection of real hard links, exclusion of data/key/environment files, rejection of unknown configuration fields, and ZIP content/hash consistency.
+- Python model tests: **20 passed**. A Linux-only model connection module was skipped on Windows. Separate NIM/Ollama tests also passed.
+- Source validation: **269 files passed**. Targeted checks found no known old environment identifiers or private-network IP addresses.
+- Local accounts and server records were unchanged; no production-server or GitHub deployment occurred at this stage. Existing source ZIPs were not updated; the newly generated `public-source` package was required.
 
-Aşağıdaki sonuçlar 2 Ekim sürümünün tarihsel doğrulama kaydıdır; bu değişikliğin test sonucu olarak değerlendirilmemelidir.
+The source scan is not a guarantee that every kind of secret is absent. New manifest entries need manual review. The lint problems recorded below for the first-run change were not fixed as part of this stage.
 
-## 2 Ekim 2026 — Tarihsel doğrulama kaydı
+## October 5, 2026 — First-run setup change
 
-Bu bağımsız kopya Windows üzerinde doğrulandı. Mevcut ViiOS kurulumuna veya üretim sunucusuna dağıtım yapılmadı.
+The first-run screen asks only for an administrator password and confirmation. The setup-code field and `VIIOS_SETUP_TOKEN` setting were removed. Passwords require at least 8 characters, with no mandatory uppercase letters, numbers, or special characters. The setup request contains only `password` and `confirmPassword`; users choose their own password.
 
-### Geçen kontroller
+- Related setup, HTTP, and authentication tests: **6 passed**, 0 failed.
+- `npm run check`, `npm run build`, and targeted lint for changed files passed.
+- Browser checks confirmed removal of the setup-code field, rejection of 7-character passwords, and acceptance of an 8-digit password and a mixed 9-character password. Requests contained only the two password fields; there were no browser errors. Setup API responses were mocked to avoid replacing the existing administrator record.
+- The local application was restarted at `http://127.0.0.1:3180`; its HTTP response and setup state were verified.
+- Full `npm run lint` failed on 3 existing errors in `server/connection-routes.mjs` and `app/desktop-layout.ts`, which were not changed during this stage.
 
-- `npm test`: **157 test, 157 başarılı**. İlk yönetici kurulumu, gerçek HTTP oturum/CSRF kontrolleri, boş sunucu listesi, hedef izolasyonu ve mevcut uygulama davranışları dahil.
-- Bağlantı alt kümesi: **15 test**. Gerçek yerel SSH2 sunucusuyla şifre ve şifreli özel anahtar, parmak izi denetimi, yanlış anahtarda kimlik doğrulamadan durma, JSON stdin, Windows/Linux sabit komut eşlemesi, SSH tüneli, şifreli kayıtlar, kuyruk ve iptal/kaldırma davranışı.
-- `npm run check`, `npm run lint`, `npm run build`: başarılı. Derleme Node 22.23.2 ile yapıldı; yalnız paket boyutu bilgilendirmesi kaldı.
-- `npm audit`: tüm bağımlılıklarda **0 bildirilen güvenlik açığı**; bu sonuç kapsamlı güvenlik denetimi yerine geçmez.
-- Tarayıcı: yönetici kurulumu/giriş, boş çalışma alanı, Linux ve Windows seçenekleri, parmak izi onayı, şifre/anahtar formu, kurulum/hata/yeniden deneme/kaldırma, hazır hedefe geçiş, Windows sanal dosya yolları ve özellik kısıtları. Masaüstü ve mobil, açık/koyu tema. Tarayıcı istisnası yok. UI akışlarında sentetik API verileri kullanıldı.
-- Windows: PowerShell 5.1 ve 7 testleri; dosya sınırları, junction/hard link ve eski revision reddi, geçerli JSON yanıtları, izinli servis kontrolleri ve sınırlı yerel HTTP tespiti. Gerçek Windows kaynak ve disk ölçümü salt okunur çalıştırıldı.
-- Windows yanıtları mevcut Node denetleyicileri üzerinden ayrıca sınandı: dosya listeleme/oluşturma/okuma/indirme ve 409 hatası; kaynak ölçümleri; disk özeti ve sınırlı klasör/uygulama ölçümü; model ve desteklenmeyen eşzamanlılık yanıtı. 13 yerel yardımcı çağrısı geçti. SSH çalıştırma sınırı yerel PowerShell'e yönlendirildi; gerçek uzak sunucu kullanılmadı.
-- Linux yardımcıları: 11 Python dosyası ve üretilen kurulum betiği sözdizimi kontrolünden geçti. Port ayrıştırma için 3, kaynak hesabı için 7 birim test geçti.
+## October 2, 2026 — Historical baseline
 
-### Henüz doğrulanmayanlar
+The standalone copy was validated on Windows. No deployment was made to the existing ViiOS installation or a production server.
 
-Tam kurulum, yeni bir uzak Linux veya Windows sunucusunda uçtan uca çalıştırılmadı. Linux paket yöneticileri, gerçek sudo/SFTP ortamı, Windows OpenSSH yönetici oturumu ve farklı dağıtımların davranışı hedef ortam testi gerektirir. Kurulum senaryoları sahte uzak çalıştırıcıyla kontrol edildi.
+### Passed checks
 
-Docker motoru ve Linux çalışma ortamı bu bilgisayarda bulunmadığı için Docker imajı ve tüm Linux dosya/Git testleri çalıştırılmadı. GitHub Actions dosyası Linux/Windows kontrol matrisini içerir; GitHub'a yükleme yapılmadığından bu iş akışı henüz çalışmadı.
+- `npm test`: **157/157 passed**, including initial administrator setup, real HTTP session/CSRF checks, an empty server list, target isolation, and existing application behavior.
+- Connection subset: **15 tests**, using a real local SSH2 server for password/encrypted-key authentication, fingerprint checks, rejection of wrong host keys before authentication, JSON standard input, fixed Windows/Linux command mapping, SSH tunnels, encrypted records, queuing, and cancellation/removal.
+- `npm run check`, `npm run lint`, and `npm run build` passed. The build used Node 22.23.2 and retained only an informational bundle-size notice.
+- `npm audit` reported **0 vulnerabilities** across dependencies at that time. This was not a comprehensive security audit.
+- Browser checks covered setup/login, the empty workspace, Linux/Windows options, fingerprint confirmation, password/key forms, setup/error/retry/removal, switching to ready targets, Windows virtual paths, and capability limitations on desktop/mobile and in light/dark themes. Synthetic API data was used; no browser exceptions occurred.
+- Windows tests ran in PowerShell 5.1 and 7, covering file limits, junction/hard-link and stale-revision rejection, JSON responses, allowed service controls, and bounded local HTTP discovery. Real Windows resource and disk measurements were exercised read-only.
+- Windows responses were also exercised through the existing Node controllers: file list/create/read/download and 409 errors, resource measurements, storage overview and bounded usage, model inventory, and unsupported concurrency responses. **13 local helper calls passed.** The SSH execution boundary was redirected to local PowerShell; no real remote server was used.
+- Linux helpers: 11 Python files and the generated setup script passed syntax checks. Port parsing had 3 passing unit tests, and resource accounting had 7.
 
-Windows Git yönetimi, büyük dosya streaming/ZIP aktarımı ve özel UAT akışları bu sürümün destek kapsamı dışındadır. Ayrıntılar [README](../README.md), [sunucu kurulumu](connections.md) ve [Windows desteği](windows-support.md) içindedir.
+### Not yet verified at that stage
+
+Complete onboarding was not run end to end against a fresh remote Linux or Windows server. Linux package managers, real sudo/SFTP environments, Windows OpenSSH administrator sessions, and distribution-specific behavior still required target integration checks. Setup scenarios used a fake remote executor.
+
+Docker and a Linux runtime were unavailable on the development computer, so the Docker image and the full Linux file/Git test suites were not run locally. The GitHub Actions file included a Windows/Linux matrix, but it had not yet run because the repository had not been published at that stage.
+
+Windows Git management, large-file streaming/ZIP transfer, and custom UAT flows were outside the release's support scope. See [README](../README.md), [Server connections](connections.md), and [Windows target support](windows-support.md).
