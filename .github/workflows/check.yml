@@ -1,0 +1,36 @@
+name: Validate ViiOS
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  controller:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run check
+      - run: npm run lint
+      - run: npm run build
+      - if: runner.os == 'Windows'
+        shell: powershell
+        run: ./tests/windows-agent.test.ps1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/package-source.py --check
+      - run: python -m unittest discover -s tests -p 'test_public_source.py'
+      - if: runner.os == 'Linux'
+        run: python -m unittest discover -s tests -p 'test_storage.py'
+      - if: runner.os == 'Linux'
+        run: python -m unittest discover -s tests -p 'test_resources.py'
+      - if: runner.os == 'Linux'
+        run: python -m unittest discover -s tests -p 'test_scanner.py'
+      - run: python -m unittest discover -s tests -p 'test_versioning_access_errors.py'

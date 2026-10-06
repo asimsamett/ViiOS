@@ -1,0 +1,491 @@
+.ops-panel {
+  max-width: 1370px;
+  padding: 28px 34px 48px;
+}
+.ops-panel-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+.ops-kicker {
+  color: var(--repo-accent);
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.1em;
+}
+.ops-panel-heading h2 {
+  margin: 5px 0 0;
+  font-size: 22px;
+  letter-spacing: -0.025em;
+}
+.ops-panel-heading p {
+  margin: 6px 0 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.ops-muted {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.ops-panel > .repo-center-error,
+.ops-panel > .repo-center-notice {
+  margin: 12px 0;
+}
+.ops-unavailable {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 245px;
+  border: 1px dashed var(--border);
+  border-radius: 11px;
+  color: var(--repo-accent);
+  text-align: center;
+}
+.ops-unavailable strong {
+  margin-top: 12px;
+  color: var(--foreground);
+  font-size: 15px;
+}
+.ops-unavailable p {
+  max-width: 400px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.ops-flow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 74px minmax(0, 1fr);
+  align-items: stretch;
+  gap: 10px;
+}
+.ops-env-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 303px;
+  padding: 20px 22px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--background);
+  box-shadow: 0 2px 10px #07152808;
+}
+.ops-env-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ops-env-icon {
+  display: grid;
+  place-items: center;
+  width: 39px;
+  height: 39px;
+  border-radius: 10px;
+}
+.ops-env-icon.dev {
+  color: #2565a1;
+  background: #e8f1ff;
+}
+.ops-env-icon.uat {
+  color: var(--repo-accent);
+  background: var(--repo-accent-soft);
+}
+.ops-env-pill {
+  padding: 5px 7px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  color: var(--muted-foreground);
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+}
+.ops-env-card h3 {
+  margin: 13px 0 2px;
+  font-size: 21px;
+}
+.ops-env-card > a,
+.ops-placeholder-port {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  width: fit-content;
+  color: var(--repo-accent);
+  font:
+    12px ui-monospace,
+    SFMono-Regular,
+    Consolas,
+    monospace;
+  text-decoration: none;
+}
+.ops-env-card > a:hover {
+  text-decoration: underline;
+}
+.ops-placeholder-port {
+  color: var(--muted-foreground);
+}
+.ops-env-card dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 18px;
+  margin: 18px 0 0;
+}
+.ops-env-card dl div {
+  min-width: 0;
+}
+.ops-env-card dt {
+  color: var(--muted-foreground);
+  font-size: 10px;
+}
+.ops-env-card dd {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 4px 0 0;
+  font:
+    700 12px ui-monospace,
+    SFMono-Regular,
+    Consolas,
+    monospace;
+}
+.ops-env-card dd.ops-healthy {
+  color: #07846b;
+}
+.ops-env-card dd.ops-unhealthy {
+  color: #b45309;
+}
+.ops-latest {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 15px 0 0;
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+.ops-setup-copy {
+  max-width: 340px;
+  margin: 23px 0;
+  color: var(--muted-foreground);
+  line-height: 1.55;
+  font-size: 12px;
+}
+.ops-profile-form {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--repo-subtle);
+  font-size: 11px;
+}
+.ops-profile-form > p {
+  margin: 0;
+  color: var(--muted-foreground);
+  line-height: 1.45;
+}
+.ops-profile-form code {
+  margin: 0 3px;
+  color: var(--repo-accent);
+}
+.ops-profile-form label {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  font-weight: 650;
+}
+.ops-profile-form label small,
+.ops-profile-form > small {
+  color: var(--muted-foreground);
+  font-weight: 400;
+}
+.ops-profile-form input,
+.ops-profile-form textarea,
+.ops-profile-form select {
+  width: 100%;
+  min-width: 0;
+  padding: 7px 8px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--background);
+  color: var(--foreground);
+  font: 11px ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+.ops-profile-form textarea { resize: vertical; }
+.ops-profile-inline { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ops-profile-form > button { justify-self: start; }
+.ops-advanced-toggle {
+  align-self: flex-start;
+  margin-top: 10px;
+  padding: 2px 0;
+  border: 0;
+  background: none;
+  color: var(--repo-accent);
+  font-size: 11px;
+  font-weight: 650;
+  cursor: pointer;
+}
+.ops-advanced-toggle:disabled { cursor: default; opacity: .6; }
+.ops-profile-extra { display: grid; gap: 10px; }
+.ops-profile-extra summary { color: var(--repo-accent); cursor: pointer; font-weight: 650; }
+.ops-profile-extra[open] { display: grid; }
+.ops-profile-extra p { margin: 0; color: var(--muted-foreground); line-height: 1.45; }
+.ops-env-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 19px;
+}
+.ops-env-actions button {
+  font-size: 11px;
+}
+.ops-flow-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: var(--repo-accent);
+}
+.ops-flow-arrow span {
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+}
+.ops-advice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  padding: 15px 17px;
+  border: 1px solid color-mix(in srgb, var(--repo-accent) 24%, var(--border));
+  border-radius: 8px;
+  color: var(--repo-accent);
+  background: var(--repo-accent-soft);
+  font-size: 12px;
+}
+.ops-advice svg {
+  flex: none;
+}
+.ops-promotion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 20px;
+  padding: 21px 23px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--repo-subtle);
+}
+.ops-promotion h3 {
+  margin: 5px 0 0;
+  font-size: 16px;
+}
+.ops-promotion p {
+  margin: 5px 0 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.ops-promotion small {
+  display: block;
+  margin-top: 6px;
+  color: #b45309;
+  font-size: 11px;
+}
+.ops-promotion button {
+  flex: none;
+  color: white;
+  background: var(--repo-accent);
+}
+.ops-promotion button:hover {
+  background: #08796f;
+}
+.ops-history {
+  margin-top: 22px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.ops-history-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 17px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.ops-history-title h3 {
+  margin: 4px 0 0;
+  font-size: 16px;
+}
+.ops-history-title > span {
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+.ops-history-grid {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  min-height: 290px;
+}
+.ops-versions {
+  max-height: 420px;
+  overflow: auto;
+  padding: 10px;
+  border-right: 1px solid var(--border);
+  background: var(--repo-subtle);
+}
+.ops-versions button {
+  display: block;
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  color: var(--foreground);
+  background: transparent;
+  text-align: left;
+}
+.ops-versions button:hover,
+.ops-versions button[aria-pressed='true'] {
+  border-color: var(--border);
+  background: var(--background);
+}
+.ops-versions button[aria-pressed='true'] {
+  box-shadow: inset 3px 0 var(--repo-accent);
+}
+.ops-versions button strong {
+  display: block;
+  color: var(--repo-accent);
+  font-size: 11px;
+}
+.ops-versions button span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 5px;
+  font-size: 11px;
+}
+.ops-versions button small {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted-foreground);
+  font-size: 10px;
+}
+.ops-version-detail {
+  min-width: 0;
+  padding: 19px;
+}
+.ops-version-meta strong,
+.ops-version-meta small {
+  display: block;
+}
+.ops-version-meta strong {
+  font-size: 14px;
+}
+.ops-version-meta small {
+  margin-top: 5px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+.ops-file-list {
+  margin: 17px 0;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  overflow: hidden;
+}
+.ops-file-list button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  color: var(--foreground);
+  text-align: left;
+  font:
+    11px ui-monospace,
+    SFMono-Regular,
+    Consolas,
+    monospace;
+}
+.ops-file-list button:last-child {
+  border-bottom: 0;
+}
+.ops-file-list button:hover,
+.ops-file-list button[aria-pressed='true'] {
+  background: var(--repo-accent-soft);
+}
+.ops-file-list button small {
+  margin-left: auto;
+  color: var(--muted-foreground);
+}
+.ops-diff {
+  max-width: 100%;
+  overflow: auto;
+  max-height: 350px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--repo-subtle);
+  font:
+    11px/1.55 ui-monospace,
+    SFMono-Regular,
+    Consolas,
+    monospace;
+}
+.dark .ops-env-icon.dev {
+  color: #99c5f7;
+  background: #183752;
+}
+@container (max-width: 920px) {
+  .ops-flow {
+    grid-template-columns: minmax(0, 1fr) 35px minmax(0, 1fr);
+  }
+  .ops-env-card {
+    padding: 16px;
+  }
+  .ops-history-grid {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+}
+@container (max-width: 650px) {
+  .ops-panel {
+    padding: 18px;
+  }
+  .ops-flow {
+    grid-template-columns: 1fr;
+  }
+  .ops-flow-arrow {
+    flex-direction: row;
+    transform: rotate(90deg);
+    padding: 3px;
+  }
+  .ops-flow-arrow span {
+    display: none;
+  }
+  .ops-promotion {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .ops-history-grid {
+    grid-template-columns: 1fr;
+  }
+  .ops-versions {
+    display: flex;
+    max-height: 132px;
+    overflow: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .ops-versions button {
+    flex: none;
+    width: 180px;
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "roots": [
+    "/home",
+    "/opt",
+    "/srv",
+    "/var/www",
+    "/mnt",
+    "/media"
+  ],
+  "projectRoots": [],
+  "projectExcludes": {}
+}

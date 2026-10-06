@@ -1,0 +1,18 @@
+import {readFile,writeFile,rename} from 'node:fs/promises';
+import {createInterface} from 'node:readline';
+import {Writable} from 'node:stream';
+import {fileURLToPath} from 'node:url';
+import path from 'node:path';
+import {loadEnvFile} from 'node:process';
+import {existsSync} from 'node:fs';
+import {hashPassword} from '../server/auth.mjs';
+import {privatePermissions} from '../server/connection-store.mjs';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+if(existsSync(path.join(root,'.env')))loadEnvFile(path.join(root,'.env'));
+const filename=path.join(path.resolve(process.env.DATA_DIR||path.join(root,'data')),'admin.json');
+await readFile(filename,'utf8');
+let muted=false;
+const output=new Writable({write(chunk,_encoding,callback){if(!muted)process.stdout.write(chunk);callback();}});
+const rl=createInterface({input:process.stdin,output,terminal:!!process.stdin.isTTY});
+process.stdout.write('Yeni yönetici şifresi (en az 8 karakter): ');muted=true;
+rl.question('',async password=>{rl.close();process.stdout.write('\n');if(password.length<8||password.length>256){console.error('Şifre 8–256 karakter olmalıdır.');process.exitCode=1;return;}const value=JSON.parse(await readFile(filename,'utf8'));value.passwordHash=hashPassword(password);await writeFile(filename+'.tmp',JSON.stringify(value),{mode:0o600});await privatePermissions(filename+'.tmp');await rename(filename+'.tmp',filename);console.log('Şifre güncellendi. ViiOS’u yeniden başlatın.');});

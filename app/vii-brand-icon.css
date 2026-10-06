@@ -1,0 +1,20 @@
+.vii-brand-icon {
+  display: block;
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  user-select: none;
+}
+
+.vii-brand-tile {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border: 1px solid #ffffff38;
+  background: #060c2d;
+  box-shadow: inset 0 1px 0 #ffffff12, 0 5px 18px #07102d30;
+}
+.vii-brand-tile > .vii-brand-icon { width: 100%; height: 100%; }
+
+.brand .vii-brand-tile { width: 42px; height: 42px; padding: 6px; border-radius: 12px; }

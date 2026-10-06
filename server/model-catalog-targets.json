@@ -1,0 +1,27 @@
+{
+  "primaryHost": "127.0.0.1",
+  "primaryName": "Sunucu",
+  "allowedHosts": [
+    "127.0.0.1",
+    "localhost",
+    "::1"
+  ],
+  "endpoints": [
+    {
+      "url": "http://127.0.0.1:11434",
+      "runtime": "Ollama",
+      "source": "Yerel model servisi"
+    }
+  ],
+  "ollamaRoots": [
+    "/root/.ollama/models",
+    "/usr/share/ollama/.ollama/models",
+    "/var/lib/ollama/.ollama/models"
+  ],
+  "modelRoots": [
+    "/opt/models",
+    "/home/models",
+    "/models"
+  ],
+  "additionalProfiles": []
+}

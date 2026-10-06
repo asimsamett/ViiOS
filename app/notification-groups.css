@@ -1,0 +1,49 @@
+.history-notifications .history-toolbar { flex-wrap: wrap; justify-content: flex-start; }
+.history-notifications .history-toolbar > :last-child { margin-left: auto; }
+.history-notifications .notification-grouping-toolbar { display: flex; align-items: center; gap: 10px; margin-top: -5px; font-size: 12px; color: var(--muted-foreground); }
+.history-notifications .notification-grouping-toolbar > span { font-weight: 600; }
+.history-notifications .notification-grouping-toolbar [data-slot="select-trigger"] { width: 175px; height: 34px; font-size: 12px; background: var(--card); }
+.history-notifications .notification-grouping-toolbar > button { height: 32px; font-size: 12px; }
+.history-notifications .notification-grouping-toolbar > small { margin-left: auto; font-size: 11px; }
+.history-notifications .notification-groups { gap: 9px; padding: 2px 3px 3px 2px; }
+.history-notifications .notification-group { flex-shrink: 0; overflow: hidden; border: 1px solid var(--border); border-radius: 9px; background: var(--card); }
+.history-notifications .notification-group.has-unread { border-color: color-mix(in srgb, var(--primary) 30%, var(--border)); }
+.history-notifications .notification-group-heading { margin: 0; }
+.history-notifications .notification-group-toggle { display: grid; grid-template-columns: 17px minmax(0, 1fr) auto auto; gap: 13px; align-items: center; width: 100%; min-height: 72px; padding: 13px 15px; border: 0; border-radius: 8px; background: transparent; color: var(--foreground); text-align: left; font: inherit; }
+.history-notifications .notification-group-toggle:hover { background: var(--muted); }
+.history-notifications .notification-group-toggle:focus-visible { outline: 2px solid var(--primary); outline-offset: -3px; }
+.history-notifications .notification-group-chevron { flex-shrink: 0; color: var(--muted-foreground); transition: transform .15s; }
+.history-notifications .notification-group-toggle[aria-expanded="true"] .notification-group-chevron { transform: rotate(90deg); }
+.history-notifications .notification-group-identity { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.history-notifications .notification-group-name { display: flex; align-items: baseline; gap: 8px; overflow-wrap: anywhere; font-size: 13px; font-weight: 650; line-height: 1.35; }
+.history-notifications .notification-group-name > code { flex-shrink: 0; font-family: var(--font-mono); font-size: 11px; font-weight: 450; color: var(--muted-foreground); }
+.history-notifications .notification-group-summary { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted-foreground); font-size: 11px; font-weight: 400; line-height: 1.5; }
+.history-notifications .notification-group-counts { display: flex; align-items: center; justify-content: flex-end; gap: 6px; font-size: 11px; font-weight: 450; white-space: nowrap; }
+.history-notifications .notification-group-counts > span { padding: 4px 7px; border-radius: 5px; background: var(--muted); color: var(--muted-foreground); }
+.history-notifications .notification-group-counts > .notification-group-unread { background: color-mix(in srgb, var(--primary) 12%, var(--card)); color: var(--primary); font-weight: 600; }
+.history-notifications .notification-group-time { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; min-width: 95px; color: var(--muted-foreground); font-size: 11px; font-weight: 400; white-space: nowrap; }
+.history-notifications .notification-group-time > span { font-size: 10px; opacity: .8; }
+.history-notifications .notification-group-events { padding: 0 12px 12px; }
+.history-notifications .notification-group-events:not([hidden]) { display: flex; flex-direction: column; gap: 8px; }
+.history-notifications .notification-group-events > .notification-item { padding: 12px; border-color: var(--border); background: var(--card); }
+.history-notifications .notification-group-events > .notification-item.unread { background: color-mix(in srgb, var(--primary) 5%, var(--card)); }
+.history-notifications .notification-group-events .notification-item > div { min-width: 0; }
+.history-notifications .notification-group-events .notification-item p { overflow-wrap: anywhere; }
+.history-notifications .notification-page-total { display: block; margin-top: 4px; font-size: 11px; }
+@media (max-width: 700px) {
+  .history-notifications .notification-grouping-toolbar { flex-wrap: wrap; gap: 8px; }
+  .history-notifications .notification-grouping-toolbar > small { width: 100%; margin-left: 0; }
+  .history-notifications .notification-group-toggle { grid-template-columns: 15px minmax(0, 1fr) auto; gap: 8px 10px; padding: 12px; }
+  .history-notifications .notification-group-identity { grid-column: 2 / -1; }
+  .history-notifications .notification-group-counts { grid-column: 2; justify-content: flex-start; flex-wrap: wrap; }
+  .history-notifications .notification-group-time { grid-column: 3; min-width: 0; }
+  .history-notifications .notification-group-time > span { display: none; }
+  .history-notifications .notification-group-events { padding: 0 8px 8px; }
+  .history-notifications .notification-group-events .notification-preview { width: 80px; }
+  .history-notifications .notification-group-events .notification-item { gap: 10px; padding: 10px; }
+  .history-notifications .history-footer { flex-wrap: wrap; }
+  .history-notifications .history-footer > div { margin-left: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .history-notifications .notification-group-chevron { transition: none; }
+}

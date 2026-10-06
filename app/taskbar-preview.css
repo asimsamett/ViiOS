@@ -1,0 +1,148 @@
+.taskbar-tab:not(.has-windows):after {
+  display: none;
+}
+.taskbar-tab.grouped:before {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 9px;
+  width: 3px;
+  height: 18px;
+  border-radius: 2px;
+  background: var(--desktop-muted);
+  opacity: 0.45;
+}
+.taskbar-preview-popup {
+  width: max-content;
+  max-width: calc(100vw - 24px);
+  padding: 7px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--popover) 94%, transparent);
+  backdrop-filter: blur(24px);
+  border-radius: 10px;
+  box-shadow: 0 12px 40px #0004;
+}
+.taskbar-preview-list {
+  display: flex;
+  gap: 7px;
+  max-width: calc(100vw - 40px);
+  overflow-x: auto;
+  scrollbar-width: thin;
+  padding: 1px;
+}
+.taskbar-preview-card {
+  width: 232px;
+  flex: 0 0 232px;
+  padding: 6px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--muted) 35%, transparent);
+}
+.taskbar-preview-card:hover {
+  background: var(--accent);
+}
+.taskbar-preview-card.active {
+  border-color: color-mix(in srgb, var(--primary) 35%, var(--border));
+}
+.taskbar-preview-card header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 27px;
+  margin-bottom: 5px;
+  color: var(--popover-foreground);
+}
+.taskbar-preview-card header > span:not(.taskbar-preview-icon) {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+}
+.taskbar-preview-icon {
+  display: flex;
+  align-items: center;
+  color: #b99140;
+}
+.taskbar-preview-icon > svg {
+  width: 16px;
+  height: 16px;
+}
+.taskbar-preview-close {
+  width: 25px;
+  height: 25px;
+  display: grid;
+  place-items: center;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.taskbar-preview-close:hover:not(:disabled) {
+  background: #c64c54;
+  color: white;
+}
+.taskbar-preview-close:disabled {
+  opacity: 0.35;
+}
+.taskbar-preview-image {
+  height: 138px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--background);
+}
+.taskbar-thumbnail {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.taskbar-preview-canvas {
+  position: absolute;
+  transform-origin: top left;
+  container-type: inline-size;
+  background: var(--desktop-surface);
+  pointer-events: none;
+  user-select: none;
+}
+.taskbar-preview-canvas *,
+.taskbar-preview-canvas *:before,
+.taskbar-preview-canvas *:after {
+  pointer-events: none !important;
+  animation: none !important;
+  transition: none !important;
+  caret-color: transparent !important;
+}
+.taskbar-preview-open {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  background: transparent;
+}
+.taskbar-preview-open:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: -3px;
+}
+.taskbar-preview-minimized {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  border-radius: 4px;
+  padding: 2px 5px;
+  font-size: 9px;
+  background: #172737ce;
+  color: white;
+  pointer-events: none;
+}
+@media (max-width: 500px) {
+  .taskbar-preview-card {
+    width: 210px;
+    flex-basis: 210px;
+  }
+  .taskbar-preview-image {
+    height: 125px;
+  }
+}

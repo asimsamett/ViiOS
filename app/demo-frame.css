@@ -1,0 +1,14 @@
+.viios-demo { --demo-bar-height: 44px; }
+.viios-demo-banner { position:fixed; inset:0 0 auto; height:var(--demo-bar-height); z-index:45; display:flex; align-items:center; gap:12px; padding:0 18px; background:#0b2535; color:#def4f7; border-bottom:1px solid #367083; font:12px 'Segoe UI',sans-serif; }
+.viios-demo-badge { display:flex; align-items:center; gap:6px; border:1px solid #62d9c977; border-radius:6px; padding:4px 7px; color:#85f0d7; font-size:10px; font-weight:700; letter-spacing:.8px; }
+.viios-demo-banner p { margin:0; }
+.viios-demo-banner p span { color:#a4c5d0; }
+.viios-demo-banner nav { display:flex; align-items:center; gap:4px; margin-left:auto; }
+.viios-demo-banner a, .viios-demo-banner button { display:flex; align-items:center; gap:6px; padding:6px 9px; border:0; border-radius:5px; background:transparent; color:inherit; font:inherit; cursor:pointer; }
+.viios-demo-banner a:hover, .viios-demo-banner button:hover { background:#ffffff18; }
+.viios-demo .desktop-shell.expanded { top:var(--demo-bar-height); }
+.viios-demo .vii-lock, .viios-demo .onboarding-shell { margin-top:var(--demo-bar-height); min-height:calc(100dvh - var(--demo-bar-height)); height:calc(100dvh - var(--demo-bar-height)); }
+.viios-demo-notice { position:fixed; bottom:100px; left:50%; transform:translateX(-50%); z-index:100; display:flex; align-items:center; gap:18px; width:max-content; max-width:calc(100vw - 32px); border:1px solid #448e93; border-radius:12px; padding:14px 18px; background:#0b2535; color:#def4f7; font-size:13px; box-shadow:0 12px 40px #0003; }
+.viios-demo-notice button { flex:none; border:0; background:transparent; color:inherit; cursor:pointer; }
+@media(max-width:720px) { .viios-demo-banner { padding:0 9px; gap:8px; } .viios-demo-banner p span, .viios-demo-banner button span { display:none; } .viios-demo-banner nav { gap:0; } .viios-demo-banner a { padding:6px; font-size:11px; } }
+@media(max-width:430px) { .viios-demo-banner p { display:none; } }

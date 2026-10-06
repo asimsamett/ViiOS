@@ -1,0 +1,415 @@
+.version-dialog {
+  width: min(1120px, 96vw);
+  max-width: min(1120px, 96vw) !important;
+  max-height: 92dvh;
+  padding: 24px;
+  gap: 16px;
+  overflow: auto;
+}
+.version-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.version-trial {
+  font-size: 11px;
+  padding: 4px 9px;
+  border-radius: 30px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-weight: 600;
+}
+.version-banner {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  background: var(--muted);
+  border-radius: 10px;
+  font-size: 13px;
+}
+.version-banner small {
+  display: block;
+  color: var(--muted-foreground);
+  margin-top: 3px;
+}
+.version-layout {
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr);
+  min-height: 420px;
+}
+.version-sidebar {
+  padding: 6px 18px 10px 0;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.version-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--muted-foreground);
+  display: flex;
+  justify-content: space-between;
+}
+.version-project {
+  display: flex;
+  text-align: left;
+  gap: 10px;
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 12px 10px;
+  font-size: 13px;
+}
+.version-project > span {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.version-project small {
+  display: block;
+  font-size: 11px;
+  color: var(--muted-foreground);
+  margin-top: 3px;
+}
+.version-project:hover,
+.version-project.selected {
+  background: var(--muted);
+  border-color: var(--border);
+}
+.version-main {
+  padding: 0 0 0 22px;
+  min-width: 0;
+}
+.version-connect {
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+}
+.version-connect > div {
+  display: flex;
+  gap: 7px;
+}
+.version-connect input {
+  min-width: 0;
+  font-family: monospace;
+  font-size: 12px;
+}
+.version-connect select {
+  width: 100%;
+  min-width: 0;
+  padding: 9px 10px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--background);
+  color: var(--foreground);
+  font-size: 13px;
+}
+.version-exclusions {
+  width: 100%;
+  text-align: left;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.version-exclusions summary {
+  cursor: pointer;
+}
+.version-exclusions pre {
+  max-height: 150px;
+  overflow: auto;
+  padding: 10px;
+  background: var(--muted);
+  border-radius: 6px;
+}
+.version-muted {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.version-error,
+.version-notice,
+.version-progress {
+  padding: 10px 12px;
+  margin-top: 12px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+.version-error {
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+}
+.dark .version-error {
+  color: #fca5a5;
+  background: #450a0a;
+  border-color: #7f1d1d;
+}
+.version-notice {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  color: #15803d;
+  background: #f0fdf4;
+}
+.dark .version-notice {
+  color: #86efac;
+  background: #052e16;
+}
+.version-progress {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  background: var(--muted);
+}
+.version-onboarding,
+.version-welcome {
+  margin-top: 20px;
+  padding: 26px 20px;
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.version-welcome {
+  align-items: center;
+  text-align: center;
+  padding: 42px 25px;
+  color: var(--muted-foreground);
+}
+.version-welcome h3,
+.version-onboarding h3,
+.version-project-heading h3 {
+  font-size: 18px;
+  font-weight: 650;
+  color: var(--foreground);
+}
+.version-onboarding code {
+  overflow-wrap: anywhere;
+}
+.version-project-heading {
+  margin-top: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.version-project-heading code {
+  font-size: 11px;
+  color: var(--muted-foreground);
+  overflow-wrap: anywhere;
+}
+.version-project-heading > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border);
+  padding: 5px 9px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+.version-stats {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin: 16px 0;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.version-stats strong {
+  font-size: 17px;
+  color: var(--foreground);
+  margin-right: 3px;
+}
+.version-tabs {
+  display: flex;
+  gap: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.version-tabs button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 2px;
+  font-size: 13px;
+  border-bottom: 2px solid transparent;
+  color: var(--muted-foreground);
+}
+.version-tabs button[aria-selected='true'] {
+  border-bottom-color: #3b82f6;
+  color: var(--foreground);
+}
+.version-tab-content {
+  display: grid;
+  gap: 12px;
+  padding-top: 14px;
+}
+.version-files {
+  max-height: 180px;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.version-files li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  font-size: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.version-files li:last-child {
+  border: 0;
+}
+.version-files li span {
+  overflow-wrap: anywhere;
+}
+.version-files code {
+  min-width: 35px;
+  font-size: 10px;
+  color: #2563eb;
+}
+.version-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.version-clean {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 25px 0;
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+.version-history {
+  max-height: 300px;
+  overflow: auto;
+  padding: 4px 2px;
+}
+.version-history li {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 17px;
+}
+.version-history-dot {
+  background: #3b82f6;
+  border: 3px solid #dbeafe;
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  margin-top: 3px;
+}
+.version-history-entry {
+  min-width: 0;
+  flex: 1;
+}
+.version-history-entry strong {
+  font-size: 13px;
+  display: block;
+  overflow-wrap: anywhere;
+}
+.version-history-entry small {
+  display: block;
+  font-size: 11px;
+  color: var(--muted-foreground);
+  margin: 4px 0 8px;
+}
+.version-confirm {
+  margin-top: 14px;
+  padding: 16px;
+  border: 1px solid #93c5fd;
+  border-radius: 8px;
+  display: grid;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.version-confirm h4 {
+  font-weight: 650;
+}
+.version-receipt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  color: var(--muted-foreground);
+  margin-top: 14px;
+}
+.version-diff {
+  margin-top: 16px;
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+}
+.version-diff > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+.version-diff pre {
+  max-height: 280px;
+  overflow: auto;
+  background: var(--muted);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 11px;
+  line-height: 1.6;
+  margin: 8px 0;
+}
+@media (max-width: 700px) {
+  .version-dialog {
+    padding: 16px;
+  }
+  .version-layout {
+    grid-template-columns: 1fr;
+  }
+  .version-sidebar {
+    border: 0;
+    padding: 0 0 16px;
+  }
+  .version-main {
+    padding: 0;
+  }
+  .version-title {
+    font-size: 16px;
+  }
+  .version-stats {
+    gap: 12px;
+  }
+  .version-banner code {
+    overflow-wrap: anywhere;
+  }
+}
+.desktop-topline button.desktop-versions {
+  display: flex;
+  gap: 7px;
+  width: auto;
+  padding: 0 9px;
+  white-space: nowrap;
+  font-size: 12px;
+}
+.version-uat-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--background);
+  cursor: pointer;
+}
+.version-uat-option input { margin-top: 3px; accent-color: var(--primary); }
+.version-uat-option span { display: grid; gap: 3px; }
+.version-uat-option strong { font-size: 13px; }
+.version-uat-option small { color: var(--muted-foreground); font-size: 11px; }

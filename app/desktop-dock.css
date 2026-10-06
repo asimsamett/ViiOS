@@ -1,0 +1,172 @@
+.desktop-dock-area {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  z-index: 25;
+  display: flex;
+  justify-content: center;
+  width: max-content;
+  max-width: calc(100% - 32px);
+  padding-bottom: 12px;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+  transition: transform 240ms cubic-bezier(.2,.8,.2,1);
+  outline: none;
+}
+.desktop-dock-area.auto-hide { transform: translate(-50%, calc(100% - 10px)); }
+.desktop-dock-area.auto-hide:is(:hover, :focus-visible, :has(:focus-visible), .is-open) { transform: translate(-50%, 0); }
+@media (hover: none) {
+  .desktop-dock-area.auto-hide:focus-within { transform: translate(-50%, 0); }
+}
+.macos-dock {
+  --dock-size: 54px;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  width: max-content;
+  max-width: 100%;
+  padding: 12px 14px 17px;
+  border: 1px solid #ffffff75;
+  border-radius: 25px;
+  background: linear-gradient(160deg, #edf5ff8c, #e4eefb54);
+  box-shadow: 0 12px 32px #0e2c4933, inset 0 1px 0 #ffffffa6, 0 0 0 1px #193f5b14;
+  backdrop-filter: blur(28px) saturate(1.65);
+  -webkit-backdrop-filter: blur(28px) saturate(1.65);
+  pointer-events: auto;
+  isolation: isolate;
+}
+.dark .macos-dock {
+  border-color: #ffffff30;
+  background: linear-gradient(160deg, #293e54c9, #182a3daa);
+  box-shadow: 0 12px 35px #0005, inset 0 1px 0 #ffffff24, 0 0 0 1px #0003;
+}
+.dock-item {
+  --dock-scale: var(--dock-hover, 1);
+  position: relative;
+  flex: 0 0 auto;
+  width: calc(var(--dock-size) * var(--dock-scale));
+  height: var(--dock-size);
+  transition: width 110ms ease-out;
+}
+.dock-item:hover, .dock-item:focus-within { z-index: 2; }
+.macos-dock .dock-button {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: var(--dock-size);
+  height: var(--dock-size);
+  padding: 0;
+  border: 0;
+  border-radius: 13px;
+  background: transparent;
+  transform: translateX(-50%) scale(var(--dock-scale));
+  transform-origin: bottom center;
+  transition: transform 110ms ease-out;
+  overflow: visible;
+  -webkit-tap-highlight-color: transparent;
+}
+.macos-dock .dock-button:is(:hover, .active) { background: transparent; border-color: transparent; }
+.dock-icon {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #ffffff80;
+  border-radius: 24%;
+  background: linear-gradient(155deg, #53c6ff, #1575cf);
+  color: white;
+  box-shadow: inset 0 1px 2px #ffffff80, inset 0 -2px 2px #002b6329, 0 3px 5px #16395738;
+}
+.dock-icon > svg { width: 58%; height: 58%; stroke-width: 1.65; filter: drop-shadow(0 1px 1px #0002); }
+.dock-item[data-dock-kind='knowledge'] .dock-icon { background: linear-gradient(155deg, #40d7c3, #078b8c); }
+.dock-item[data-dock-kind='server'] .dock-icon { background: linear-gradient(155deg, #73c9ff, #326acb); }
+.dock-item[data-dock-kind='tasks'] .dock-icon { background: linear-gradient(155deg, #394b60, #13202e); color: #6cf7b0; }
+.dock-item[data-dock-kind='applications'] .dock-icon { background: linear-gradient(155deg, #a18cff, #6951d5); }
+.dock-item[data-dock-kind='repo'] .dock-icon { background: linear-gradient(155deg, #ffc572, #e88832); }
+.dock-item[data-dock-kind='search'] .dock-icon { background: linear-gradient(155deg, #f8fcff, #cfdeee); color: #32628d; }
+.dock-item[data-dock-kind='search'] .dock-brand-icon { padding:calc(var(--dock-size) * .13); border-color:#ffffff38; background:#060c2d; box-shadow:inset 0 1px 0 #ffffff12, 0 3px 5px #16395738; }
+.dock-brand-icon > .vii-brand-icon { width:100%; height:100%; }
+.dock-item[data-dock-kind='file'] .dock-icon { background: linear-gradient(155deg, #fff, #e3eaf5); color: #567aaa; }
+.dock-item[data-dock-kind='trash'] .dock-icon { background: linear-gradient(155deg, #fafcffd9, #d4e1eed9); color: #62778d; }
+.dock-item[data-dock-kind='trash'] { margin-left: 12px; }
+.dock-item[data-dock-kind='trash']:before { content: ''; position: absolute; width: 1px; height: 40px; left: -12px; bottom: 0; background: #ffffff70; }
+.macos-dock .dock-button:after {
+  content: '';
+  position: absolute;
+  left: calc(50% - 2px);
+  bottom: -9px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #354d61;
+  opacity: .85;
+}
+.macos-dock .dock-button:not(.has-windows):after { display: none; }
+.dark .macos-dock .dock-button:after { background: #e8f2ff; }
+.macos-dock .dock-button.active:after { width: 5px; height: 5px; left: calc(50% - 2.5px); opacity: 1; }
+.macos-dock .dock-button.grouped:before { display: none; }
+.macos-dock .dock-button:focus-visible { outline: 3px solid white; outline-offset: 4px; }
+.macos-dock .taskbar-dirty { top: -2px; right: -2px; width: 8px; height: 8px; border: 1px solid white; }
+.dock-label {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  z-index: 3;
+  width: max-content;
+  max-width: 250px;
+  padding: 7px 12px;
+  border: 1px solid #ffffff73;
+  border-radius: 8px;
+  background: #f4f8fcef;
+  color: #26394c;
+  box-shadow: 0 4px 14px #142f4930;
+  backdrop-filter: blur(16px);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.35;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(-50%) scale(calc(1 / var(--dock-scale)));
+  transform-origin: bottom center;
+  transition: opacity 110ms ease;
+}
+.dock-label:after { content: ''; position: absolute; top: 100%; left: calc(50% - 5px); border: 5px solid transparent; border-top-color: #f4f8fcef; }
+.dock-button:hover .dock-label, .dock-button:focus-visible .dock-label { opacity: 1; visibility: visible; }
+.dark .dock-label { background: #243446f5; color: #eef5ff; border-color: #ffffff25; }
+.dark .dock-label:after { border-top-color: #243446f5; }
+.dock-preview-popup { border-radius: 15px; }
+.desktop-topline .desktop-clock { display: flex; align-items: center; gap: 9px; font-size: 12px; font-variant-numeric: tabular-nums; color: var(--desktop-muted); }
+.desktop-topline .desktop-clock strong { font-weight: 600; color: var(--desktop-ink); }
+.desktop-stage:has(.desktop-dock-area) .desktop-folders { bottom: 110px; }
+@media (hover: hover) and (pointer: fine) and (min-width: 761px) and (prefers-reduced-motion: no-preference) {
+  .dock-item:hover { --dock-hover: 1.65; }
+  .dock-item:has(+ .dock-item:hover), .dock-item:hover + .dock-item { --dock-hover: 1.3; }
+  .dock-item:has(+ .dock-item + .dock-item:hover), .dock-item:hover + .dock-item + .dock-item { --dock-hover: 1.08; }
+}
+@media (max-width: 760px) {
+  .desktop-dock-area { max-width: calc(100% - 16px); padding-bottom: 8px; }
+  .macos-dock { --dock-size: 36px; gap: 6px; max-width: 100%; padding: 10px 10px 15px; border-radius: 19px; overflow-x: auto; scrollbar-width: none; }
+  .macos-dock::-webkit-scrollbar { display: none; }
+  .dock-item { --dock-scale: 1 !important; }
+  .dock-item[data-dock-kind='trash'] { margin-left: 6px; }
+  .dock-item[data-dock-kind='trash']:before { height: 30px; left: -6px; }
+  .desktop-topline .desktop-clock > span { display: none; }
+  .desktop-stage:has(.desktop-dock-area) .desktop-folders { top: 10px; bottom: 86px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dock-item { --dock-scale: 1 !important; }
+  .desktop-dock-area, .dock-item, .macos-dock .dock-button, .dock-label { transition: none; }
+}
+/* Prominent application shortcuts and bounded overflow for open tool windows. */
+.dock-item[data-dock-kind='models'] .dock-icon { background:linear-gradient(155deg,#d394ff,#8550d4); }
+.dock-item[data-dock-kind='credentials'] .dock-icon { background:linear-gradient(155deg,#ffcf6f,#d89531); }
+.macos-dock:has(.dock-item:nth-child(12)) { overflow-x:auto; overflow-y:hidden; scrollbar-width:none; }
+.macos-dock:has(.dock-item:nth-child(12))::-webkit-scrollbar { display:none; }
+.macos-dock:has(.dock-item:nth-child(12)) .dock-item { --dock-scale:1 !important; }
+@media(min-width:761px) and (max-width:1100px) {
+  .macos-dock { --dock-size:44px; gap:8px; overflow-x:auto; overflow-y:hidden; scrollbar-width:none; }
+  .macos-dock::-webkit-scrollbar { display:none; }
+  .dock-item { --dock-scale:1 !important; }
+}

@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "linux": [
+    {
+      "source": "server/scan.py",
+      "name": "scan.py"
+    },
+    {
+      "source": "server/control.py",
+      "name": "control.py"
+    },
+    {
+      "source": "server/files.py",
+      "name": "files.py"
+    },
+    {
+      "source": "server/resources.py",
+      "name": "resources.py"
+    },
+    {
+      "source": "server/storage.py",
+      "name": "storage.py"
+    },
+    {
+      "source": "server/model_connections.py",
+      "name": "model_connections.py"
+    },
+    {
+      "source": "server/model_catalog.py",
+      "name": "model_catalog.py"
+    },
+    {
+      "source": "server/model_concurrency.py",
+      "name": "model_concurrency.py"
+    },
+    {
+      "source": "server/versioning.py",
+      "name": "versioning.py"
+    },
+    {
+      "source": "server/versioning_access.py",
+      "name": "versioning_access.py"
+    },
+    {
+      "source": "server/versioning_policy.py",
+      "name": "versioning_policy.py"
+    },
+    {
+      "source": "server/versioning.json",
+      "name": "versioning.json"
+    },
+    {
+      "source": "server/model-targets.json",
+      "name": "model-targets.json"
+    },
+    {
+      "source": "server/model-catalog-targets.json",
+      "name": "model-catalog-targets.json"
+    },
+    {
+      "source": "server/apps.json",
+      "name": "apps.json"
+    },
+    {
+      "source": "server/versioning-ignore",
+      "name": "versioning-ignore"
+    }
+  ],
+  "windows": [
+    {
+      "source": "server/agent/windows-agent.ps1",
+      "name": "windows-agent.ps1"
+    }
+  ]
+}

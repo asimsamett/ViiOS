@@ -1,0 +1,10 @@
+services:
+  viios:
+    build: .
+    ports:
+      - "127.0.0.1:3180:3180"
+    volumes:
+      - viios-data:/data
+    restart: unless-stopped
+volumes:
+  viios-data:

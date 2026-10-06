@@ -1,0 +1,206 @@
+/* Shared ViiOS icon and desktop palette. Semantic status colors stay
+   in their own components; navigation and application icons use these tokens. */
+:root {
+  --ui-icon-ink: var(--primary);
+  --ui-icon-surface: color-mix(in srgb, var(--primary) 8%, var(--card));
+  --ui-icon-border: color-mix(in srgb, var(--primary) 19%, var(--border));
+}
+.dark {
+  --ui-icon-ink: #88d9bc;
+  --ui-icon-surface: color-mix(in srgb, var(--primary) 16%, var(--card));
+}
+.ui-icon.ui-icon,
+.dark .ui-icon,
+:is(.app-icon, .server-icon, .audit-icon, .repo-center-brand-icon),
+.dark :is(.app-icon, .server-icon, .audit-icon, .repo-center-brand-icon) {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  color: var(--ui-icon-ink);
+  background: var(--ui-icon-surface);
+  border: 1px solid var(--ui-icon-border);
+  border-radius: 10px;
+  box-shadow: none;
+}
+.ui-icon.ui-icon > svg,
+:is(.app-icon, .server-icon, .audit-icon, .repo-center-brand-icon) > svg {
+  color: inherit;
+  stroke-width: 1.75;
+  fill: none;
+  filter: none;
+}
+.ui-icon.project-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+}
+.ui-icon.project-service-icon {
+  width: 39px;
+  height: 39px;
+}
+.ui-icon.project-catalog-mark {
+  border-radius: 13px;
+}
+.ui-icon.desktop-shortcut-icon,
+.ui-icon.desktop-welcome-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+}
+.desktop-shortcut-icon > svg {
+  width: 30px;
+  height: 30px;
+}
+.ui-icon.window-app-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+}
+.launcher-item .ui-icon.launcher-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+}
+.launcher-item .ui-icon.launcher-icon > svg {
+  width: 24px;
+  height: 24px;
+}
+.launcher-item.row .ui-icon.launcher-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+}
+.launcher-item.row .ui-icon.launcher-icon > svg {
+  width: 20px;
+  height: 20px;
+}
+.project-apps,
+.dark .project-apps {
+  --project-border: var(--border);
+  --project-muted: var(--muted-foreground);
+  --project-surface: var(--card);
+  color: var(--foreground);
+}
+.desktop-window-body > .project-apps,
+.dark .desktop-window-body > .project-apps {
+  background: var(--background);
+}
+.project-service-footer,
+.dark .project-service-footer {
+  background: color-mix(in srgb, var(--muted) 50%, var(--card));
+}
+.project-port code,
+.dark .project-port code,
+.project-source-links > button,
+.dark .project-source-links > button,
+.project-endpoint-actions > :is(button, a) {
+  color: var(--ui-icon-ink);
+}
+.desktop-shell,
+.dark .desktop-shell {
+  --desktop-surface: var(--background);
+  --desktop-chrome: var(--muted);
+  --desktop-glass: color-mix(in srgb, var(--card) 94%, transparent);
+  --desktop-ink: var(--foreground);
+  --desktop-muted: var(--muted-foreground);
+  --desktop-line: var(--border);
+  background: var(--background);
+  border-color: var(--border);
+  font-family: var(--font-sans), sans-serif;
+}
+.desktop-shortcut {
+  min-height: 97px;
+  gap: 8px;
+  border-radius: 12px;
+  color: #f8fcff;
+  text-shadow: 0 1px 4px #122c49;
+}
+.desktop-shortcut:hover,
+.desktop-shortcut:focus-visible {
+  background: color-mix(in srgb, var(--card) 70%, transparent);
+  border-color: var(--ui-icon-border);
+}
+.desktop-shortcut:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+.desktop-welcome {
+  color: var(--foreground);
+  text-shadow: none;
+}
+.desktop-welcome button {
+  background: var(--card);
+  color: var(--foreground);
+  border-color: var(--border);
+}
+.desktop-taskbar :is(.taskbar-start, .taskbar-explorer, .taskbar-tab) > svg,
+.taskbar-preview-icon,
+.start-places svg,
+.stat-icon,
+.stat-icon.green-icon {
+  color: var(--ui-icon-ink);
+  fill: none;
+  stroke-width: 1.75;
+}
+.taskbar-tab.active:after {
+  background: var(--primary);
+}
+.desktop-window.active {
+  border-color: var(--ui-icon-border);
+}
+.explorer-item > button > svg,
+.explorer-item > button.directory > svg {
+  color: var(--ui-icon-ink);
+  stroke: currentColor;
+  stroke-width: 1.75;
+  fill: none;
+  padding: 7px;
+  border: 1px solid var(--ui-icon-border);
+  border-radius: 12px;
+  background: var(--ui-icon-surface);
+}
+.explorer-item.selected {
+  background: var(--ui-icon-surface);
+  border-color: var(--ui-icon-border);
+}
+.desktop-launcher,
+.dark .desktop-launcher {
+  --launch-bg: var(--card);
+  --launch-text: var(--foreground);
+  --launch-muted: var(--muted-foreground);
+  --launch-hover: var(--muted);
+  --launch-line: var(--border);
+  background: var(--card) !important;
+  border-color: var(--border);
+  font-family: var(--font-sans), sans-serif;
+}
+.launcher-search-field,
+.dark .launcher-search-field {
+  background: var(--background);
+  border-color: var(--border);
+  border-bottom-color: var(--primary);
+  color: var(--ui-icon-ink);
+}
+.repo-center {
+  --repo-accent: var(--primary);
+}
+@media (max-width: 760px) {
+  .ui-icon.desktop-shortcut-icon {
+    width: 46px;
+    height: 46px;
+  }
+  .desktop-shortcut-icon > svg {
+    width: 25px;
+    height: 25px;
+  }
+  .desktop-shortcut {
+    min-height: 88px;
+  }
+}
+
+.people-workspace > :is(.server-strip, .fleet-panel, .network-notice) { display: none; }
+.repo-team-section { margin: 0 34px; }
+.repo-team-section > .project-team { margin: 0 0 22px; }
+@media (max-width: 760px) {
+  .repo-team-section { margin: 0 16px; }
+}

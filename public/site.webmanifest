@@ -1,0 +1,14 @@
+{
+  "name": "ViiOS · Visual Infrastructure Intelligence",
+  "short_name": "ViiOS",
+  "lang": "tr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#101828",
+  "theme_color": "#101828",
+  "icons": [
+    { "src": "brand/viios-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "brand/viios-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
