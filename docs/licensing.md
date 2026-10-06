@@ -9,6 +9,7 @@
 <!-- docs-nav:end -->
 
 The complete license is [ViiOS Private Noncommercial License 1.0](../LICENSE).
+A [complete Turkish translation](license-text.tr.md) is also available; the English original controls.
 It is an original project-specific license, not an open-source license or an
 OSI-approved license. This page explains it and does not add permissions.
 

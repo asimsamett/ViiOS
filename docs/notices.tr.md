@@ -16,4 +16,4 @@ Proje ViiOS Private Noncommercial License 1.0 kullanır. Özel ortamda ticari ol
 
 [Türkçe lisans rehberini](licensing.tr.md) ve [üçüncü taraf bildirimlerini](../THIRD_PARTY_NOTICES.tr.md) okuyun. Bağımsız platform hakları ve önceki lisansların verdiği haklar saklıdır.
 
-Bu sayfa açıklama amaçlı Türkçe karşılıktır. İzin verilen kopyalarda [özgün NOTICE dosyası (İngilizce)](../NOTICE) ve ilgili bildirimler korunmalıdır. Hukuki açıdan esas alınan [tam lisans metni İngilizcedir](../LICENSE).
+Bu sayfa açıklama amaçlı Türkçe karşılıktır. İzin verilen kopyalarda [özgün NOTICE dosyası (İngilizce)](../NOTICE) ve ilgili bildirimler korunmalıdır. [Lisansın Türkçe tam çevirisini](license-text.tr.md) okuyabilirsiniz; anlam farkı olursa [İngilizce özgün metin](../LICENSE) esas alınır.

@@ -8,8 +8,9 @@
 [Demo](demo.tr.md) · [Sunucu bağlantıları](connections.tr.md) · [Windows desteği](windows-support.tr.md) · [Doğrulama](validation.tr.md) · [Telif bildirimleri](notices.tr.md) · [Üçüncü taraflar](../THIRD_PARTY_NOTICES.tr.md)
 <!-- docs-nav:end -->
 
-Tam ve esas alınan İngilizce metin: [ViiOS Private Noncommercial License 1.0 — tam metin, İngilizce](../LICENSE).
-Bu açıklama ek hak vermez. Lisans açık kaynak lisansı değildir ve OSI onayı iddiası taşımaz.
+**[Lisansın tamamını Türkçe oku](license-text.tr.md)** · [İngilizce özgün metin](../LICENSE)
+
+Türkçe tam metin, lisansın 11 maddesinin tamamının çevirisidir. Aşağıdaki bölüm kısa açıklama ve kullanım örneklerini içerir. Çeviri ek hak vermez; anlam farkı olursa İngilizce özgün metin esas alınır. Lisans açık kaynak lisansı değildir ve OSI onayı iddiası taşımaz.
 
 Temel kural: **Değiştirmek serbest; dağıtmak yasak.** Bu kural, yalnız lisansın
 kendi verdiği haklar bakımındandır. Kanundan, platform koşullarından, önceki

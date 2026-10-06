@@ -18,7 +18,7 @@
 
 [Canlı demo](https://asimsamett.github.io/ViiOS/) · [Sürümler](https://github.com/asimsamett/ViiOS/releases) · [Katkı rehberi](CONTRIBUTING.tr.md) · [Güvenlik bildirimi](SECURITY.tr.md)
 
-**Yalnız özel ve ticari olmayan kullanım:** v0.3.2 itibarıyla [ViiOS Private Noncommercial License 1.0](docs/licensing.tr.md) geçerlidir. Özel ortamınızda değişiklik yapabilirsiniz; dağıtım, ticari kullanım, kurumsal kurulum ve üçüncü kişilere hizmet sunma hakkı verilmez. Bu bir **açık kaynak lisansı değildir**. Lisansı, atıfları ve [telif ve atıf bildirimi](docs/notices.tr.md) bildirimini koruyun. Platformdan, önceki lisanslardan ve [üçüncü taraf lisanslarından](THIRD_PARTY_NOTICES.tr.md) doğan bağımsız haklar saklıdır. [Madde madde Türkçe açıklamayı ve geçiş notlarını](docs/licensing.tr.md) okuyun.
+**Yalnız özel ve ticari olmayan kullanım:** v0.3.2 itibarıyla [ViiOS Private Noncommercial License 1.0 — Türkçe tam metin](docs/license-text.tr.md) geçerlidir. Özel ortamınızda değişiklik yapabilirsiniz; dağıtım, ticari kullanım, kurumsal kurulum ve üçüncü kişilere hizmet sunma hakkı verilmez. Bu bir **açık kaynak lisansı değildir**. Lisansı, atıfları ve [telif ve atıf bildirimi](docs/notices.tr.md) bildirimini koruyun. Platformdan, önceki lisanslardan ve [üçüncü taraf lisanslarından](THIRD_PARTY_NOTICES.tr.md) doğan bağımsız haklar saklıdır. [Madde madde Türkçe açıklamayı ve geçiş notlarını](docs/licensing.tr.md) okuyun.
 
 **Yayımlama sınırı:** Aşağıdaki GitHub Pages ve kaynak ZIP yayımlama yönergeleri yalnız telif hakkı sahibi veya ayrıca yazılı izin almış kişiler içindir. Araçların mevcut olması dağıtım izni vermez. Yerel demo yalnız kişisel, ticari olmayan kullanım içindir.
 
